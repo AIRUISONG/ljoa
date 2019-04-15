@@ -1,0 +1,38 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/4 0004
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+    <jgp-panel>
+        <jgp-form _id="customerInfo" _disabled="true" _fdata='${fdata!''}' _label_width="140px">
+            <jgp-form-group _title="基本信息">
+                <jgp-text _label="姓名：" _name="customerName"_required="true" _col="6"></jgp-text>
+                <jgp-text _label="电话：" _name="customerTel" _required="true" _col="6" ></jgp-text>
+                <jgp-text _label="身份证号：" _name="customerIdentify" _required="true" _col="6" ></jgp-text>
+                <jgp-text _label="其他联系人姓名：" _name="otherName" _col="6" ></jgp-text>
+                <jgp-text _label="其他联系人电话：" _name="otherTel" _col="6" ></jgp-text>
+                <jgp-text _label="其他联系人身份证号：" _name="otherIdentify" _col="6" ></jgp-text>
+                <jgp-text _label="客户来访区域：" _name="customerArea"  _col="6" ></jgp-text>
+            </jgp-form-group>
+            <jgp-form-group _title="定金信息" >
+                <jgp-num _label="缴纳定金（元）：" _name="earnest" _decimal="5" _col="6" ></jgp-num>
+                <jgp-drop _label="定金状态：" _name="earnestStatus"  _col="6" _not_input="true" _active_key="LJ_CUSTOMER_INFO.EARNESTSTATUS"></jgp-drop>
+                <jgp-drop _label="定金去向：" _name="earnestDirection"  _col="6" _not_input="true" _active_key="LJ_CUSTOMER_INFO.EARNESTDIRECTION"></jgp-drop>
+            </jgp-form-group>
+            <jgp-form-group _title="成交信息">
+                <jgp-num _label="成交价格（元）：" _name="transactionPrice" _decimal="5" _col="6" ></jgp-num>
+                <jgp-num _label="优惠金额（元）：" _name="discountMoney" _decimal="5" _col="6" ></jgp-num>
+                <jgp-date-time _label="成交日期：" _not_input="true" _name="tradingDate" _format="date"  _col="6" ></jgp-date-time>
+            </jgp-form-group>
+             [#--<jgp-date-time _label="网签约定日期：" _required="true" _not_input="true" _name="appointDate" _format="date"  _col="6" ></jgp-date-time>--]
+            <jgp-area _label="备注：" _name="earnestRemark"  _col="12" _row="3"></jgp-area>
+        </jgp-form>
+    </jgp-panel>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+</script>
+[/@JGP.foot]

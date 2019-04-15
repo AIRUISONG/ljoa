@@ -1,0 +1,79 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/8/1
+-->
+[@JGP.head "$Title$"]
+<style>
+    .sty {
+        color:green;
+    }
+    .styl{
+        color: red;
+    }
+</style>
+[/@JGP.head]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/expense/ljExpenseMakeMoneyApiController/listAllLjExpenseMakeMoney">
+        <jgp-drop _label="查询条件："  _not_input="true" _name="expenseType" _placeholder="报销种类"  _active_key="LJOA.EXPENSE_TYPE" _col="3"></jgp-drop>
+        <jgp-drop  _not_input="true" _name="payStatus" _placeholder="打款状态"  _active_key="LJOA.PAY_STATUS" _col="3"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+              _record_tools="[{'icon':'credit-card','tip':'打款','fn':'editLjExpense'},{'icon':'cogs','tip':'打印申请','fn':'printLjExpense'}]">
+        <jgp-grid-col _name="payStatus" _filter_render="filterFn"  _underline="false"></jgp-grid-col>
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function filterFn(data) {
+        console.log(data.back.value);
+        if(data.back.value == "1"){
+            return "sty";
+        }
+        if(data.back.value == "0"){
+            return "styl";
+        }
+
+    }
+    //审批
+    function editLjExpense(re) {
+        var config = {
+            url:'/ljoa/expense/ljExpenseMakeMoneyController/showLjExpenseMakeMoney/'+re.back.record.id,
+            title:"报销打款",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //打印
+    function printLjExpense(re) {
+        var money=re.back.record.money;
+        var config=null;
+        if(money>=1500){
+            config={
+                url:'/ljoa/reporter/ljExpenseReportController/ljExpensereport1/'+re.back.record.id,
+                title:'打印申请',
+                width:'100%',
+                height:'100%'
+            }
+        }else {
+            config={
+                url:'/ljoa/reporter/ljExpenseReportController/ljExpensereport2/'+re.back.record.id,
+                title:'打印申请',
+                width:'100%',
+                height:'100%'
+            }
+        }
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

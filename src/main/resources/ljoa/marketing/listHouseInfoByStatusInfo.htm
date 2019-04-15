@@ -1,0 +1,114 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/4 0004
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _col="['20','*']" _aux="true">
+    <div slot="1-1">
+        <jgp-tree _id="testTree" _root="项目列表"
+                  _url="/ljoa/marketing/ljHouseInfoApiYXController/listTestTree"
+                  _onclick="opengrid"
+                  _auto_load="false">
+        </jgp-tree>
+    </div>
+    <jgp-div slot="1-2" _row="['45','*']" _runit = "px" _aux="true">
+        <jgp-query slot="1-1" _id="query" _target="grid"  _action="/ljoa/marketing/customerInfoApiController/listHouseInfoByStatus/${status!''}">
+            <jgp-drop _label="查询条件：" _col="3" _name="projectUuid" _placeholder="项目名称" _not_input="true" _url="/ljoa/marketing/ljProjectInfoYXApiController/listProjectDrop"></jgp-drop>
+            <jgp-drop _col="2" _name="roomType" _placeholder="产品分类" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>
+            <jgp-drop _col="2" _name="status" _placeholder="销售状态" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_STATUS"></jgp-drop>
+        </jgp-query>
+        <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+                  _record_tools=" [{'icon':'keyboard-o','tip':'客户信息录入','fn':'addorEdit'}]"></jgp-grid>
+    </jgp-div>
+</jgp-div>
+
+
+
+[#--<jgp-div _row="['45','*']" _runit = "px" _aux="true">--]
+    [#--<jgp-query slot="1-1" _target="grid"  _action="/ljoa/marketing/customerInfoApiController/listHouseInfoByStatus/${status!''}">--]
+        [#--<jgp-drop _label="查询条件：" _col="3" _name="projectUuid" _placeholder="项目名称" _not_input="true" _url="/ljoa/marketing/ljProjectInfoYXApiController/listProjectDrop"></jgp-drop>--]
+        [#--<jgp-drop _col="2" _name="roomType" _placeholder="产品分类" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>--]
+        [#--<jgp-drop _col="2" _name="status" _placeholder="销售状态" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_STATUS"></jgp-drop>--]
+    [#--</jgp-query>--]
+    [#--<jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"--]
+    [#--_record_tools=" [{'icon':'keyboard-o','tip':'客户信息录入','fn':'addorEdit'},{'icon':'keyboard-o','tip':'前后置佣金录入','fn':'editMoney'}]"></jgp-grid>--]
+[#--</jgp-div>--]
+[/@JGP.body]
+[@JGP.foot]
+<script>
+
+
+    JGP.$onload(function(){
+        JGP.tree('testTree').load();
+        JGP.query('query').searchTo("/ljoa/marketing/customerInfoApiController/listHouseInfoByStatus/${status!''}/00", function () {
+
+        }, function () {
+
+        });
+    })
+
+/*    function  editWeb() {
+        JGP.$post("/ljoa/marketing/customerInfoApiController/editOperationColumn",{},
+                function (re) {
+                    console.log(re.back.key+"   14");
+                    if(re.data.Column = "A"){
+                    }else{
+                        JGP.grid("grid").attr("[{'icon':'keyboard-o','tip':'客户信息录入','fn':'addorEdit'}]");
+                    }
+                },function () {
+
+                });
+    }*/
+
+
+
+    function opengrid(re) {
+        //JGP.grid("grid").attr('_url',"/ljoa/channel/ajax/queryAllLjHouseInfo/"+re.back.key);
+        //JGP.grid("grid").load("/ljoa/channel/ajax/queryAllLjHouseInfo/"+re.back.key);
+        //console.log(re.back.key+"   ")
+        JGP.query('query').searchTo("/ljoa/marketing/customerInfoApiController/listHouseInfoByStatus/${status!''}/"+re.back.key, function (re) {
+        }, function () {
+
+        })
+        uuid = re.back.key;
+    }
+    //添加或修改
+    function addorEdit(result) {
+        var config = {
+            url:'/ljoa/marketing/customerInfoController/addCustomerInfo/'+result.back.record.id,
+            title:"客户信息录入",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+
+    function editMoney(result) {
+//        console.log(result.back);
+        if( result.back.record.saleMoney==null){
+            JGP.$warn("该信息尚未出售！");
+            return;
+        }
+        var config = {
+            url:'/ljoa/com/marketingHouseInfoController/showPriceHouseInfo/'+result.back.record.id,
+            title:"前后置佣金录入",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

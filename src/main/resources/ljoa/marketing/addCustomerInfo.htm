@@ -1,0 +1,133 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/4 0004
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','45']" _runit="px" _aux="true">
+    <jgp-panel slot="1-1">
+        <jgp-form _id="customerInfo"_action="/ljoa/marketing/customerInfoApiController/saveCustomerInfo/${hid!''}"  _fdata='${fdata!''}' _label_width="160px">
+            <jgp-form-group _title="基本信息">
+                <jgp-text _label="姓名：" _name="customerName"_required="true" _col="6"></jgp-text>
+                <jgp-text _label="电话：" _name="customerTel" _required="true" _col="6" ></jgp-text>
+                <jgp-text _label="身份证号：" _name="customerIdentify" _required="true" _col="6" ></jgp-text>
+                <jgp-text _label="其他联系人姓名：" _name="otherName" _col="6" ></jgp-text>
+                <jgp-text _label="其他联系人电话：" _name="otherTel" _col="6" ></jgp-text>
+                <jgp-text _label="其他联系人身份证号：" _name="otherIdentify" _col="6" ></jgp-text>
+                <jgp-text _label="客户来访区域：" _name="customerArea"  _col="6" ></jgp-text>
+            </jgp-form-group>
+            <jgp-form-group  _title="付款信息">
+            [#--<jgp-drop _label="付款方式：" _name="patyType" _not_input="true" _active_key="LJ_CUSTOMER_INFO.PATYTYPE"></jgp-drop>--]
+                <jgp-drop _label="付款方式：" _name="patyType"  _col="6" _not_input="true" _onchange="getPatyType" _id="patyType" _active_key="LJ_CUSTOMER_INFO.PATYTYPE"></jgp-drop>
+                <jgp-num _label="客户首付款(元)：" _name="downPayment"  _col="6" ></jgp-num>
+                <jgp-num _label="商贷额度(元)："  _name="commercialMoney"    _col="6" _id="commercialMoney" _is_show="false"></jgp-num>
+                <jgp-num _label="公积金贷款额度(元)：" _name="fundMoney"   _col="6" _id="fundMoney" _is_show="false"></jgp-num>
+                <jgp-num _label="垫资额度(元)：" _name="advanceMoney"    _col="6" _id="advanceMoney" _is_show="false"></jgp-num>
+                <jgp-drop _label="房源回款状态：" _name="returnMoney" _col="6" _id="returnMoney" _is_show="false" _active_key="LJ_CUSTOMER_INFO.RETURN_MONEY"></jgp-drop>
+            </jgp-form-group>
+            <jgp-form-group _title="定金团购信息" >
+                <jgp-num _label="缴纳定金(元)：" _name="earnest" _decimal="5" _col="6" ></jgp-num>
+                [#--<jgp-drop _label="定金状态：" _name="earnestStatus"  _col="6" _not_input="true" _active_key="LJ_CUSTOMER_INFO.EARNESTSTATUS"></jgp-drop>--]
+                <jgp-drop _label="定金去向：" _name="earnestDirection"  _col="6" _not_input="true" _active_key="LJ_CUSTOMER_INFO.EARNESTDIRECTION"></jgp-drop>
+                <jgp-date-time _label="缴纳定金时间：" _name="earnestDate" _format="date"  _col="6" _not_input="true"></jgp-date-time>
+                <jgp-num _label="团购费:" _name="groupBuyingMoney" _col="6" _decimal="5"></jgp-num>
+                <jgp-drop _label="团购费去向：" _name="groupBuyingMoneyDestination"  _col="6" _not_input="true" _active_key="LJ_CUSTOMER_INFO.EARNESTDIRECTION"></jgp-drop>
+                <jgp-date-time _label="团购费缴纳时间" _name="groupBuyingMoneyDate" _col="6" _format="date"></jgp-date-time>
+            </jgp-form-group>
+            <jgp-form-group _title="成交信息">
+                <jgp-num _label="成交价格(元)：" _name="transactionPrice" _decimal="5" _col="6" ></jgp-num>
+                <jgp-num _label="优惠金额(元)：" _name="discountMoney" _decimal="5" _col="6" ></jgp-num>
+                <jgp-date-time _label="成交日期：" _not_input="true" _name="tradingDate" _format="date" _placeholder="若以成交此必填"  _col="6" ></jgp-date-time>
+            </jgp-form-group>
+             [#--<jgp-date-time _label="网签约定日期：" _required="true" _not_input="true" _name="appointDate" _format="date"  _col="6" ></jgp-date-time>--]
+            <jgp-area _label="备注：" _name="earnestRemark"  _col="12" _row="3"></jgp-area>
+        </jgp-form>
+    </jgp-panel>
+    <div slot="2-1" style="margin-left: 70%">
+        <jgp-btn slot="2-1" _form="customerInfo" _fn="addCallBack" _id="btn">保存</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+
+    JGP.$onload(function () {
+        var status = '${status!''}';
+        if(status=='2'){
+            JGP.form('customerInfo').attr('_disabled','true');
+            JGP.btn('btn').attr('_is_show','false');
+        }
+
+        var patyType = JGP.form('customerInfo').field('patyType');
+        if(patyType==2){
+            JGP.num("commercialMoney").show();
+            JGP.drop("returnMoney").show();
+            JGP.drop("returnMoney").attr("_required","true");
+        }else if (patyType==3){
+            JGP.num("fundMoney").show();
+            JGP.drop("returnMoney").show();
+            JGP.drop("returnMoney").attr("_required","true");
+        }else if (patyType==4){
+            JGP.num("commercialMoney").show();
+            JGP.num("fundMoney").show();
+            JGP.drop("returnMoney").show();
+            JGP.drop("returnMoney").attr("_required","true");
+        }else if (patyType==5){
+            JGP.num("advanceMoney").show();
+//            JGP.datetime("advanceDate").show();
+//            JGP.datetime("refundDate").show();
+            JGP.drop("returnMoney").show();
+            JGP.drop("returnMoney").attr("_required","true");
+        }
+    });
+    function addCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("添加失败！");
+            JGP.$close(false);
+        }
+
+    }
+    function getPatyType(param) {
+
+        JGP.form('customerInfo').field('commercialMoney',0);
+        JGP.form('customerInfo').field('fundMoney',0);
+        JGP.form('customerInfo').field('advanceMoney',0);
+//        JGP.num("commercialMoney").reset();
+//        JGP.num("fundMoney").reset();
+//        JGP.num("advanceMoney").reset();
+//        JGP.datetime("advanceDate").reset();
+//        JGP.datetime("refundDate").reset();
+        JGP.num("commercialMoney").attr("_is_show","false");
+        JGP.num("fundMoney").attr("_is_show","false");
+        JGP.num("advanceMoney").attr("_is_show","false");
+//        JGP.datetime("advanceDate").attr("_is_show","false");
+//        JGP.datetime("refundDate").attr("_is_show","false");
+        var patyType = JGP.drop('patyType').val();
+        if(patyType==2){
+            JGP.num("commercialMoney").show();
+            JGP.drop("returnMoney").show();
+            JGP.drop("returnMoney").attr("_required","true");
+        }else if (patyType==3){
+            JGP.num("fundMoney").show();
+            JGP.drop("returnMoney").show();
+            JGP.drop("returnMoney").attr("_required","true");
+        }else if (patyType==4){
+            JGP.num("commercialMoney").show();
+            JGP.num("fundMoney").show();
+            JGP.drop("returnMoney").show();
+            JGP.drop("returnMoney").attr("_required","true");
+        }else if (patyType==5){
+            JGP.num("advanceMoney").show();
+//            JGP.datetime("advanceDate").show();
+//            JGP.datetime("refundDate").show();
+            JGP.drop("returnMoney").show();
+            JGP.drop("returnMoney").attr("_required","true");
+        }
+    }
+</script>
+[/@JGP.foot]

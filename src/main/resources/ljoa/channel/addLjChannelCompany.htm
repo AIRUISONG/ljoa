@@ -1,0 +1,38 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/8/14
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','50']" _runit="px">
+    <jgp-panel slot="1-1">
+        <jgp-form  _label_width="140px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/channel/LjChannelCompanyApiController/saveLjChannelCompany">
+            <jgp-text _name="companyName" _label="公司名称:" _required="true" _col="6"></jgp-text>
+            <jgp-text _name="companyAccount" _label="公司账号:" _required="true" _col="6"></jgp-text>
+            <jgp-text _name="licNo" _label="营业执照号码:" _required="true" _col="6"></jgp-text>
+            <jgp-text _name="companyBank" _label="开户行:" _required="true" _col="6"></jgp-text>
+            <jgp-text _name="deputeName" _label="委托收款人姓名:"  _col="12"></jgp-text>
+            <jgp-text _name="deputeIdentity" _label="委托收款人身份证:"  _col="12"></jgp-text>
+            <jgp-text _name="deputeAccount" _label="委托收款人账号:"  _col="12"></jgp-text>
+            <jgp-text _name="deputeBank" _label="委托收款人开户行:"  _col="12"></jgp-text>
+        </jgp-form>
+    </jgp-panel>
+    <jgp-btn style="margin-left: 75%" slot="2-1" _icon="floppy-o" _form="form" _fn="saveCallBack">保存</jgp-btn>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function saveCallBack(result) {
+        if(result.back && result.back.flag){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$warn("添加失败！");
+            JGP.$close(false);
+        }
+    }
+</script>
+[/@JGP.foot]

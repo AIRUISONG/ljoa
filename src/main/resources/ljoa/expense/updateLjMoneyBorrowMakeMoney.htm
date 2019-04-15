@@ -1,0 +1,60 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/11/29
+-->
+[@JGP.head "$Title$"]
+    <style>
+        .upload{
+            margin-top: 20px;
+        }
+    </style>
+[/@JGP.head]
+[@JGP.body]
+<jgp-div _row="['*','45']" _runit="px">
+    <jgp-panel slot="1-1">
+        <jgp-form  _label_width="100px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/expense/LjMoneyBorrowApiController/saveLjMoneyBorrow">
+            <jgp-form-group _title="打款状态">
+                <jgp-drop _name="status" _id="status" _label="状态" _active_key="LJOA.EXPENSE" _readonly="true"></jgp-drop>
+                <jgp-drop _name="payStatus" _id="payStatus" _onchange="editPayStatus" _label="打款状态" _active_key="LJOA.PAY_STATUS" _required="true"></jgp-drop>
+            </jgp-form-group>
+            <jgp-form-group _title="基本信息">
+                <jgp-drop _not_input="true" _name="borrowOrg" _label="部门:" _url="/ljoa/hr/organizationApiController/listAllOrg" _required="true" _col="6"></jgp-drop>
+                <jgp-drop _id="borrowMan"  _label="借款人:" _url="/ljoa/hr/employeeApiController/listAllEmployee" _name="borrowMan" _not_input="true" _required="true"></jgp-drop>
+                <jgp-num _name="borrowMoney" _label="借款金额:" _decimal="5" _required="true"></jgp-num>
+                <jgp-drop _name="payType" _label="支出类型:" _required="true" _active_key="LJOA.EXPENSE_TYPE"></jgp-drop>
+                <jgp-date-time _label="销账截止日期:" _name="finishDate" _format="date"  _required="true"></jgp-date-time>
+                <jgp-area _name="borrowUses" _label="付款用途:" _required="true" _col="12"></jgp-area>
+            </jgp-form-group>
+            <jgp-form-group class="upload">
+                <jgp-uploader _allow="all" _object_id='${id!''}' _object_type="com.jgp.ljoa.expense.model.LjMoneyBorrow"></jgp-uploader>
+            </jgp-form-group>
+        </jgp-form>
+    </jgp-panel>
+    <div slot="2-1" style="margin-left: 75%">
+        <jgp-btn _icon="floppy-o" _form="form" _fn="saveCallBack">保存</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function saveCallBack(result) {
+        if(result.back && result.back.flag){
+            JGP.$alert("保存成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$warn("保存失败！");
+            JGP.$close(false);
+        }
+    }
+
+    function editPayStatus(re) {
+        var payStatus=JGP.drop("payStatus").val();
+        if(payStatus=="1"){
+            JGP.drop("status").val("6");
+        }
+    }
+</script>
+[/@JGP.foot]

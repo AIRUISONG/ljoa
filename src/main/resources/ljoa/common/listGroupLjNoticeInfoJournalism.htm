@@ -1,0 +1,109 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/9/13
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/common/LjNoticeInfoApiController/listGroupLjNoticeInfoJournalismY">
+        <jgp-drop _not_input="true" _name="noticeType" _label="查询条件"  _placeholder="信息类别" _active_key="LJ_NOTICE_INFO.NOTICE_TYPE" _col="4"></jgp-drop>
+        <jgp-drop _not_input="true" _name="boticeStatus" _placeholder="信息状态" _active_key="LJ_NOTICE_INFO.NOTICE_STATUS" _col="4"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+              _record_tools="[{'icon':'eye','tip':'详情','fn':'show'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function addParamSet(result) {
+        var config = {
+            url:'/ljoa/common/LjNoticeInfoController/addLjNoticeInfo',
+            title:"添加新闻公告",
+            callback:function(a){
+                if(a){window.location.reload();}
+            },
+            width:'600px',
+            height:'400px'
+        }
+        JGP.$dialog(config);
+    }
+
+    function show(re) {
+        var config = {
+            url:'/ljoa/common/LjNoticeInfoController/showLjNoticeInfo/'+re.back.record.id,
+            title:"添加新闻公告",
+            callback:function(a){
+                if(a){window.location.reload();}
+            },
+            width:'800px',
+            height:'600px'
+        }
+        JGP.$dialog(config);
+    }
+    //删除
+    function remove(result) {
+        JGP.$confirm("是否删除\""+result.back.title+"\"？",function () {
+            JGP.$post("/ljoa/common/LjNoticeInfoApiController/removeljNoticeInfoById/"+result.back.record.id,{},
+                    function (re) {
+                        if(re.flag ==true){
+                            JGP.$alert("删除成功！");
+                            window.location.reload();
+                        }else{
+                            JGP.$warn("删除失败615156651");
+                        }
+                    },function () {
+                        JGP.$warn("删除失败！");
+                    });
+        },function () {
+
+        })
+    }
+
+    //作废数据
+    function tovoid(result) {
+        JGP.$confirm("是否作废\""+result.back.record.title+"\"？",function () {
+            JGP.$post("/ljoa/common/LjNoticeInfoApiController/editToVoidljNoticeInfo/"+result.back.record.id,{},
+                    function (re) {
+                        if(re.flag ==true){
+                            JGP.$alert("作废成功！");
+                            window.location.reload();
+                        }else{
+                            JGP.$warn("修改失败！");
+                        }
+                    },function () {
+                        JGP.$warn("修改失败！");
+                    });
+        },function () {
+
+        })
+    }
+
+    //发布数据
+    function releasel(result) {
+        if(result.back.boticeStatus=="3"){
+            JGP.$warn("该数据已作废无法发布！");
+            return;
+        }
+        JGP.$confirm("是否发布\""+result.back.record.title+"\"？",function () {
+            JGP.$post("/ljoa/common/LjNoticeInfoApiController/editReleaseljNoticeInfo/"+result.back.record.id,{},
+                    function (re) {
+                        if(re.flag ==true){
+                            JGP.$alert("发布成功！");
+                            window.location.reload();
+                        }else{
+                            JGP.$warn("修改失败！");
+                        }
+                    },function () {
+                        JGP.$warn("修改失败！");
+                    });
+        },function () {
+
+        })
+    }
+</script>
+[/@JGP.foot]

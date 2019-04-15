@@ -1,0 +1,39 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['45','*']" _runit="px">
+    <div slot="1-1">
+        <jgp-btn _form="form" _fn="saveCallBack">保存</jgp-btn>
+    </div>
+    <jgp-form slot="2-1" _id="form" _action="/ljoa/hr/organizationApiController/addOrganization" _label_width="100px" _fdata='${fdata!''}' _method="post" >
+        <jgp-text _name="orgCode" _label="部门编号：" _col="12" _required="true"></jgp-text>
+        <jgp-text _name="orgName" _label="部门名称：" _col="12" _required="true"></jgp-text>
+        <jgp-drop _active_key="LJ_ORGANIZATION.ORG_TYPE" _name="orgType" _label="部门类别：" _col="12" _required="false" _not_input="true"></jgp-drop>
+        <jgp-date-time _format="date" _name="createTime" _label="创建日期：" _col="12" _required="true" _not_input="true"></jgp-date-time>
+        <jgp-text _name="sortCode" _label="排序号码：" _col="12" _required="true" ></jgp-text>
+        <jgp-area _name="remark" _label="备注：" _col="12" _required="true" ></jgp-area>
+    </jgp-form>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    //添加部门
+    function saveCallBack(result) {
+        //console.log(result.back);
+        if(result.back && result.back.flag){
+            JGP.$alert("保存成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("保存失败！");
+            JGP.$close(false);
+        }
+    }
+
+</script>
+[/@JGP.foot]

@@ -1,0 +1,76 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/9/21
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','200','45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _target="grid" _id="query"
+               _action="/ljoa/marketing/ljHouseInfoApiYXController/listHouseInfoSoldYES">
+        <jgp-drop _label="查询条件：" _col="3" _name="projectUuid" _placeholder="项目名称" _not_input="true" _url="/ljoa/channel/ljProjectInfoApiController/listProjectDrop"></jgp-drop>
+        <jgp-drop _col="2" _name="roomType" _placeholder="产品分类" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"
+              _record_tools="[{'icon':'eye','tip':'公司内部人员佣金','fn':'chargeInfo'},
+              {'icon':'eye','tip':'客户信息','fn':'customerInfo'}]">
+    </jgp-grid>
+    <jgp-query slot="3-1" _target="gridLJ" _page_size="15" _action="/ljoa/expense/ljExpenseApiController/listExpenseApprovalMarketing">
+        <jgp-drop  _not_input="true" _name="expenseType" _label="查询条件：" _placeholder="报销种类"  _col="3" _active_key="LJOA.EXPENSE_TYPE"></jgp-drop>
+        <jgp-drop  _not_input="true" _name="status" _placeholder="审核状态"  _active_key="LJOA.EXPENSE"  _col="2"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="4-1" _id="gridLJ" _check="false"
+              _record_tools="[{'icon':'eye','tip':'详情','fn':'showLjExpense'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function chargeInfo(result) {
+        var config = {
+            url:'/ljoa/marketing/ljHouseInfoYXController/listMarketingChargeInfoByHid/'+re.back.record.id,
+            title:"公司内部人员佣金",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'750px',
+            height:'500px'
+        }
+        JGP.$dialog(config);
+    }
+
+    function customerInfo(result) {
+        var config = {
+            url:'/ljoa/marketing/customerInfoController/showCustomerInfo/'+re.back.record.id,
+            title:"客户信息",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'750px',
+            height:'500px'
+        }
+        JGP.$dialog(config);
+    }
+    //详情
+    function showLjExpense(re) {
+        var config = {
+            url:'/ljoa/expense/ljExpenseController/showLjExpense/'+re.back.record.id,
+            title:"申请详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+</script>
+[/@JGP.foot]

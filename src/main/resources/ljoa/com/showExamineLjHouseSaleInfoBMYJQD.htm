@@ -1,0 +1,129 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/10
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','45']" _runit="px">
+    <jgp-panel slot="1-1" >
+        <jgp-form _label_width="120px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/channel/ljHouseSaleInfoApiController/saveLjHouseSaleInfo">
+            <jgp-form-group _title="客户信息" _col="12" _label_width="165px">
+                <jgp-text _name="houseUuid" _label="房源主键：" style="display: none"   _col="6"></jgp-text>
+                <jgp-text _name="customerName" _label="客户姓名："  _readonly="true"_col="6"></jgp-text>
+                <jgp-text _name="customerTel" _label="客户电话："  _readonly="true" _col="6"></jgp-text>
+                <jgp-text _name="identityCode" _label="客户身份证号："  _col="6"></jgp-text>
+                <jgp-num _name="totalPrice" _id="totalPrice" _onchange="changeTotalPrice" _label="成交总价(元)：" _readonly="true"  _decimal="5"  _col="6"></jgp-num>
+                <jgp-date-time _not_input="true" _name="buyTime" _label="认购日期："  _readonly="true" _format="date"></jgp-date-time>
+                <jgp-date-time _not_input="true" _name="signTime" _label="签约日期："   _format="date"></jgp-date-time>
+                <jgp-drop _not_input="true" _name="payType" _label="付款方式："  _readonly="true" _active_key="LJOA.CHANNEL.PAY_TYPE"  _col="6"></jgp-drop>
+            </jgp-form-group>
+            <jgp-form-group  _title="公司业绩" _col="12" _label_width="165px">
+                <jgp-num _name="companyTax" _label="公司业绩(元)："  _decimal="5"  _col="6"></jgp-num>
+                <jgp-drop _not_input="true" _name="companyTaxDeduction" _id="companyTaxDeduction" _onchange="editCaseManagerChargeType"  _label="公司业绩扣税方式：" _active_key="LJOA.CHANNEL.CHARGE_TYPE"  _col="6"></jgp-drop>
+                <jgp-drop _not_input="true"  _name="companyTaxDeductionScale" _id="companyTaxDeductionScale" _label="公司业绩扣税比例(%)：" _readonly="true" _active_key="LJOA.CHANNEL.SCALE"   _col="6"></jgp-drop>
+                <jgp-num _name="companyTaxDeductionMoney" _id="companyTaxDeductionMoney" _label="公司业绩扣税金额(元):" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+            </jgp-form-group>
+            <jgp-form-group _title="渠道公司" _col="12" _label_width="165px">
+                <jgp-drop _not_input="true" _name="channelCompany" _label="渠道公司：" _url="/ljoa/channel/LjChannelCompanyApiController/listAllLjChannelCompany" _readonly="true" _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="channelChargeType" _id="channeChargeType" _onchange="editChargeType" _label="渠道佣金方式："  _readonly="true"  _active_key="LJOA.CHANNEL.CHARGE_TYPE"   _col="6"></jgp-drop>
+                <jgp-num _name="channelChargeMoney" _id="channeChargeMoney" _label="渠道佣金金额(元)：" _readonly="true"  _decimal="5"  _col="6"></jgp-num>
+                <jgp-num _name="channelChargeScale" _id="channeChargeScale" _label="渠道佣金比例(%)：" _readonly="true"  _decimal="5" _col="6"></jgp-num>
+                <jgp-drop _not_input="true" _name="channelTaxType" _id="channelTaxType" _label="渠道佣金缴税方式："  _readonly="true" _onchange="editChannelTaxScale"  _active_key="LJOA.CHANNEL.TAX_TYPE"  _col="6"></jgp-drop>
+                [#--<jgp-drop _not_input="true" _name="channelTaxScale"  _id="channelTaxScale" _label="渠道扣税比例(%)：" _readonly="true" _active_key="LJOA.CHANNEL.SCALE" _col="6"></jgp-drop>--]
+                <jgp-num  _name="channelTaxScale"  _id="channelTaxScale" _label="渠道扣税比例(%)：" _decimal="5"  _col="6"></jgp-num>
+                <jgp-num _name="channelTaxMoney" _id="channelTaxMoney" _label="渠道扣税金额(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+                <jgp-num _name="channelAfterTaxMoney" _id="channelAfterTaxMoney" _label="渠道公司税后佣金(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+                <jgp-drop _name="channelChargeStatus" _label="渠道佣金状态"  _readonly="true" _active_key="LJOA.MAIDSTATUS"  _col="6"></jgp-drop>
+                <jgp-date-time _not_input="true" _name="channelChargeSendDate" _label="渠道结佣时间：" _readonly="true" _format="date" _col="6"></jgp-date-time>
+                <jgp-text _name="dutyMan" _label="个人："  _readonly="true" _col="6"></jgp-text>
+                <jgp-num _name="dutyManMoney" _label="个人奖(元)："  _readonly="true"_decimal="5"  _col="6"></jgp-num>
+            </jgp-form-group>
+     [#--       <jgp-form-group _title="渠道员工" _col="12" _label_width="150px">
+                <jgp-drop  _name="adviser" _label="员工姓名：" _url="/ljoa/hr/employeeApiController/listAllEmployee" _readonly="true" _col="6"></jgp-drop>
+                <jgp-num _name="adviserMonty" _label="提成(元)："  _readonly="true" _decimal="5"  _col="6"></jgp-num>
+            </jgp-form-group>--]
+            <jgp-form-group _title="案场经理佣金" _col="12" _label_width="165px">
+                <jgp-drop _name="caseManager" _label="案场经理：" _url="/ljoa/hr/employeeApiController/listAllEmployee"  _readonly="true" _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="caseManagerChargeType" _id="caseManagerChargeType" _onchange="editManagerChargeType" _label="案场经理提成方式："  _readonly="true" _active_key="LJOA.CHANNEL.CHARGE_TYPE"  _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="caseManagerChargeScale" _id="caseManagerChargeScale" _label="案场经理提成比例(%)：" _readonly="true" _active_key="LJOA.CHANNEL.SCALE"   _col="6"></jgp-drop>
+                <jgp-num _name="caseManagerChargeMoney" _id="caseManagerChargeMoney" _label="案场经理提成金额(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+            </jgp-form-group>
+            <jgp-form-group _title="区域经理佣金" _col="12" _label_width="165px">
+                <jgp-drop _name="areaManage" _label="区域经理：" _url="/ljoa/hr/employeeApiController/listAllEmployee"  _readonly="true" _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="areaManagerChargeType" _id="areaManagerChargeType" _onchange="editChannelManagerChargeType"  _readonly="true" _label="区域经理提成方式：" _active_key="LJOA.CHANNEL.CHARGE_TYPE"   _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="areaManagerChargeScale" _id="areaManagerChargeScale" _label="区域经理提成比例(%)：" _readonly="true" _active_key="LJOA.CHANNEL.SCALE"  _col="6"></jgp-drop>
+                <jgp-num _name="areaManagerChargeMoney" _id="areaManagerChargeMoney" _label="区域经理提成金额(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+            </jgp-form-group>
+            <jgp-form-group _title="渠道总监佣金" _col="12" _label_width="165px">
+                <jgp-drop _name="channelChief" _label="渠道总监：" _url="/ljoa/hr/employeeApiController/listAllEmployee" _readonly="true" _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="channelChiefChargeType" _id="channelChiefChargeType" _onchange="editchannelChiefChargeType" _label="渠道总监提成方式："  _readonly="true" _active_key="LJOA.CHANNEL.CHARGE_TYPE"  _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="channelChiefChargeScale" _id="channelChiefChargeScale" _label="渠道总监提成比例(%)：" _readonly="true" _active_key="LJOA.CHANNEL.SCALE"   _col="6"></jgp-drop>
+                <jgp-num _name="channelChiefChargeMoney" _id="channelChiefChargeMoney" _label="渠道总监提成金额(元)：" _readonly="true"  _decimal="5"  _col="6"></jgp-num>
+            </jgp-form-group>
+            [#--<jgp-form-group _title="渠道" _col="12" _label_width="165px">
+                <jgp-drop _name="channelManager" _label="渠道经理：" _url="/ljoa/hr/employeeApiController/listAllEmployee" _required="true" _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="channelManagerChargeType" _id="channelManagerChargeType" _onchange="editchannelManagerChargeType"   _readonly="true" _label="渠道经理提成方式：" _active_key="LJOA.CHANNEL.CHARGE_TYPE"   _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="channelManagerChargeScale" _id="channelManagerChargeScale" _label="渠道经理提成比例(%)：" _readonly="true" _active_key="LJOA.CHANNEL.SCALE"  _col="6"></jgp-drop>
+                <jgp-num _name="channelManagerChargeMoney" _id="channelManagerChargeMoney" _label="渠道经理提成金额(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+            </jgp-form-group>--]
+            <jgp-form-group  _title="公司" _col="12" _label_width="165px">
+                <jgp-num _name="companyProfit" _label="公司利润(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+                <jgp-drop _not_input="true" _name="insideChargeStatus" _label="内部佣金状态："  _readonly="true" _active_key="LJOA.MAIDSTATUS" _col="6"></jgp-drop>
+                <jgp-date-time _not_input="true" _name="insideChargeSendDate" _label="内部结佣时间：" _readonly="true" _format="date" _col="6"></jgp-date-time>
+                <jgp-drop _not_input="true" _name="chargeStatus" _id="chargeStatus" _label="佣金状态：" _readonly="true"  _active_key="LJOA.CHANNEL.CHARGE_STATUS"  _col="6"></jgp-drop>
+                <jgp-date-time _not_input="true" _name="chargeSendDate" _label="结佣时间：" _readonly="true"  _format="date"></jgp-date-time>
+                <jgp-radio _required="true" _label="是否上传发票附件：" _id="invoice" _name="invoice" _active_key="MESSAGE. IS_READ" _col="12"></jgp-radio>
+                <jgp-uploader _allow="all" _object_id='${uuid!''}' _object_type="com.jgp.ljoa.channel.model.LjHouseSaleInfo"></jgp-uploader>
+            </jgp-form-group>
+        </jgp-form>
+    </jgp-panel>
+    <div slot="2-1" style="margin-left: 75%">
+        <jgp-btn  _fn="ljApprovalSaveCallBack" _icon="check">申请审批</jgp-btn>
+    </div>
+</jgp-div>
+
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+
+    var chargeStatus = '${chargeStatus!''}';
+
+    JGP.$onload(function () {
+        if(chargeStatus != '1' && chargeStatus != '5'){
+            JGP.$warn('此信息已申请！');
+            JGP.form('form').attr('_disabled','true');
+            JGP.form('formLjApproval').attr('_disabled','true');
+        }
+    })
+
+    function ljApprovalSaveCallBack() {
+        var invoice = JGP.radio("invoice").val();//发票是否已上传
+        if(invoice == "1"){
+            JGP.drop("chargeStatus").val("2");
+        }else{
+            JGP.drop("chargeStatus").val("11");
+        }
+
+        JGP.form("form").ajaxSubmit("/ljoa/channel/ljHouseSaleInfoApiController/saveLjHouseSaleInfo",function (re) {
+            JGP.$alert("申请成功！");
+            JGP.$close(true);
+        },function (re) {
+            JGP.$error("申请失败！");
+            JGP.$close(false);
+        })
+    }
+    //审批通过后修改报销状态
+    function editStatus() {
+        if(JGP.radio('checkResult').val()=='Y'){
+            JGP.drop("chargeStatus").val("2");
+
+        }else if(JGP.radio('checkResult').val()=='N'){
+            JGP.drop("chargeStatus").val("3");
+
+        }
+    }
+</script>
+[/@JGP.foot]

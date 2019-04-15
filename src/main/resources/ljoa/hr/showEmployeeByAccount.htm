@@ -1,0 +1,44 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['45','*']" _runit="px">
+    <div slot="1-1">
+        <jgp-btn _form="form" _fn="saveCallBack">保存</jgp-btn>
+    </div>
+    <jgp-form slot="2-1" _label_width="100px" _id="form" _action="/ljoa/hr/employeeApiController/editEmployee" _fdata='${fdata!''}' _method="post" >
+        <jgp-text _name="account" _label="账号：" _readonly="true"></jgp-text>
+        <jgp-text _name="workCode" _label="工号：" _required="true"></jgp-text>
+        <jgp-text _name="personName" _label="姓名：" _required="true"></jgp-text>
+        <jgp-text _name="nameSpell" _label="拼音名：" _required="true" ></jgp-text>
+        <jgp-text _name="identity" _label="身份证号：" _required="true"></jgp-text>
+        <jgp-text _name="linkTel" _label="联系方式：" _required="true"></jgp-text>
+        <jgp-radio _active_key="LJ_ORGANIZATION.SEX" _name="sex" _label="性别：" _required="true" _not_input="true"></jgp-radio>
+        <jgp-date-time _format="date" _name="birthday" _label="出生日期：" _required="true" _not_input="true"></jgp-date-time>
+        <jgp-text _name="address" _label="地址：" _required="true" ></jgp-text>
+    </jgp-form>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //添加员工
+    function saveCallBack(result) {
+        //console.log(result.back);
+        if(result.back && result.back.flag){
+            JGP.$alert("保存成功！");
+            window.location.reload();
+            JGP.$close(true);
+        }else {
+            JGP.$error("保存失败！");
+            JGP.$close(false);
+        }
+    }
+
+</script>
+[/@JGP.foot]

@@ -1,0 +1,43 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/9/11
+-->
+[@JGP.head "$Title$"]
+    <style>
+        .upload{
+            margin-top: 20px;
+        }
+        .uploadSome{
+            margin-left: 128px;
+            width: 83% !important;
+
+        }
+    </style>
+[/@JGP.head]
+[@JGP.body]
+        <jgp-form _id="form" _label_width="120px" _fdata='${fdata!''}'>
+            <jgp-div  _row="['150','200','*']" _runit="px">
+                <jgp-form-group slot="1-1">
+                    <jgp-text _name="title" _label="标题：" _readonly="true"_col="12"></jgp-text>
+                    <jgp-drop _not_input _name="noticeType" _label="信息类别：" _readonly="true" _active_key="LJ_NOTICE_INFO.NOTICE_TYPE" _col="6"></jgp-drop>
+                    <jgp-date-time _not_input _label="发布日期:" _name="pushTime" _format="date" _col="6" _readonly="true"></jgp-date-time>
+                    <jgp-date-time _not_input _label="有效开始日期:" _name="startDate" _format="date" _col="6" _readonly="true"></jgp-date-time>
+                [#--<jgp-date-time _not_input _label="有效结束日期:" _name="endDate" _format="date" _col="6" _readonly="true"></jgp-date-time>--]
+                    <jgp-drop _name="boticeStatus" _label="信息状态：" _readonly="true" _active_key="LJ_NOTICE_INFO.NOTICE_STATUS" _col="6"></jgp-drop>
+                    [#--<jgp-area _label="内容：" _name="content"  _col="12" _row="12" _readonly="true"></jgp-area>--]
+                </jgp-form-group>
+                <jgp-panel slot="2-1">
+                    <jgp-rich-editor _label="内容："  _id="rich-editor" _name="content" _readonly="true" _col="12"></jgp-rich-editor>
+                </jgp-panel>
+                <jgp-form-group class="upload" slot="3-1">
+                    <jgp-uploader _allow="all" _id="upload" class="uploadSome" _object_id="${id!''}" _disabled="true" _object_type="com.jgp.ljoa.common.model.LjNoticeInfo"></jgp-uploader>
+                </jgp-form-group>
+            </jgp-div>
+        </jgp-form>
+[/@JGP.body]
+
+[@JGP.foot]
+
+[/@JGP.foot]

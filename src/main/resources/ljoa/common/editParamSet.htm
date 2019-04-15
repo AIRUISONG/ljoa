@@ -1,0 +1,44 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   wfgl
+作者   LIUJINXU
+时间   2018/3/24
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['45','*']" _runit="px">
+    <div slot="1-1">
+        <jgp-btn _form="form" _fn="saveCallBack">保存</jgp-btn>
+
+    </div>
+    <jgp-form _id="form" slot="2-1" _action="/ljoa/common/paramSetApiController/editParamSet" _fdata='${fdata!''}'>
+        <jgp-form-group _label_width="110px">
+        <jgp-text _name="paramName" _label="参数名称：" _required="true"></jgp-text>
+        <jgp-text _name="paramCode" _label="参数代码：" _required="true"></jgp-text>
+        <jgp-text _name="strContent1" _label="字符参数值1：" ></jgp-text>
+        <jgp-text _name="strContent2" _label="字符参数值2：" ></jgp-text>
+        <jgp-text _name="strContent3" _label="字符参数值3：" ></jgp-text>
+        <jgp-num _decimal="5"  _name="numContent1" _label="数值参数值1：" ></jgp-num>
+        <jgp-num _decimal="5" _name="numContent2" _label="数值参数值2：" ></jgp-num>
+        <jgp-num _decimal="5"  _name="numContent3" _label="数值参数值3：" ></jgp-num>
+        <jgp-date-time _not_input="true" _label="日期参数值1：" _name="dateContent1" _format="datetime" ></jgp-date-time>
+        <jgp-date-time _not_input="true" _name="dateContent2" _label="日期参数值2：" _format="datetime" ></jgp-date-time>
+        <jgp-date-time _not_input="true" _name="dateContent3" _label="日期参数值3："  _format="datetime" ></jgp-date-time>
+        </jgp-form-group>
+    </jgp-form>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    function saveCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("保存成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("保存失败！");
+            JGP.$close(false);
+        }
+    }
+</script>
+[/@JGP.foot]

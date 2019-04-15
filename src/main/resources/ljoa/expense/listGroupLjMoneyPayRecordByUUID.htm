@@ -1,0 +1,118 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/11/30
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','45','*','45']" _runit = "px" _aux="true">
+    <jgp-btn slot="1-1" _fn="addLjMoneyPayRecord"> 添加</jgp-btn>
+    <jgp-query slot="2-1" _target="grid" _id="query"
+               _action='/ljoa/expense/LjMoneyPayRecordApiController/listGroupLjMoneyPayRecordByUUID/${id!''}'>
+        <jgp-drop _label="查询条件：" _col="4" _name="payType" _placeholder="支出类型" _not_input="true" _active_key="LJOA.EXPENSE_TYPE"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="3-1" _id="grid" _check="false"
+              _record_tools="[{'icon':'edit','tip':'修改','fn':'editLjMoneyPayRecord'},{'icon':'eye','tip':'详情','fn':'showLjMoneyPayRecord'},{'icon':'trash','tip':'删除','fn':'deleteLjExpense'}]">
+    </jgp-grid>
+    <jgp-btn style="margin-left: 70%" slot="4-1" _fn="finishMoney">销账(明细填写完成)</jgp-btn>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    var id = '${id!''}';
+    var status='${status!''}';
+    function addLjMoneyPayRecord(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyPayRecordController/addLjMoneyPayRecord/'+id,
+            title:"添加",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+    function editLjMoneyPayRecord(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyPayRecordController/editLjMoneyPayRecord/'+re.back.record.id,
+            title:"修改",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+    function showLjMoneyPayRecord(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyPayRecordController/showLjMoneyPayRecord/'+re.back.record.id,
+            title:"详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+    function finishMoney(re) {
+            JGP.$confirm("销账？",function () {
+                JGP.$post("/ljoa/expense/LjMoneyBorrowApiController/finishMoney",{id:id},
+                        function (result) {
+                            console.log(result.data.status);
+                            if(result.data.status=='0'){
+                                JGP.$alert("请填写支出明细！");
+                                window.location.reload();
+                            }
+                            if(result.data.status=='1'){
+                                JGP.$alert("已销账！");
+                                window.location.reload();
+                            }
+                            if(result.data.status=='2'){
+                                JGP.$alert("尚未通过审核！");
+                                window.location.reload();
+                            }
+                            if(result.data.status=='3'){
+                                JGP.$alert("已销账！");
+                                window.location.reload();
+                            }
+                        },function (result) {
+                            JGP.$error("尚未通过审核！");
+                            window.location.reload();
+                        })
+            },function () {
+
+            })
+    }
+
+    function deleteLjExpense(re) {
+        if(status != '1'&& status != '0'){
+            JGP.$warn("该备用金申请已在审核，不可删除对应明细！");
+            return;
+        }
+        JGP.$confirm("是否删除该明细？",function () {
+            JGP.$post("/ljoa/expense/LjMoneyPayRecordApiController/removeLjMoneyPayRecordById/"+re.back.record.id,{},
+                    function () {
+                        JGP.$alert("删除成功！");
+                        window.location.reload();
+                    },function () {
+                        JGP.$error("删除失败！");
+                        window.location.reload();
+                    })
+        })
+    }
+</script>
+[/@JGP.foot]

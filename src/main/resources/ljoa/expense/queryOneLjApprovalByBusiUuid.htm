@@ -1,0 +1,38 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['45','*']" _runit="px">
+    <div slot="1-1">
+        <jgp-btn _form="form" _fn="saveCallBack">提交</jgp-btn>
+    </div>
+    <jgp-form slot="2-1" _id="form" _action="/ljoa/expense/ajax/addLjApproval" _method="post" >
+        <jgp-text _name="checkMan" _label="审批人：" _required="true" ></jgp-text>
+        <jgp-date-time _format="date" _name="checkTime" _label="审批时间：" _required="true" _not_input="true"></jgp-date-time>
+        <jgp-drop _name="checkContent" _label="审批业务：" _required="true"></jgp-drop>
+        <jgp-drop _name="checkType" _label="审批类型：" _required="true"></jgp-drop>
+        <jgp-radio _active_key="" _name="checkResult" _label="审批结果：" _required="true" _not_input="true"></jgp-radio>
+        <jgp-area _name="checkOption" _label="审批意见：" _required="true"></jgp-area>
+    </jgp-form>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+    <script>
+        //审核
+        function saveCallBack(result) {
+            //console.log(result.back);
+            if(result.back && result.back.flag){
+                JGP.$alert("审核完成！");
+                JGP.$close(true);
+            }else {
+                JGP.$error("审核失败！");
+                JGP.$close(false);
+            }
+        }
+    </script>
+[/@JGP.foot]

@@ -1,0 +1,46 @@
+server:
+  port: 8000
+spring:
+  datasource:
+    url: jdbc:log4jdbc:mysql://47.105.140.247:3306/ljoa?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: ljoa
+    password: ljoa!@#$123
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+logging:
+  level:
+    com.jgp: info
+jgp:
+  pay:
+    #付款回调处理类 可自定义 需集成此类
+    callback-class: com.jgp.third.pay.SimpleDefaultPayCallback
+  security:
+    enabled: true
+    super-admin: super-admin,123456
+
+  reporter:
+    dir: D:\projects\lj-oa\jasper
+  attachment:
+    md5-check: true #是否md5验证文件唯一性
+    local-enable: true #是否启用本地存储 必须启用
+    ftp-enable: false #使用ftp上传
+    local-dir: D:\projects\lj-oa\upload #服务文件存储物理目录
+    local-temp-dir: D:\projects\lj-oa\upload #服务文件临时存储目录
+    thumb:
+      video: ['70,70','100,100']
+      image: ['70,70','100,100','200,200','500,200','1000,200','200,2000']
+    allow:
+      image:
+        title: '图片'
+        extensions: ['gif', 'jpg', 'jpeg', 'bmp', 'png']
+      doc:
+        title: '文档'
+        extensions: ['attachment', 'docx', 'pdf', 'xls', 'xlsx', 'txt']
+      video:
+        title: '视频'
+        extensions: ['mp4', 'avi']
+      audio:
+         title: '音频'
+         extensions: ['mp3', 'ogg', 'wav']
+      zip:
+        title: '压缩文件'
+        extensions: ['zip', 'rar', 'iso', 'tar']

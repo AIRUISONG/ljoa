@@ -1,0 +1,32 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/5 0005
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-panel  _runit="px">
+    <div >
+        <jgp-btn _form="customerInfo" _fn="addCallBack">保存</jgp-btn>
+    </div>
+    <jgp-form _id="customerInfo"_action="/ljoa/marketing/ajax/saveCustomerInfo"  _fdata='${fdata!''}' _label_width="140px">
+        <jgp-drop _label="定金状态：" _name="earnestStatus" _not_input="true"  _col="12" _active_key="LJ_CUSTOMER_INFO.OUTEARNESTSTATUS"></jgp-drop>
+        <jgp-area _label="定金退回原因：" _name="returnEarnestReason" _col="12" _row="4"></jgp-area>
+    </jgp-form>
+</jgp-panel>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    function addCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("添加失败！");
+            JGP.$close(false);
+        }
+
+    }
+</script>
+[/@JGP.foot]

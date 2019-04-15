@@ -1,0 +1,92 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/9/11
+-->
+[@JGP.head "$Title$"]
+    <style>
+        .field-3{
+            text-align: center;
+        }
+        .sty {
+            color: #94939d;
+        }
+        .styl{
+            color: red;
+        }
+    </style>
+[/@JGP.head]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit="px" _aux="true">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/common/messageApiController/listGroupMessageForAccept">
+        <jgp-drop _label="查询条件:" _name="sendMan" _placeholder="发送人" _url="/ljoa/common/messageApiController/queryAllAdminUser" _col="2"></jgp-drop>
+        <jgp-text _name="msgTitle"  _placeholder="标题" _col="3"></jgp-text>
+        <jgp-date-time _not_input="true" _onchange="checkDate" _id="createDatetime" _format="date" _name="beginDate" _placeholder="开始时间" _col="2"></jgp-date-time>
+        <jgp-date-time _not_input="true" _onchange="checkDate" _id="modifyDatetime" _format="date" _name="endDate" _placeholder="结束时间" _col="2"></jgp-date-time>
+        <jgp-drop _not_input="true" _name="isRead" _placeholder="是否已读" _col="1" _active_key="MESSAGE. IS_READ"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _cols="['*','100','*']" _c_unit="px"
+              _record_tools="[{'icon':'eye','tip':'查看','fn':'show'}]">
+        <jgp-grid-col _name="sendManName" _filter_render="filterFn"  _underline="false"></jgp-grid-col>
+        <jgp-grid-col _name="msgTitle" _filter_render="filterFn"  _underline="false"></jgp-grid-col>
+        <jgp-grid-col _name="msgTime" _filter_render="filterFn"  _underline="false"></jgp-grid-col>
+        <jgp-grid-col _name="isRead" _filter_render="filterFn"  _underline="false"></jgp-grid-col>
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+
+    function filterFn(data) {
+//        console.log(data);
+        if(data.back.record.isRead == "1"){
+            return "sty";
+        }
+        if(data.back.record.isRead == "0"){
+            return "styl";
+        }
+
+    }
+
+    var msgId = '';
+
+    //详情
+    function show(re) {
+//        console.log("msgID:::"+msgId);
+//        console.log("re.back.id:::"+re.back.id);
+
+        var config = {
+            url:'/ljoa/common/messageController/acceptManLookMessage/'+re.back.record.id,
+            title:"信息详情",
+            callback:function(a){
+                //更新信息角标
+                top.autoUpdate();
+                window.location.reload();
+            },
+            width:'600px',
+            height:'400px'
+        }
+        JGP.$dialog(config);
+    }
+
+    //时间验证
+    function checkDate() {
+        var createDatetime = JGP.datetime('createDatetime').val();
+        var modifyDatetime = JGP.datetime('modifyDatetime').val();
+        createDatetime = createDatetime.substring(0, 10);
+        modifyDatetime = modifyDatetime.substring(0, 10);
+        var date1 = new Date(Date.parse(createDatetime.replace(/-/g, "/")));
+        var date2 = new Date(Date.parse(modifyDatetime.replace(/-/g, "/")));
+        //开始日期必须在结束日期之前
+        if(createDatetime!=''&& modifyDatetime!=''){
+            if(date1.getTime() > date2.getTime()){
+                JGP.$warn('日期选择错误！');
+                JGP.datetime('createDatetime').val(0);
+                JGP.datetime('modifyDatetime').val(0);
+            }
+        }
+    }
+</script>
+[/@JGP.foot]

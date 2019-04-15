@@ -1,0 +1,22 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['45','*']" _runit="px">
+    <jgp-query _id="query" slot="1-1" _label_width="66px" _page_size="15"
+               _target="grid" _action="/ljoa/expense/ajax">
+        <jgp-drop _name="checkContent" _label="查询条件：" _placeholder="审批业务" _required="true"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _record_tools=" [{'icon':'edit','tip':'编辑','fn':'edit'},{'icon':'trash','tip':'删除','fn':'removeOne'}]"></jgp-grid>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    
+</script>
+[/@JGP.foot]

@@ -1,0 +1,50 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/10 0010
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','20']" >
+    <jgp-form slot="1-1" _id="form" _fdata='${fdata!''}' _label_width="120px" _action="/ljoa/marketing/marketingChargeInfoApiController/saveMarketingChargeInfo">
+        <jgp-drop _label="渠道名称:" _not_input="true" _name="chargeTargetUuid" _col="12" _id="chargeTargetUuid" _onchange="chargeTargetUuid"  _url="/ljoa/channel/LjChannelCompanyApiController/listAllLjChannelCompany"></jgp-drop>
+        [#--<jgp-text _label="其他渠道名称:" _id="chargeTargetName" _name="chargeTargetName" _id="chargeTargetName" _col="12" _is_show="false"></jgp-text>--]
+        <jgp-num _label="佣金金额（元）:" _name="chargeMoney" _decimal="5" _col="12" _required="true"></jgp-num>
+        <jgp-drop _label="佣金类型：" _name="chargeType" _readonly="true" _not_input="true" _id="chargeType" _onchange="getChargeType" _col="12" _active_key="LJ_CUSTOMER_INFO.CHARGE_TYPE"></jgp-drop>
+        <jgp-drop _label="佣金状态：" _name="chargeStatus" _not_input="true" _readonly="true" _col="12" _active_key="LJ_CUSTOMER_INFO.CHARGESTATUS"></jgp-drop>
+    </jgp-form>
+    <div slot="2-1" style="margin-left: 80%">
+        <jgp-btn _form="form" _fn="addCallBack">保存</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+   /* function chargeTargetUuid(re) {
+        /!*if(re.back.item){
+            JGP.text('chargeTargetName').val(re.back.item.label);
+        }*!/
+        var chargeType = JGP.drop('chargeType').val();
+        var chargeTargetUuid = JGP.drop('chargeTargetUuid').val();
+        if (chargeType=='5'&&chargeTargetUuid=='4'){//渠道佣金、其他
+            JGP.text('chargeTargetName').show();
+        }else{
+            JGP.text('chargeTargetName').attr('_is_show','false');
+            JGP.text('chargeTargetName').reset();
+        }
+    }*/
+
+    function addCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("添加失败！");
+            JGP.$close(false);
+        }
+
+    }
+</script>
+[/@JGP.foot]

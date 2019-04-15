@@ -1,0 +1,122 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/11/29
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _target="grid" _id="query"
+               _action="/ljoa/expense/LjMoneyBorrowApiController/listLjMoneyBorrowByZNO">
+        <jgp-drop _label="查询条件：" _col="3" _name="expenseType" _placeholder="支出类型" _not_input="true" _active_key="LJOA.EXPENSE_TYPE"></jgp-drop>
+        <jgp-drop _col="2" _name="status" _placeholder="状态" _not_input="true" _active_key="LJOA.EXPENSE"></jgp-drop>
+        <jgp-date-time _col="2" _name="borrowDate" _placeholder="借款日期" _not_input="true" _format="date"></jgp-date-time>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"
+              _record_tools="[{'icon':'edit','tip':'审批','fn':'editLjMoneyBorrow'},
+              {'icon':'tty','tip':'明细','fn':'addLjMoneyPayRecords'},
+              {'icon':'eye','tip':'详情','fn':'showLjMoneyBorrow'},
+              {'icon':'tty','tip':'反馈意见','fn':'feedback'},
+              {'icon':'tty','tip':'进度查询','fn':'feedSpeed'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //详情
+    function showLjMoneyBorrow(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyBorrowController/showljMoneyBorrow/'+re.back.record.id,
+            title:"申请详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //审批
+    function editLjMoneyBorrow(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyBorrowController/updateLjMoneyBorrowByZDirector/'+re.back.record.id,
+            title:"审批备用金",
+            callback:function(a){
+                /*if(a){
+                    window.location.reload();
+                }*/
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //反馈意见
+    function feedback(re) {
+        var config = {
+            url:'/ljoa/com/approvalController/showApproval/'+re.back.record.id+'/1/1',
+            title:"反馈意见",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //进度查询
+    function feedSpeed(re) {
+        var config = {
+            url: '/ljoa/expense/ljExpenseController/showApprovalProgressLjMoneyBorrow/' + re.back.record.id,
+            title: "进度",
+            callback: function (a) {
+                if (a) {
+                    window.location.reload();
+                }
+            },
+            width: '800px',
+            height: '550px'
+        }
+        JGP.$dialog(config);
+    }
+    //删除
+    function deleteLjExpense(re) {
+        if(re.back.record.status == '1'||re.back.record.status == '2'||re.back.record.status == '3'
+                ||re.back.record.status == '4'||re.back.record.status == '5'||re.back.record.status == '6'||re.back.record.status == '7'){
+            JGP.$warn("该备用金申请已在审核，不可删除！");
+            return;
+        }
+        JGP.$confirm("是否删除该申请？",function () {
+            JGP.$post("/ljoa/expense/LjMoneyBorrowApiController/removeLjMoneyBorrowById/"+re.back.record.id,{},
+                    function () {
+                        JGP.$alert("删除成功！");
+                        window.location.reload();
+                    },function () {
+                        JGP.$error("删除失败！");
+                        window.location.reload();
+                    })
+        })
+    }
+    //填写明细
+    function addLjMoneyPayRecords(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyPayRecordController/listGroupLjMoneyPayRecordByUUID/'+re.back.record.id,
+            title:"备用金明细",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

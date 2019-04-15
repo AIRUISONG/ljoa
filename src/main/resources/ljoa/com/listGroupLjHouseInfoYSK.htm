@@ -1,0 +1,78 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/9/26
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+
+<jgp-div _row="['45','170','45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _target="grid" _id="query" _label_width="130px"
+               _action="/ljoa/com/LjHouseInfoZJLApiController/listGroupLjHouseInfoYINGXIAO">
+        <jgp-drop _label="查询条件(营销)：" _label_width="130px" _col="3" _name="projectUuid" _placeholder="项目名称" _not_input="true" _url="/ljoa/channel/ljProjectInfoApiController/listProjectDrop"></jgp-drop>
+        <jgp-drop _col="2" _name="roomType" _placeholder="产品分类" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"
+              _record_tools="[{'icon':'eye','tip':'公司内部人员佣金','fn':'chargeInfo'},
+              {'icon':'eye','tip':'客户信息','fn':'customerInfo'}]">
+    </jgp-grid>
+    <jgp-query slot="3-1" _target="grid1" _id="query" _label_width="130px"
+               _action="/ljoa/com/LjHouseInfoZJLApiController/listGroupLjHouseInfoQUDAO">
+        <jgp-drop _label="查询条件(渠道)：" _label_width="130px" _col="3" _name="projectUuid" _placeholder="项目名称" _not_input="true" _url="/ljoa/channel/ljProjectInfoApiController/listProjectDrop"></jgp-drop>
+        <jgp-drop _col="2" _name="roomType" _placeholder="产品分类" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="4-1" _id="grid1" _check="false"
+              _record_tools="[{'icon':'eye','tip':'销售详情','fn':'saleInfo'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function chargeInfo(result) {
+        var config = {
+            url:'/ljoa/marketing/ljHouseInfoYXController/listMarketingChargeInfoByHid/'+result.back.record.id,
+            title:"公司内部人员佣金",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'750px',
+            height:'500px'
+        }
+        JGP.$dialog(config);
+    }
+
+    function customerInfo(result) {
+        var config = {
+            url:'/ljoa/marketing/customerInfoController/showCustomerInfo/'+result.back.record.id,
+            title:"客户信息",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'750px',
+            height:'500px'
+        }
+        JGP.$dialog(config);
+    }
+    //销售信息
+    function saleInfo(result) {
+        var config = {
+            url:'/ljoa/channel/ljHouseInfoController/showHouseSaleInfo/'+result.back.record.id,
+            title:"销售信息",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'750px',
+            height:'500px'
+        }
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

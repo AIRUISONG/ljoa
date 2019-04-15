@@ -1,0 +1,83 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/3
+-->
+[@JGP.head "渠道整合项目信息"/]
+[@JGP.body]
+
+<jgp-div _row="['50','*']" _runit = "px" _aux="true">
+    <div slot="1-1">
+        <jgp-btn _icon="bullseye" _fn="addljChannelProject">添加项目</jgp-btn>
+    </div>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15" _record_tools="[{'icon':'eye','tip':'详情','fn':'showljChannelProject'},
+              {'icon':'edit','tip':'修改','fn':'editljChannelProject'},
+              {'icon':'trash','tip':'删除','fn':'deleteljChannelProject'}]"
+              _url="/ljoa/channel/ljProjectInfoApiController/listAllLjProjectInfo">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //添加
+    function addljChannelProject() {
+        var config = {
+            url:'/ljoa/channel/ljProjectInfoController/addLjProjectInfo',
+            title:"添加项目",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+    //项目详情
+    function showljChannelProject(re) {
+        var config = {
+            url:'/ljoa/channel/ljProjectInfoController/showLjProjectInfo/'+re.back.record.id,
+            title:"项目详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //修改
+    function editljChannelProject(re) {
+        var config = {
+            url:'/ljoa/channel/ljProjectInfoController/editLjProjectInfo/'+re.back.record.id,
+            title:"修改项目信息",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //删除
+    function deleteljChannelProject(re) {
+        JGP.$confirm("是否删除\""+re.back.projectName+"\"？",function () {
+            JGP.$post("/ljoa/channel/ljProjectInfoApiController/removeLjProjectInfo/"+re.back.record.id,{},
+                    function () {
+                        JGP.$alert("删除成功！");
+                        window.location.reload();
+                    },function () {
+                        JGP.$error("删除失败！");
+                        window.location.reload();
+                    })
+        })
+    }
+</script>
+[/@JGP.foot]

@@ -1,0 +1,51 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/10 0010
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','20']" >
+    <jgp-form slot="1-1" _id="form" _fdata='${fdata!''}' _label_width="120px" _action="/ljoa/marketing/marketingChargeInfoApiController/saveMarketingChargeInfo">
+        <jgp-drop _label="姓名:" _not_input="true" _name="chargeTargetUuid" _col="6" _id="chargeTargetUuid" _onchange="chargeTargetUuid" _url="/ljoa/hr/employeeApiController/listAllEmployee"></jgp-drop>
+        <jgp-text _id="chargeTargetName" _name="chargeTargetName" _is_show="false"></jgp-text>
+        <jgp-num _label="佣金金额（元）:" _name="chargeMoney" _decimal="5" _col="6" _readonly="true"></jgp-num>
+        <jgp-num _label="佣金比例（%）:" _name="chargeProportion" _decimal="5" _col="6" _required="true"></jgp-num>
+        <jgp-num _label="交房前（%）:" _name="frontHouse" _id="frontHouse" _decimal="5" _col="6" _required="true"></jgp-num>
+        <jgp-num _label="交房后（%）:" _name="afterHouse" _id="afterHouse" _decimal="5" _col="6" _required="true"></jgp-num>
+
+        <jgp-drop _label="佣金类型：" _name="chargeType" _not_input="true" _readonly="true" _id="chargeType" _onchange="getChargeType" _col="6" _active_key="LJ_CUSTOMER_INFO.CHARGE_TYPE"></jgp-drop>
+        <jgp-drop _label="佣金状态：" _name="chargeStatus" _not_input="true" _readonly="true" _col="6" _active_key="LJ_CUSTOMER_INFO.CHARGESTATUS"></jgp-drop>
+    </jgp-form>
+    <div slot="2-1" style="margin-left: 80%">
+        <jgp-btn _form="form" _fn="addCallBack">保存</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+
+    function addCallBack(result) {
+        var frontHouse = JGP.form('form').field('frontHouse');
+        var afterHouse = JGP.form('form').field('afterHouse');
+        if(parseFloat(frontHouse)+parseFloat(afterHouse)==100){
+            if(result.back && result.back.flag ){
+                JGP.$alert("添加成功！");
+                JGP.$close(true);
+            }else {
+                JGP.$error("添加失败！");
+                JGP.$close(false);
+            }
+        }else{
+            JGP.$warn("交房前后比例总和100%！");
+        }
+
+    }
+
+    function chargeTargetUuid(param) {
+        JGP.text('chargeTargetName').val(param.back.item.label);
+    }
+</script>
+[/@JGP.foot]

@@ -1,0 +1,25 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/3
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-form _id="form" _method="post" _fdata='${fdata!''}' _disabled="true" _label_width="100px">
+    <jgp-text _name="projectName" _label="项目名称:" _readonly="true" _col="6"></jgp-text>
+    <jgp-drop _id="projecRegion" _name="projecRegion" _label="项目区域:" _active_key="LJ_CUSTOMER_INFO.PROJECREGION"  _required="true" _col="6"></jgp-drop>
+    <jgp-drop _id="chiefUuid" _name="chiefUuid" _label="销售总监："  _url="/ljoa/hr/employeeApiController/listAllEmployee" _col="6" _required="true"></jgp-drop>
+    <jgp-drop _id="managerUuid" _name="managerUuid" _label="销售经理："  _url="/ljoa/hr/employeeApiController/listAllEmployee" _col="6" _required="true"></jgp-drop>
+    <jgp-drop _id="caseManager" _name="caseManager" _label="销售助理:"  _url="/ljoa/hr/employeeApiController/listAllEmployee"  _col="6" _required="true"></jgp-drop>
+    <jgp-drop _name="projectType" _label="项目类别：" _active_key="LJOA.CHANNEL.HOUSETYPE" _readonly="true" _col="6"></jgp-drop>
+    <jgp-drop _name="province" _label="省:" _active_key="LJOA.CHANNEL.PROVINCE" _col="6"></jgp-drop>
+    <jgp-drop _name="city" _label="市:" _active_key="LJOA.CHANNEL.CITY" _col="6"></jgp-drop>
+    <jgp-drop _name="area" _label="区:" _active_key="LJOA.CHANNEL.AREA" _col="6" ></jgp-drop>
+    <jgp-area _name="describe" _label="备注：" _readonly="true" _col="12" _row="6"> </jgp-area>
+</jgp-form>
+[/@JGP.body]
+
+[@JGP.foot]
+
+[/@JGP.foot]

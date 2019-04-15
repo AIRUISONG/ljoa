@@ -1,0 +1,68 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/5 0005
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-panel  _runit="px">
+    <div >
+        <jgp-btn _form="customerInfo" _fn="addCallBack">保存</jgp-btn>
+    </div>
+    <jgp-form _id="customerInfo"_action="/ljoa/marketing/ajax/addorEditNetSigning"  _fdata='${fdata!''}' _label_width="140px">
+        <jgp-date-time _label="网签日期：" _name="signDate" _not_input="true" _format="date"  _col="6" ></jgp-date-time>
+        <jgp-drop _label="网签状态：" _name="signStatus"  _col="6" _not_input="true" _active_key="LJ_CUSTOMER_INFO.SIGNSTATUS"></jgp-drop>
+        <jgp-drop _label="付款方式：" _name="patyType"  _col="6" _not_input="true" _onchange="getPatyType" _id="patyType" _active_key="LJ_CUSTOMER_INFO.PATYTYPE"></jgp-drop>
+        <jgp-num _label="客户首付款（元）：" _name="downPayment" _decimal="5" _col="6" ></jgp-num>
+        <jgp-num _label="商贷额度（元）："  _name="commercialMoney"  _decimal="5"  _col="6" _id="commercialMoney" _is_show="false"></jgp-num>
+        <jgp-num _label="公积金贷款额度（元）：" _name="fundMoney"  _decimal="5"  _col="6" _id="fundMoney" _is_show="false"></jgp-num>
+        <jgp-num _label="垫资额度（元）：" _name="advanceMoney"  _decimal="5"  _col="6" _id="advanceMoney" _is_show="false"></jgp-num>
+        <jgp-date-time _label="垫资日期：" _name="advanceDate" _format="date" _not_input="true"  _col="6" _id="advanceDate" _is_show="false"></jgp-date-time>
+        <jgp-date-time _label="垫资还款日期：" _name="refundDate" _format="date" _not_input="true"  _col="6" _id="refundDate" _is_show="false"></jgp-date-time>
+        <jgp-text _name="houseUuid" _value="${hid!''}" style="display: none"></jgp-text>
+    </jgp-form>
+</jgp-panel>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    function addCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("添加失败！");
+            JGP.$close(false);
+        }
+    }
+    function getPatyType(param) {
+
+        JGP.form('customerInfo').field('commercialMoney',0);
+        JGP.form('customerInfo').field('fundMoney',0);
+        JGP.form('customerInfo').field('advanceMoney',0);
+//        JGP.num("commercialMoney").reset();
+//        JGP.num("fundMoney").reset();
+//        JGP.num("advanceMoney").reset();
+        JGP.datetime("advanceDate").reset();
+        JGP.datetime("refundDate").reset();
+        JGP.num("commercialMoney").attr("_is_show","false");
+        JGP.num("fundMoney").attr("_is_show","false");
+        JGP.num("advanceMoney").attr("_is_show","false");
+        JGP.datetime("advanceDate").attr("_is_show","false");
+        JGP.datetime("refundDate").attr("_is_show","false");
+        var patyType = JGP.drop('patyType').val();
+        if(patyType==2){
+            JGP.num("commercialMoney").show();
+        }else if (patyType==3){
+            JGP.num("fundMoney").show();
+        }else if (patyType==4){
+            JGP.num("commercialMoney").show();
+            JGP.num("fundMoney").show();
+        }else if (patyType==5){
+            JGP.num("advanceMoney").show();
+            JGP.datetime("advanceDate").show();
+            JGP.datetime("refundDate").show();
+        }
+    }
+</script>
+[/@JGP.foot]

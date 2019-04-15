@@ -1,0 +1,70 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2019/1/14
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','45']" _runit="px">
+    <jgp-panel slot="1-1" >
+        <jgp-form _label_width="120px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/expense/maidApiController/editExpenseMaidChannelHouseSaleInfo">
+          <jgp-form-group _title="案场经理佣金" _col="12" _label_width="165px">
+                <jgp-drop _name="caseManager" _label="案场经理：" _url="/ljoa/hr/employeeApiController/listAllEmployee"  _readonly="true" _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="caseManagerChargeType" _id="caseManagerChargeType" _onchange="editManagerChargeType" _label="案场经理提成方式："  _readonly="true" _active_key="LJOA.CHANNEL.CHARGE_TYPE"  _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="caseManagerChargeScale" _id="caseManagerChargeScale" _label="案场经理提成比例(%)：" _readonly="true" _active_key="LJOA.CHANNEL.SCALE"   _col="6"></jgp-drop>
+                <jgp-num _name="caseManagerChargeMoney" _id="caseManagerChargeMoney" _label="案场经理提成金额(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+            </jgp-form-group>
+            <jgp-form-group _title="区域经理佣金" _col="12" _label_width="165px">
+                <jgp-drop _name="areaManage" _label="区域经理：" _url="/ljoa/hr/employeeApiController/listAllEmployee"  _readonly="true" _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="areaManagerChargeType" _id="areaManagerChargeType" _onchange="editChannelManagerChargeType"  _readonly="true" _label="区域经理提成方式：" _active_key="LJOA.CHANNEL.CHARGE_TYPE"   _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="areaManagerChargeScale" _id="areaManagerChargeScale" _label="区域经理提成比例(%)：" _readonly="true" _active_key="LJOA.CHANNEL.SCALE"  _col="6"></jgp-drop>
+                <jgp-num _name="areaManagerChargeMoney" _id="areaManagerChargeMoney" _label="区域经理提成金额(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+            </jgp-form-group>
+            <jgp-form-group  _title="公司利润" _col="12" _label_width="150px">
+                <jgp-num _name="companyProfit" _label="公司利润(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+                <jgp-drop _name="insideChargeStatus" _label="内部佣金状态" _id="inside" _readonly="true" _active_key="LJOA.MAIDSTATUS" _col="6"></jgp-drop>
+                <jgp-date-time _not_input="true" _name="insideChargeSendDate" _label="内部结佣时间：" _onchange="insideChange"  _placeholder="自行确认内部结佣时间"  _format="date" _col="6"></jgp-date-time>
+                <jgp-drop _not_input="true" _name="chargeStatus" _id="chargeStatus"  _label="佣金状态：" _readonly="true"  _active_key="LJOA.CHANNEL.CHARGE_STATUS"  _col="6"></jgp-drop>
+                <jgp-date-time _not_input="true" _name="chargeSendDate" _label="结佣时间：" _readonly="true"  _format="date"></jgp-date-time>
+            </jgp-form-group>
+        </jgp-form>
+    </jgp-panel>
+    <div slot="2-1" style="margin-left: 50%">
+        <jgp-btn  _form="form" _fn="maid" _icon="check">结佣</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    var flag = '${flag!''}';
+    var uuid = '${uuid!''}';
+    //var flag = '0';
+
+    //结佣
+    function maid(re) {
+        //console.log(re.back)
+        if (re.back.flag){
+            JGP.$alert("结佣成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("结佣失败！");
+            JGP.$close(false);
+        }
+    }
+
+    //设置渠道结佣时间
+    function channelChange() {
+        JGP.drop('channel').val('2');
+    }
+
+    //设置内部结佣时间
+    function insideChange() {
+        JGP.drop('inside').val('2');
+        JGP.drop('chargeStatus').val('10');
+    }
+
+
+</script>
+[/@JGP.foot]

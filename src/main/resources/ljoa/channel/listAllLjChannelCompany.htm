@@ -1,0 +1,99 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/8/14
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div  _row="['50','*']" _runit = "px">
+    <div slot="1-1">
+        <jgp-btn  _icon="plus" _fn="addLjChannelCompany">添加</jgp-btn>
+        <jgp-btn _fn="importChannelCompany">导入第三方信息</jgp-btn>
+        <jgp-btn _fn="textDownload">下载模板</jgp-btn>
+
+    </div>
+
+    <jgp-grid slot="2-1" _id="grid" _check="false" _url="/ljoa/channel/LjChannelCompanyApiController/listLjChannelCompany"
+              _record_tools="[{'icon':'eye','tip':'详情','fn':'showLjChannelCompany'},{'icon':'edit','tip':'修改','fn':'editLjChannelCompany'},{'icon':'trash','tip':'删除','fn':'deleteLjChannelCompany'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function addLjChannelCompany(re) {
+        var config = {
+            url:'/ljoa/channel/LjChannelCompanyController/addLjChannelCompany',
+            title:"添加第三方",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+
+    }
+
+    function showLjChannelCompany(re) {
+        var config = {
+            url:'/ljoa/channel/LjChannelCompanyController/showLjChannelCompany/'+re.back.record.id,
+            title:"详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+    function editLjChannelCompany(re) {
+        var config = {
+            url:'/ljoa/channel/LjChannelCompanyController/editLjChannelCompany/'+re.back.record.id,
+            title:"修改",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+    function deleteLjChannelCompany(re) {
+        JGP.$confirm("是否删除该信息",function () {
+            JGP.$post("/ljoa/channel/LjChannelCompanyApiController/removeLjChannelCompany/"+re.back.record.id,{},
+                    function () {
+                        JGP.$alert("删除成功！");
+                        window.location.reload();
+                    },function () {
+                        JGP.$error("删除失败！");
+                        window.location.reload();
+                    })
+        })
+    }
+
+    function importChannelCompany() {
+        var config = {callback:getFilePath};
+        JGP.$upload(config);
+    }
+
+    function getFilePath(backResult) {
+        var fileId = backResult.back.existFiles[0];
+        JGP.$post("/ljoa/channel/LjChannelCompanyApiController/importHouse", {"fileId":fileId});
+    }
+
+    function textDownload() {
+        window.open("/ljoa/channel/ljHouseInfoApiController/testDownloadThere");
+    }
+
+</script>
+[/@JGP.foot]

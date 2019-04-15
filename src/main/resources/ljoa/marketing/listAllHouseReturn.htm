@@ -1,0 +1,54 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/23
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/marketing/houseReturnApiController/listAllHouseReturn">
+        <jgp-text  _label="查询条件：" _name="applyName" _placeholder="姓名" _col="3"></jgp-text>
+        <jgp-drop _not_input="true" _name="approvalStatus"  _placeholder="申请状态" _active_key="LJ_HOUSE_RETURN.APPROVAL_STATUS" _col="4"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+              _record_tools="[{'icon':'eye','tip':'房源详情','fn':'show'},{'icon':'eye','tip':'退房信息','fn':'examine'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //房源详情
+    function show(re) {
+        var config = {
+            url:'/ljoa/com/houseReturnFZController/showLjHouseInfoHouseReturn/'+re.back.record.id,
+            title:"房源详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+
+    //审批
+    function examine(re) {
+        var config = {
+            url:'/ljoa/marketing/houseReturnController/showHouseReturn/'+re.back.record.id,
+            title:"退房信息",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

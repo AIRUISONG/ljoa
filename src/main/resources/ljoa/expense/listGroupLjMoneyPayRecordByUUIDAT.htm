@@ -1,0 +1,68 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/11/30
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _target="grid" _id="query"
+               _action='/ljoa/expense/LjMoneyPayRecordApiController/listGroupLjMoneyPayRecordByUUID/${id!''}'>
+        <jgp-drop _label="查询条件：" _col="6" _name="payType" _placeholder="支出类型" _not_input="true" _active_key="LJOA.EXPENSE_TYPE"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"
+              _record_tools="[{'icon':'eye','tip':'详情','fn':'showLjMoneyPayRecord'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    var id = '${id!''}';
+    function addLjMoneyPayRecord(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyPayRecordController/addLjMoneyPayRecord/'+id,
+            title:"添加",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'600px',
+            height:'400px'
+        }
+        JGP.$dialog(config)
+    }
+
+    function editLjMoneyPayRecord(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyPayRecordController/editLjMoneyPayRecord/'+re.back.record.id,
+            title:"修改",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'600px'
+        }
+        JGP.$dialog(config)
+    }
+
+    function showLjMoneyPayRecord(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyPayRecordController/showLjMoneyPayRecord/'+re.back.record.id,
+            title:"详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'600px'
+        }
+        JGP.$dialog(config)
+    }
+</script>
+[/@JGP.foot]

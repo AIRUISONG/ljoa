@@ -1,0 +1,98 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/10/24
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit="px">
+    <jgp-query _id="query" slot="1-1" _label_width="100px" _page_size="15"
+               _target="grid" _action="/ljoa/hr/employeeApiController/listGroupEmployeeNO">
+        <jgp-text _name="account" _label="查询条件："  _col="3" _placeholder="账号"></jgp-text>
+        <jgp-text _name="personName"  _col="2" _placeholder="姓名"></jgp-text>
+        <jgp-text _name="identity"  _col="2" _placeholder="身份证号"></jgp-text>
+        <jgp-text _name="linkTel"  _col="2" _placeholder="联系方式"></jgp-text>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _record_tools=" [{'icon':'edit','tip':'编辑','fn':'edit'},{'icon':'trash','tip':'删除','fn':'removeOne'}]"></jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+
+
+    //编辑
+    function edit(result) {
+        var config = {
+            url:'/ljoa/hr/employeeController/editEmployee/'+result.back.record.id,
+            title:"编辑员工信息",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+
+    //删除单个员工
+    function removeOne(result) {
+        JGP.$confirm("是否删除此员工？",function () {
+            JGP.$post("/ljoa/hr/employeeApiController/removeOneEmployee",{"id":result.back.record.id},
+                    function (result) {
+                        JGP.$alert("删除成功！");
+                        window.location.reload();
+                    },function () {
+                        JGP.$error("删除失败！");
+                    })
+        },function () {
+
+        })
+    }
+
+    //批量删除员工
+    function removeSelected() {
+        var selected = JGP.grid('grid').getSelected();
+        if(selected.length==0){
+            JGP.$warn("请选择要删除的对象！");
+            return;
+        }
+        var arr = new Array();
+        for (var i=0;i<selected.length;i++){
+            arr[i] = selected[i].id;
+        }
+        JGP.$confirm("是否删除选中的员工？",function () {
+            JGP.$post("/ljoa/hr/employeeApiController/removeSelectedEmployee",{array:arr+''},function () {
+                JGP.$alert("删除成功！");
+                window.location.reload();
+            },function () {
+                JGP.$error("删除失败！");
+            })
+        },function () {
+            window.location.reload();
+        })
+    }
+
+    //人事修改密码
+    function changePwd(result) {
+        var config = {
+            url:'/ljoa/hr/employeeController/editEmployeePasswordByRenShi/'+result.back.record.id,
+            title:"修改密码",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'400px',
+            height:'400px'
+        }
+        JGP.$dialog(config)
+    }
+
+
+
+</script>
+[/@JGP.foot]

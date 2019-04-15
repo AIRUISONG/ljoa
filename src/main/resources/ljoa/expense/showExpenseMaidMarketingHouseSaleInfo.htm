@@ -1,0 +1,109 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/5
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+    [#--<jgp-btn _fn="maid" _form="form" _icon="credit-card-alt" _is_show="true">结佣</jgp-btn>
+    <jgp-form _label_width="120px" _id="form" _method="post" _fdata='${fdata!''}'  _action="/ljoa/expense/ajax/expenseMaidMarketingHouseSaleInfo">
+        <jgp-text _label="销售主管" _name="dutyManUuid" _readonly="true"></jgp-text>
+        <jgp-num _label="销售主管佣金" _name="dutyCharge" _readonly="true"></jgp-num>
+        <jgp-text _label="销售经理" _name="saleManagerUuid" _readonly="true"></jgp-text>
+        <jgp-num _label="销售经理佣金" _name="saleManagerCharge" _readonly="true"></jgp-num>
+        <jgp-text _label="销售总监" _name="saleChiefUuid" _readonly="true"></jgp-text>
+        <jgp-num _label="销售总监佣金" _name="saleChiefCharge" _readonly="true"></jgp-num>
+        <jgp-text _label="置业顾问" _name="counselorManUuid" _readonly="true"></jgp-text>
+        <jgp-num _label="置业顾问佣金" _name="counselorCharge" _readonly="true"></jgp-num>
+        <jgp-drop _label="渠道名称：" _active_key="LJ_CUSTOMER_INFO.CHANNEL_NAME" _name="channelName" _col="6" _readonly="true"></jgp-drop>
+        <jgp-num _label="渠道佣金：" _name="channelCharge" _col="6" _readonly="true"></jgp-num>
+        <jgp-num _label="前置赚取：" _name="prepositionEarn" _col="6" _readonly="true"></jgp-num>
+        <jgp-num _label="公司毛利润：" _name="grossProfit" _col="6" _readonly="true"></jgp-num>
+        <jgp-num _label="公司纯利润：" _name="pureProfit" _col="6" _readonly="true" ></jgp-num>
+        <jgp-drop _label="佣金状态：" _name="chargeStatus" _col="6" _readonly="true" _active_key="LJ_CUSTOMER_INFO.CHARGESTATUS"></jgp-drop>
+        <jgp-date-time _label="结佣时间：" _not_input="true" _name="chargeSengDate" _format="date" _required="true" _col="6" ></jgp-date-time>
+        <jgp-area _label="备注：" _name="remark" _col="12" _row="5" _readonly="true"></jgp-area>
+    </jgp-form>--]
+    <jgp-panel _title="房源销售信息" _default_tools="[]">
+        <jgp-grid _id="grid" _check="false" _url="/ljoa/marketing/marketingChargeInfoApiController/listGroupMarketingChargeInfo/${houseId!''}" _page_size="15"
+            _record_tools="[{'tip':'结佣','fn':'maidOne','icon':'check'},{'tip':'取消结佣','fn':'cancelOne','icon':'remove'}]"></jgp-grid>
+        <jgp-form _label_width="130px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/marketing/marketingSaleInfoApiController/saveMarketingSaleInfo">
+            <jgp-num _label="前置赚取(元)：" _name="prepositionEarn" _col="6" _decimal="5" _readonly="true"></jgp-num>
+            <jgp-num _label="公司毛利润(元)：" _name="grossProfit" _col="6" _decimal="5" _readonly="true"></jgp-num>
+            <jgp-num _label="公司纯利润(元)：" _name="pureProfit" _decimal="5" _col="6" _readonly="true" ></jgp-num>
+            <jgp-drop _id="channel" _label="渠道佣金状态" _name="channeChargeStatus" _id="channeChargeStatus" _col="6" _readonly="true" _active_key="LJ_CUSTOMER_INFO.CHARGESTATUS"></jgp-drop>
+            <jgp-date-time _onchange="channelChange" _label="渠道结佣时间：" _name="channeChargeSengDate" _format="date" _not_input="true" _col="6" ></jgp-date-time>
+            <jgp-drop _id="inside" _label="内部佣金状态" _name="insideChargeStatus" _id="insideChargeStatus" _col="6" _readonly="true" _active_key="LJ_CUSTOMER_INFO.CHARGESTATUS"></jgp-drop>
+            <jgp-date-time _onchange="insideChange" _label="内部结佣时间：" _name="insideChargeSengDate" _format="date" _not_input="true" _col="6" ></jgp-date-time>
+            <jgp-area _label="备注：" _name="remark" _col="12" _row="5" _readonly="true"></jgp-area>
+        </jgp-form>
+        <div  style="margin-left: 75%;margin-top: -200px">
+            <jgp-btn _form="form" _fn="maid" _icon="check">结佣</jgp-btn>
+        </div>
+    </jgp-panel>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+
+    //结佣
+    function maid(re) {
+        //console.log(re.back)
+        if (re.back.flag){
+            JGP.$alert("结佣成功！");
+            //window.location.reload();
+            JGP.$close(true);
+        }else {
+            JGP.$error("结佣失败！");
+            JGP.$close(false);
+        }
+    }
+    //为个人结佣
+    function maidOne(result) {
+        //console.log(result.back.id)
+        var config = {
+            url:'/ljoa/expense/maidController/showMaidMarketingChargeInfo/'+result.back.record.id,
+            title:"个人结佣",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'400px',
+            height:'400px'
+        }
+        JGP.$dialog(config);
+    }
+
+    //取消个人结佣
+    function cancelOne(result) {
+        JGP.$confirm('是否撤销结佣？',function () {
+            JGP.$post('/ljoa/expense/maidApiController/editCancelOne',{chargeInfoId:result.back.record.id},function (re) {
+                //console.log(re)
+                if(re.flag){
+                    JGP.$alert('撤销成功！');
+                    window.location.reload();
+                }else {
+                    JGP.$error('撤销失败！');
+                }
+            },function (re) {
+                JGP.$error('撤销失败！');
+            })
+        },function () {
+
+        })
+    }
+
+
+    //设置渠道结佣时间
+    function channelChange() {
+        JGP.drop('channel').val('12');
+    }
+
+    //设置内部结佣时间
+    function insideChange() {
+        JGP.drop('inside').val('12');
+    }
+</script>
+[/@JGP.foot]

@@ -1,0 +1,72 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['45','*']" _runit="px">
+    <div slot="1-1">
+        <jgp-btn _form="form" _fn="saveCallBack">保存</jgp-btn>
+    </div>
+    <jgp-panel slot="2-1">
+        <jgp-form _id="form"  _action="/ljoa/hr/employeeApiController/editEmployee" _fdata='${fdata!''}' _label_width="150px" _method="post" >
+            <jgp-text _name="account" _label="账号：" _readonly="true"></jgp-text>
+            <jgp-text _name="workCode" _label="工号：" _required="true"></jgp-text>
+            <jgp-text _name="personName" _label="姓名：" _required="true"></jgp-text>
+            <jgp-text _name="age" _label="年龄：" _required="true" ></jgp-text>
+            <jgp-date-time _format="date" _name="birthday" _label="生日："></jgp-date-time>
+            <jgp-drop _name="posi" _label="职级：" _required="true" _active_key="LJOA_EMPLOYEE.POSI"></jgp-drop>
+          [#--  <jgp-date-time _format="date" _name="leaveTime" _label="离职日期："></jgp-date-time>
+            <jgp-drop _name="leaveType" _label="主动离职："  _active_key="LJOA_EMPLOYEE.LEAVETYPE"></jgp-drop>
+            <jgp-drop _name="passiveType" _label="被动离职：" _active_key="LJOA_EMPLOYEE.PASSIVETYPE"></jgp-drop>--]
+            <jgp-drop _name="education" _label="学历：" _active_key="LJOA_EMPLOYEE.EDUCATION" _required="true"></jgp-drop>
+            <jgp-text _name="school" _label="毕业学校：" ></jgp-text>
+            <jgp-text _name="specialty" _label="专业：" ></jgp-text>
+            <jgp-text _name="criticalLinkMan" _label="紧急联系人姓名：" ></jgp-text>
+            <jgp-text _name="criticalLinkTel" _label="紧急联系人电话：" ></jgp-text>
+            <jgp-text _name="nation" _label="民族：" _required="true"></jgp-text>
+            <jgp-drop _name="political" _label="政治面貌：" _active_key="LJOA_EMPLOYEE.POLITICAL" _required="true"></jgp-drop>
+            <jgp-text _name="birthPlace" _label="籍贯：" _required="true" _col="12"> </jgp-text>
+            <jgp-text _name="censusAddress" _label="户籍地址：" _required="true" _col="12"> </jgp-text>
+            <jgp-date-time _format="date" _name="graduateTime" _label="毕业时间："></jgp-date-time>
+            <jgp-date-time _format="date" _name="inTime" _label="入职时间："></jgp-date-time>
+           [#-- <jgp-drop _name="employeeType" _label="员工类型：" _active_key="LJOA_EMPLOYEE.EMPLOYEETYPE" _required="true"></jgp-drop>--]
+            <jgp-text _name="contractCompany" _label="合同签订公司：" _required="true" _col="12"></jgp-text>
+            <jgp-date-time _format="date" _name="contractBeginTime" _label="最新合同起始时间："></jgp-date-time>
+            <jgp-date-time _format="date" _name="contractEndTime" _label="最新合同终止时间："></jgp-date-time>
+            <jgp-text _name="relationMove" _label="劳动关系转移身份："></jgp-text>
+            <jgp-text _name="fileLocation" _label="档案所在地："></jgp-text>
+            <jgp-drop _name="censusNature" _label="户籍性质：" _active_key="LJOA_EMPLOYEE.CENSUSNATURE"></jgp-drop>
+            <jgp-drop _name="isLocalAccount" _label="是否本地户口：" _active_key="LJOA_EMPLOYEE.ISLOCALACCOUNT"></jgp-drop>
+            <jgp-drop _name="recruitType" _label="招聘渠道：" _active_key="LJOA_EMPLOYEE.RECRUITTYPE"></jgp-drop>
+            <jgp-text _name="identity" _label="身份证号：" _required="true"></jgp-text>
+            <jgp-text _name="linkTel" _label="联系方式：" _required="true"></jgp-text>
+            <jgp-drop _active_key="LJ_ORGANIZATION.SEX" _name="sex" _label="性别：" _required="true" _not_input="true"></jgp-drop>
+            [#--<jgp-date-time _format="date" _name="birthday" _label="出生日期：" _required="true" _not_input="true"></jgp-date-time>--]
+            <jgp-text _name="address" _label="地址：" _required="true" _col="12"></jgp-text>
+        </jgp-form>
+    </jgp-panel>
+
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //添加员工
+    function saveCallBack(result) {
+        //console.log(result.back);
+        if(result.back && result.back.flag){
+            JGP.$alert("保存成功！");
+            window.location.reload();
+            JGP.$close(true);
+        }else {
+            JGP.$error("保存失败！");
+            JGP.$close(false);
+        }
+    }
+
+</script>
+[/@JGP.foot]

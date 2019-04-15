@@ -1,0 +1,51 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/4 0004
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _target="grid"  _action="/ljoa/marketing/ajax/queryHouseInfoByCustomerInfoSignStatus">
+        <jgp-drop _label="查询条件：" _col="3" _name="projectUuid" _placeholder="项目名称" _not_input="true" _url="/ljoa/marketing/ajax/projectDrop"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+              _record_tools=" [{'icon':'edit','tip':'延期处理','fn':'addorEditDeferredHandling'},{'icon':'edit','tip':'网签办理','fn':'addorEditNetSigning'}]"></jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //添加或修改延期处理
+    function addorEditDeferredHandling(result) {
+        var config = {
+            url:'/ljoa/marketing/addorEditDeferredHandling/'+result.back.record.id,
+            title:"延期处理",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'550px',
+            height:'300px'
+        }
+        JGP.$dialog(config);
+    }
+    //添加或修改网签办理
+    function addorEditNetSigning(result) {
+        var config = {
+            url:'/ljoa/marketing/addorEditNetSigning/'+result.back.record.id,
+            title:"网签办理",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'600px',
+            height:'300px'
+        }
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

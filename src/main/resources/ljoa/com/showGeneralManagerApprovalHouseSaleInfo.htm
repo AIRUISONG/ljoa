@@ -1,0 +1,40 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-panel>
+    <jgp-form _id="form" _action="/ljoa/com/approvalApiController/addGeneralManagerApproval/${houseType!''}" _fdata='${fdata!''}' _method="post" >
+        <jgp-text _name="checkMan" _label="审批人：" _required="true"></jgp-text>
+        <jgp-drop _readonly="true" _active_key="LJOA.TONG.CHECK_CONTENT" _name="checkContent" _label="审批业务："></jgp-drop>
+        <jgp-drop _readonly="true" _active_key="LJOA.TONG.CHECK_TYPE" _name="checkType" _label="审批类别："></jgp-drop>
+        <jgp-radio _active_key="LJOA.TONG.CHECK_RESULT" _name="checkResult" _label="审批结果：" _required="true" _not_input="true"></jgp-radio>
+        <jgp-date-time _format="date" _name="checkTime" _label="审批时间：" _readonly="true" ></jgp-date-time>
+        <jgp-area _name="checkOption" _label="审批意见：" _col="12" _row="8" _required="true"></jgp-area>
+    </jgp-form>
+    <jgp-panel _title="房源销售信息" _url="/ljoa/com/approvalController/showGeneralManagerLookHouseSaleInfo/${houseId!''}/${houseType!''}" _default_tools="[]"></jgp-panel>
+    <jgp-btn _form="form" _fn="saveCallBack">完成审核</jgp-btn>
+</jgp-panel>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    JGP.$alert("1");
+    //添加总经理渠道佣金审批
+    function saveCallBack(result) {
+        //console.log(result.back);
+        if(result.back && result.back.flag){
+            JGP.$alert("审核完成！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("审核失败！");
+            JGP.$close(false);
+        }
+    }
+
+</script>
+[/@JGP.foot]

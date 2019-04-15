@@ -1,0 +1,115 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/9/11
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','45','*']" _runit="px" _aux="true">
+    <div slot="1-1">
+        <jgp-btn _icon="plus" _fn="addMessage">添加</jgp-btn>
+        <jgp-btn _icon="trash" _fn="removeSelected">批量删除</jgp-btn>
+    </div>
+    <jgp-query slot="2-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/common/messageApiController/listGroupMessageForSend">
+        <jgp-drop _label="查询条件:" _name="acceptMan" _placeholder="接收人" _url="/ljoa/common/messageApiController/queryAllAdminUser" _col="2"></jgp-drop>
+        <jgp-text _name="msgTitle"  _placeholder="标题" _col="3"></jgp-text>
+        <jgp-date-time _not_input="true" _onchange="checkDate" _id="createDatetime" _format="date" _name="beginDate" _placeholder="开始时间" _col="2"></jgp-date-time>
+        <jgp-date-time _not_input="true" _onchange="checkDate" _id="modifyDatetime" _format="date" _name="endDate" _placeholder="结束时间" _col="2"></jgp-date-time>
+    </jgp-query>
+    <jgp-grid slot="3-1" _id="grid" _cols="['*','100','*']" _c_unit="px"
+              _record_tools="[{'icon':'eye','tip':'详情','fn':'show'},{'icon':'trash','tip':'删除','fn':'remove'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //添加
+    function addMessage() {
+        var config = {
+            url:'/ljoa/common/messageController/addMessage',
+            title:"添加信息",
+            callback:function(a){
+                if(a){window.location.reload();}
+            },
+            width:'600px',
+            height:'400px'
+        }
+        JGP.$dialog(config);
+    }
+    //详情
+    function show(re) {
+        var config = {
+            url:'/ljoa/common/messageController/editMessage/'+re.back.record.id,
+            title:"信息详情",
+            callback:function(a){
+                if(a){window.location.reload();}
+            },
+            width:'600px',
+            height:'400px'
+        }
+        JGP.$dialog(config);
+    }
+
+    //删除
+    function remove(result) {
+        JGP.$confirm("是否删除此信息？",function () {
+            JGP.$post("/ljoa/common/messageApiController/removeOneMessage",{id:result.back.record.id},
+                    function (re) {
+                        if(re.flag ==true){
+                            JGP.$alert("删除成功！");
+                            window.location.reload();
+                        }else{
+                            JGP.$warn("删除失败615156651");
+                        }
+                    },function () {
+                        JGP.$warn("删除失败！");
+                    });
+        },function () {
+
+        })
+    }
+
+    //批量删除信息
+    function removeSelected() {
+        var selected = JGP.grid('grid').getSelected();
+        if(selected.length==0){
+            JGP.$warn("请选择要删除的对象！");
+            return;
+        }
+        var arr = new Array();
+        for (var i=0;i<selected.length;i++){
+            arr[i] = selected[i].id;
+        }
+        JGP.$confirm("是否删除选中的信息？",function () {
+            JGP.$post("/ljoa/common/messageApiController/removeSelectedMessage",{array:arr+''},function () {
+                JGP.$alert("删除成功！");
+                window.location.reload();
+            },function () {
+                JGP.$error("删除失败！");
+            })
+        },function () {
+
+        })
+    }
+
+    //时间验证
+    function checkDate() {
+        var createDatetime = JGP.datetime('createDatetime').val();
+        var modifyDatetime = JGP.datetime('modifyDatetime').val();
+        createDatetime = createDatetime.substring(0, 10);
+        modifyDatetime = modifyDatetime.substring(0, 10);
+        var date1 = new Date(Date.parse(createDatetime.replace(/-/g, "/")));
+        var date2 = new Date(Date.parse(modifyDatetime.replace(/-/g, "/")));
+        //开始日期必须在结束日期之前
+        if(createDatetime!=''&& modifyDatetime!=''){
+            if(date1.getTime() > date2.getTime()){
+                JGP.$warn('日期选择错误！');
+                JGP.datetime('createDatetime').val(0);
+                JGP.datetime('modifyDatetime').val(0);
+            }
+        }
+    }
+</script>
+[/@JGP.foot]

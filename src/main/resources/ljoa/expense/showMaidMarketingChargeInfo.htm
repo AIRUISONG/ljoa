@@ -1,0 +1,37 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/17 0017
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','15']" >
+    <jgp-form slot="1-1" _id="form" _fdata='${fdata!''}' _label_width="120px" _action="/ljoa/marketing/marketingChargeInfoApiController/saveMarketingChargeInfo">
+        [#--<jgp-drop _label="姓名:" _name="chargeTargetUuid" _col="12" _readonly="true" _url="/ljoa/hr/ajax/queryAllEmployee"></jgp-drop>--]
+        <jgp-text _label="佣金对象名称:" _name="chargeTargetName" _col="12" _readonly="true" ></jgp-text>
+        <jgp-num _label="佣金金额(元):" _name="chargeMoney" _decimal="5" _col="12" _readonly="true"></jgp-num>
+        <jgp-drop _label="佣金类型：" _name="chargeType" _readonly="true" _readonly="true" _col="12" _not_input="true" _active_key="LJ_CUSTOMER_INFO.CHARGE_TYPE"></jgp-drop>
+        <jgp-date-time _format="date" _label="结佣时间：" _col="12" _not_input="true" _name="chargeSendDate"></jgp-date-time>
+        <jgp-drop _label="佣金状态：" _name="chargeStatus" _id="chargeStatus" _not_input="true" _readonly="true" _col="12" _active_key="LJ_CUSTOMER_INFO.CHARGESTATUS"></jgp-drop>
+    </jgp-form>
+    <div slot="2-1" style="margin-left: 75%">
+        <jgp-btn _form="form" _fn="editCallBack" _icon="check">确认</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function editCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("结佣成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("结佣失败！");
+            JGP.$close(false);
+        }
+    }
+</script>
+[/@JGP.foot]
+

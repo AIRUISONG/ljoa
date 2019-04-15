@@ -1,0 +1,77 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2019/1/14
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['230','230','45']" _runit="px">
+    <jgp-panel slot="1-1">
+    <jgp-form  _label_width="120px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/expense/maidApiController/editExpenseMaidChannelHouseSaleInfo">
+        <jgp-form-group _title="渠道公司佣金信息" _col="12" _label_width="165px">
+            <jgp-drop _name="channelCompany" _label="渠道公司："  _readonly="true"  _url="/ljoa/channel/LjChannelCompanyApiController/listAllLjChannelCompany"  _col="6"></jgp-drop>
+            <jgp-drop _not_input="true" _name="channelChargeType" _id="channeChargeType" _onchange="editChargeType" _label="渠道佣金方式："  _readonly="true"  _active_key="LJOA.CHANNEL.CHARGE_TYPE"   _col="6"></jgp-drop>
+            <jgp-num _name="channelChargeMoney" _id="channeChargeMoney" _label="渠道佣金金额(元)：" _readonly="true"  _decimal="5"  _col="6"></jgp-num>
+            <jgp-num _name="channelChargeScale" _id="channeChargeScale" _label="渠道佣金比例(%)：" _readonly="true"  _decimal="5" _col="6"></jgp-num>
+            <jgp-drop _not_input="true" _name="channelTaxType" _id="channelTaxType" _label="渠道佣金缴税方式："  _readonly="true" _onchange="editChannelTaxScale"  _active_key="LJOA.CHANNEL.TAX_TYPE"  _col="6"></jgp-drop>
+            <jgp-num  _name="channelTaxScale"  _id="channelTaxScale" _label="渠道扣税比例(%)：" _decimal="5"  _col="6"></jgp-num>
+            <jgp-num _name="channelTaxMoney" _id="channelTaxMoney" _label="渠道扣税金额(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+            <jgp-num _name="channelAfterTaxMoney" _id="channelAfterTaxMoney" _label="渠道公司税后佣金(元)：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+            <jgp-drop _name="channelChargeStatus" _label="渠道佣金状态" _id="channel" _readonly="true" _active_key="LJOA.MAIDSTATUS"  _col="6"></jgp-drop>
+            <jgp-date-time _not_input="true" _name="channelChargeSendDate" _label="渠道结佣时间：" _onchange="channelChange" _format="date" _required="true" _col="6" ></jgp-date-time>
+            <jgp-text _name="dutyMan" _label="个人："  _readonly="true" _col="6"></jgp-text>
+            <jgp-num _name="dutyManMoney" _label="个人奖(元)："  _readonly="true"_decimal="5"  _col="6"></jgp-num>
+        </jgp-form-group>
+    </jgp-form>
+    </jgp-panel>
+    <jgp-panel slot="2-1">
+    <jgp-form   _label_width="140px" _id="formCompanyName" _method="post" _fdata='${companyData!''}' _disabled="true">
+        <jgp-form-group _title="渠道公司信息" _col="12" _label_width="165px">
+        <jgp-text _name="companyName" _label="公司名称:" _required="true" _col="6"></jgp-text>
+        <jgp-text _name="companyAccount" _label="公司账号:" _required="true" _col="6"></jgp-text>
+        <jgp-text _name="licNo" _label="营业执照号码:" _required="true" _col="6"></jgp-text>
+        <jgp-text _name="companyBank" _label="开户行:" _required="true" _col="6"></jgp-text>
+        <jgp-text _name="deputeName" _label="委托收款人姓名:"  _col="12"></jgp-text>
+        <jgp-text _name="deputeIdentity" _label="委托收款人身份证:"  _col="12"></jgp-text>
+        <jgp-text _name="deputeAccount" _label="委托收款人账号:"  _col="12"></jgp-text>
+        <jgp-text _name="deputeBank" _label="委托收款人开户行:"  _col="12"></jgp-text>
+        </jgp-form-group>
+    </jgp-form>
+    </jgp-panel>
+    <div slot="3-1" style="margin-left: 85%">
+        <jgp-btn  _form="form" _fn="maid" _icon="check">结佣</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    var flag = '${flag!''}';
+    var uuid = '${uuid!''}';
+    //var flag = '0';
+
+    //结佣
+    function maid(re) {
+        //console.log(re.back)
+        if (re.back.flag){
+            JGP.$alert("结佣成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("结佣失败！");
+            JGP.$close(false);
+        }
+    }
+
+    //设置渠道结佣时间
+    function channelChange() {
+        JGP.drop('channel').val('2');
+    }
+
+    //设置内部结佣时间
+    function insideChange() {
+        JGP.drop('inside').val('2');
+        JGP.drop('chargeStatus').val('10');
+    }
+</script>
+[/@JGP.foot]

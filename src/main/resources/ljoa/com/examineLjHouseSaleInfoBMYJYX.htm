@@ -1,0 +1,72 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/10
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['160','*','45']" _runit="px">
+
+    <jgp-form slot="1-1" _label_width="100px" _id="formLjApproval" _method="post" _fdata='${LjApprovalfdata!''}' _action="/ljoa/com/ajax/saveLjApproval">
+        <jgp-drop _label="审批业务" _name="checkContent" _active_key="LJOA.TONG.CHECK_CONTENT"  _readonly="true"  _col="6"></jgp-drop>
+        <jgp-drop _label="审批类型" _name="checkType" _active_key="LJOA.TONG.CHECK_TYPE"  _readonly="true" _col="6"></jgp-drop>
+        <jgp-radio _label="审批结果" _id="checkResult" _name="checkResult" _id="checkResult" _onchange="editStatus" _active_key="LJOA.TONG.CHECK_RESULT" _col="6"></jgp-radio>
+        <jgp-date-time _not_input="true" _label="审批时间" _name="checkTime" _format="date" _col="12"></jgp-date-time>
+        <jgp-area _label="审批意见" _name="checkOption"  _col="12"></jgp-area>
+    </jgp-form>
+    <jgp-panel slot="2-1">
+        <jgp-form _label_width="120px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/marketing/ajax/saveMarketingSaleInfo">
+            [#--<jgp-text _label="营销负责人：" _name="dutyMan" _readonly="true"></jgp-text>--]
+            [#--<jgp-num _label="营销负责人佣金(元)：" _name="dutyCharge" _readonly="true"></jgp-num>--]
+            [#--<jgp-text _label="置业顾问：" _name="counselorMan" _readonly="true"></jgp-text>--]
+            [#--<jgp-num _label="置业顾问佣金(元)：" _name="counselorCharge" _readonly="true"></jgp-num>--]
+            [#--<jgp-drop _label="渠道名称：" _name="channelName" _col="6" _readonly="true"></jgp-drop>--]
+            [#--<jgp-num _label="渠道佣金(元)：" _name="channelCharge" _col="6" _readonly="true"></jgp-num>--]
+            <jgp-num _label="前置赚取(元)：" _name="prepositionEarn" _col="6" _readonly="true"></jgp-num>
+            <jgp-num _label="公司毛利润(元)：" _name="grossProfit" _col="6" _readonly="true"></jgp-num>
+            <jgp-num _label="公司纯利润(元)：" _name="pureProfit" _col="6" _readonly="true" ></jgp-num>
+            <jgp-drop _label="渠道佣金状态" _name="channeChargeStatus" _col="6" _readonly="true" _active_key="LJOA.CHANNEL.COMPANY_CHARGE_STATUS"></jgp-drop>
+            <jgp-date-time _label="渠道结佣时间" _name="channeChargeSengDate" _col="6"></jgp-date-time>
+            <jgp-drop _label="内部佣金状态" _name="insideChargeStatus" _id="insideChargeStatus" _col="6" _readonly="true" _active_key="LJOA.CHANNEL.CHARGE_STATUS"></jgp-drop>
+            <jgp-date-time _label="内部结佣时间：" _name="insideChargeSengDate" _format="date" _readonly="true" _col="6" ></jgp-date-time>
+            <jgp-area _label="备注：" _name="remark" _col="12" _row="5" _readonly="true"></jgp-area>
+        </jgp-form>
+    </jgp-panel>
+    <div slot="3-1" style="margin-left: 75%">
+        <jgp-btn  _fn="ljApprovalSaveCallBack" _icon="check">完成审批</jgp-btn>
+    </div>
+</jgp-div>
+
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //保存
+    function ljApprovalSaveCallBack() {
+        JGP.form("form").ajaxSubmit("/ljoa/marketing/ajax/saveMarketingSaleInfo",function (re) {
+            JGP.form("formLjApproval").ajaxSubmit("/ljoa/com/ajax/saveLjApproval",function () {
+                JGP.$alert("审批成功！");
+                JGP.$close(true);
+            },function () {
+                JGP.$warn("审批失败！");
+                JGP.$close(false);
+            })
+        },function (re) {
+            JGP.$warn("审批失败！");
+            JGP.$close(false);
+        })
+    }
+
+
+    //审批通过后修改报销状态
+    function editStatus() {
+        if(JGP.radio('checkResult').val()=='Y'){
+            JGP.drop("chargeStatus").val("2");
+
+        }else if(JGP.radio('checkResult').val()=='N'){
+            JGP.drop("chargeStatus").val("3");
+        }
+    }
+</script>
+[/@JGP.foot]

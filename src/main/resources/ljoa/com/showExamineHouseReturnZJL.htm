@@ -1,0 +1,74 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/23
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['160','*','45']" _runit="px">
+    <jgp-form slot="1-1" _label_width="110px" _id="formLjApproval" _method="post" _fdata='${LjApprovalfdata!''}' _action="/ljoa/com/approvalApiController/saveLjApproval">
+        <jgp-drop _label="审批业务：" _name="checkContent" _active_key="LJOA.TONG.CHECK_CONTENT" _readonly="true" _col="6"></jgp-drop>
+        <jgp-drop _label="审批类型：" _name="checkType" _active_key="LJOA.TONG.CHECK_TYPE" _readonly="true" _col="6"></jgp-drop>
+        <jgp-radio _required="true" _label="审批结果：" _id="checkResult" _name="checkResult" _onchange="editStatus" _active_key="LJOA.TONG.CHECK_RESULT" _col="6"></jgp-radio>
+        <jgp-date-time _not_input="true" _label="审批时间：" _name="checkTime" _format="date" _col="6"></jgp-date-time>
+        <jgp-area _label="审批意见：" _name="checkOption"  _col="12"></jgp-area>
+    </jgp-form>
+    <jgp-panel slot="2-1">
+        <jgp-form _label_width="110px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/marketing/houseReturnApiController/addHouseReturn" _readonly="true">
+            <jgp-form-group _label_width="110px" _title="退房上报信息">
+                <jgp-text _name="applyName" _label="客户姓名：" _readonly="true" _col="6"></jgp-text>
+                <jgp-text _name="tel" _label="联系方式：" _readonly="true" _col="6"></jgp-text>
+                <jgp-text _name="identityCode" _label="身份证号：" _readonly="true" _col="6"></jgp-text>
+                <jgp-text _name="bank" _label="开户行：" _readonly="true" _col="6"></jgp-text>
+                <jgp-text _name="bankCard" _label="银行卡号：" _readonly="true" _col="6"></jgp-text>
+                <jgp-num _name="returnMoney" _label="退款金额(元)：" _decimal="5" _col="6" _readonly="true"></jgp-num>
+                <jgp-num _name="actuaLReturnMoney" _label="实际退款(元)：" _decimal="5" _col="6" _readonly="true"></jgp-num>
+                <jgp-area _name="returnReason" _label="退款原因：" _readonly _col="12"></jgp-area>
+                <jgp-date-time _format="date" _not_input="true" _name="applyDate" _label="申请日期：" _readonly="true"  _readonly="true"  _col="6"></jgp-date-time>
+                <jgp-drop _not_input="true" _name="inputMan" _label="申请填报人：" _readonly="true" _url="/ljoa/hr/employeeApiController/listAllEmployee" _col="6"></jgp-drop>
+                <jgp-drop _not_input="true" _name="approvalStatus" _id="approvalStatus" _label="申请状态：" _readonly="true" _active_key="LJOA.EXPENSE"></jgp-drop>
+                <jgp-drop _not_input="true" _name="moneyStatus" _label="退款状态：" _active_key="LJ_HOUSE_RETURN.MONEY_STATUS" _readonly="true"></jgp-drop>
+                <jgp-area _name="remark" _label="备注：" _col="12"></jgp-area>
+            <jgp-uploader _allow="all" _object_id="${uuid!''}" _object_type="com.jgp.ljoa.marketing.model.HouseReturn" _disabled="true"></jgp-uploader>
+            </jgp-form-group>
+        </jgp-form>
+    </jgp-panel>
+    <div slot="3-1" style="margin-left: 75%">
+        <jgp-btn  _fn="save" _icon="check">完成审批</jgp-btn>
+        [#--<jgp-btn  _form="formLjApproval" _fn="saveCallBack" _icon="check">保存</jgp-btn>--]
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function editStatus(re) {
+        if(re.back=="Y"){
+            JGP.drop("approvalStatus").val("7");
+        }else if(re.back=="N"){
+            JGP.drop("approvalStatus").val("11");
+        }
+    }
+
+    function save() {
+        var checkResult = JGP.form('formLjApproval').field('checkResult');
+        if(checkResult == '' || checkResult == undefined){
+            JGP.$alert('请填写审批结果！');
+            return;
+        }
+        JGP.form("form").ajaxSubmit(function (re) {
+            JGP.form("formLjApproval").ajaxSubmit(function () {
+                JGP.$alert("审批成功！");
+                JGP.$close(true);
+            },function () {
+                JGP.$error("审批失败！");
+                JGP.$close(false);
+            })
+        },function (re) {
+            JGP.$error("审批失败！");
+            JGP.$close(false);
+        })
+    }
+</script>
+[/@JGP.foot]

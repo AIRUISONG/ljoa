@@ -1,0 +1,157 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/10 0010
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _col="['20','*']" _aux="true">
+    <div slot="1-1">
+        <jgp-tree _id="testTree" _root="项目列表"
+                  _url="/ljoa/marketing/ljHouseInfoApiYXController/listTestTree"
+                  _onclick="opengrid"
+                  _auto_load="false">
+        </jgp-tree>
+    </div>
+    <jgp-div slot="1-2" _row="['45','*']" _runit = "px" _aux="true">
+        <jgp-query slot="1-1" _target="grid" _id="query"
+                   _action="/ljoa/marketing/marketingSaleInfoApiController/listLjHouseInfoManager">
+
+            <jgp-drop _label="查询条件："_name="roomType" _placeholder="产品分类" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>
+        </jgp-query>
+        <jgp-grid slot="2-1" _id="grid" _check="false"
+                  _record_tools=" [{'icon':'eye','tip':'反馈意见','fn':'feedback'},
+              {'icon':'edit','tip':'修改','fn':'editLjHouseInfoManager'},
+              {'icon':'edit','tip':'录入佣金','fn':'queryMarketingChargeInfo'},
+              {'icon':'money','tip':'公司利润','fn':'addMarketingSaleInfo'},
+              {'icon':'check','tip':'提交申请','fn':'editChargeStatus'}]">
+        </jgp-grid>
+    </jgp-div>
+</jgp-div>
+
+
+
+[#--<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _target="grid" _id="query"
+               _action="/ljoa/marketing/marketingSaleInfoApiController/listLjHouseInfoManager">
+
+        <jgp-drop _label="查询条件：" _col="3" _name="projectUuid" _placeholder="项目名称" _not_input="true" _url="/ljoa/marketing/ljProjectInfoYXApiController/listProjectDrop"></jgp-drop>
+        <jgp-drop _col="2" _name="roomType" _placeholder="产品分类" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"
+              _record_tools=" [{'icon':'eye','tip':'反馈意见','fn':'feedback'},
+              {'icon':'edit','tip':'修改','fn':'editLjHouseInfoManager'},
+              {'icon':'edit','tip':'录入佣金','fn':'queryMarketingChargeInfo'},
+              {'icon':'money','tip':'公司利润','fn':'addMarketingSaleInfo'},
+              {'icon':'check','tip':'提交申请','fn':'editChargeStatus'}]">
+    </jgp-grid>
+</jgp-div>--]
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+
+
+
+    JGP.$onload(function(){
+        JGP.tree('testTree').load();
+        JGP.query('query').searchTo("/ljoa/marketing/marketingSaleInfoApiController/listLjHouseInfoManager/00", function () {
+
+        }, function () {
+
+        })
+    })
+
+    function opengrid(re) {
+        //JGP.grid("grid").attr('_url',"/ljoa/channel/ajax/queryAllLjHouseInfo/"+re.back.key);
+        //JGP.grid("grid").load("/ljoa/channel/ajax/queryAllLjHouseInfo/"+re.back.key);
+        //console.log(re.back.key+"   ")
+        JGP.query('query').searchTo("/ljoa/marketing/marketingSaleInfoApiController/listLjHouseInfoManager/"+re.back.key, function (re) {
+        }, function () {
+
+        })
+        uuid = re.back.key;
+    }
+    //总监反馈
+    function feedback(re) {
+        var config = {
+            url:'/ljoa/com/approvalController/showChargeApprovalByHouseUuid/2/'+re.back.record.id+'/2/2',
+            title:"反馈意见",
+            callback:function(a){
+                /*if(a){
+                    window.location.reload();
+                }*/
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+    //公司人员佣金
+    function queryMarketingChargeInfo(result) {
+        var config = {
+            url:'/ljoa/marketing/marketingChargeInfoController/listMarketingChargeInfo/'+result.back.record.id,
+            title:"录入佣金",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+    //公司利润
+    function addMarketingSaleInfo(result) {
+        var config = {
+            url:'/ljoa/marketing/marketingSaleInfoController/addMarketingSaleInfo/'+result.back.record.id,
+            title:"公司利润",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+
+    //申请审批
+    function editChargeStatus(result) {
+        JGP.$confirm("是否申请？",function () {
+            JGP.$post("/ljoa/marketing/marketingSaleInfoApiController/saveMarketingSaleInfoChargeStatus/"+result.back.record.id,{},//参数
+                    function (re) {
+                        if(re.flag==false){
+                            JGP.$error("已提交申请或未填写公司利润！")
+                        }else{
+                            JGP.$alert("申请成功！");
+                            window.location.reload();
+                        }
+                    })
+        },function () {
+
+        })
+    }
+
+    //修改
+    function editLjHouseInfoManager(result) {
+        var config = {
+            url:'/ljoa/marketing/marketingSaleInfoController/editLjHouseInfoManager/'+result.back.record.id,
+            title:"修改信息",
+            callback:function(a){
+                /*if(a){
+                    window.location.reload();
+                }*/
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+
+</script>
+[/@JGP.foot]

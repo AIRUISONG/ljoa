@@ -1,0 +1,88 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/5 0005
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _target="grid" _id="query" _auto="false">
+        <jgp-drop _label="查询条件：" _col="3" _name="projectUuid" _placeholder="项目名称" _not_input="true" _url="/ljoa/marketing/ljProjectInfoYXApiController/listProjectDrop"></jgp-drop>
+        <jgp-drop _col="2" _name="roomType" _placeholder="产品分类" _not_input="true" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>
+        <jgp-text _col="2" _name="buildingNo" _placeholder="楼号" ></jgp-text>
+        <jgp-text _col="2" _name="unitNo" _placeholder="单元" ></jgp-text>
+        <jgp-text _col="2" _name="roomNo" _placeholder="房号" ></jgp-text>
+        <jgp-btn _fn="search">搜索</jgp-btn>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"
+              _record_tools=" [{'icon':'eye','tip':'反馈意见','fn':'feedback'},{'icon':'edit','tip':'退房申请','fn':'houseReturn'},{'icon':'eye','tip':'进度查询','fn':'feedSpeed'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+   //页面渲染完成之后调用
+    JGP.$onload(search())
+
+   //手动搜索
+    function search() {
+        JGP.query('query').searchTo('/ljoa/marketing/houseReturnApiController/listAllHouseInfoForHouseReturn',function () {
+
+        },function () {
+
+        });
+    }
+
+    //总监反馈
+    function feedback(re) {
+       var config = {
+           url:'/ljoa/com/approvalController/showHouseReturnApprovalByHouseUuid/'+re.back.record.id+'/3/1',
+           title:"反馈意见",
+           callback:function(a){
+               /*if(a){
+                   window.location.reload();
+               }*/
+           },
+           width:'800px',
+           height:'550px'
+       }
+       JGP.$dialog(config)
+    }
+
+    //申请退房(助理录入)
+    function houseReturn(result) {
+        //console.log(result.back.id);
+        var config = {
+            url:'/ljoa/marketing/houseReturnController/addHouseReturn/'+result.back.record.id,
+            title:"退房申请",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+//进度查询
+    function  feedSpeed(re) {
+        var config = {
+            url:'/ljoa/marketing/houseReturnController/showHouseReturnSpeed/'+re.back.record.id,
+            title:"进度",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+
+</script>
+[/@JGP.foot]
+

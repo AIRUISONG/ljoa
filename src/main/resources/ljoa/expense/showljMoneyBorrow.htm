@@ -1,0 +1,49 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/11/30
+-->
+[@JGP.head "$Title$"]
+    <style>
+        .upload{
+            margin-top: 20px;
+        }
+    </style>
+[/@JGP.head]
+[@JGP.body]
+<jgp-div _row="['*','45']" _runit="px">
+    <jgp-panel slot="1-1">
+        <jgp-form  _label_width="100px" _id="form" _method="post"  _fdata='${fdata!''}' _disabled="true">
+            <jgp-form-group>
+                <jgp-drop _not_input="true" _name="borrowOrg" _label="部门:" _url="/ljoa/hr/organizationApiController/listAllOrg" _required="true" _col="6"></jgp-drop>
+                <jgp-drop _id="borrowMan"  _label="借款人:" _url="/ljoa/hr/employeeApiController/listAllEmployee" _name="borrowMan" _not_input="true" _required="true"></jgp-drop>
+                <jgp-num _name="borrowMoney" _label="借款金额:" _decimal="5" _required="true"></jgp-num>
+                <jgp-drop _name="payType" _label="支出类型:" _required="true" _active_key="LJOA.EXPENSE_TYPE"></jgp-drop>
+                <jgp-date-time _label="销账截止日期:" _name="finishDate" _format="date"  _required="true"></jgp-date-time>
+                <jgp-area _name="borrowUses" _label="付款用途:" _required="true" _col="12"></jgp-area>
+            </jgp-form-group>
+            <jgp-form-group class="upload">
+                <jgp-uploader _allow="all" _object_id='${id!''}' _object_type="com.jgp.ljoa.expense.model.LjMoneyBorrow" _disabled="true"></jgp-uploader>
+            </jgp-form-group>
+        </jgp-form>
+    </jgp-panel>
+    <div slot="2-1" style="margin-left: 80%">
+
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function saveCallBack(result) {
+        if(result.back && result.back.flag){
+            JGP.$alert("修改成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("保存失败！");
+            JGP.$close(false);
+        }
+    }
+</script>
+[/@JGP.foot]

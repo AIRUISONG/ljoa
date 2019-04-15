@@ -1,0 +1,53 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/8/1
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/expense/houseReturnMakeMoneyApiController/listAllHouseReturnMakeMoney">
+        <jgp-text _label="查询条件：" _col="3" _name="applyName" _placeholder="姓名"></jgp-text>
+        <jgp-text _col="3" _name="identityCode" _placeholder="身份证号"></jgp-text>
+        <jgp-drop _not_input="true" _name="moneyStatus" _col="3" _label="退款状态：" _active_key="LJ_HOUSE_RETURN.MONEY_STATUS" ></jgp-drop>
+    </jgp-query>
+
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+              _record_tools="[{'icon':'credit-card','tip':'打款','fn':'editLjExpense'},{'icon':'cogs','tip':'打印申请','fn':'output'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //打款
+    function editLjExpense(re) {
+        var config = {
+            url:'/ljoa/expense/houseReturnMakeMoneyController/showHouseReturnMakeMoney/'+re.back.record.id,
+            title:"退款打款",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+    function output(re) {
+
+//        console.log(re.back.id);
+        var config = {
+            url:'/ljoa/moneyReturnReportController/report/moneyReturnReport/'+re.back.record.id,
+            title:'打印申请',
+            width:'100%',
+            height:'100%'
+        }
+        JGP.$dialog(config);
+    }
+
+</script>
+[/@JGP.foot]

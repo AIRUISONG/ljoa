@@ -1,0 +1,32 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/6 0006
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-panel>
+    <jgp-form _fdata='${fdata!''}' _disabled="true" _label_width="140px">
+        <jgp-text _label="销售总监：" _name="saleChiefUuid" _col="6" _required="true"></jgp-text>
+        <jgp-num _label="销售总监佣金（元）：" _name="saleChiefCharge" _col="6" _decimal="5" _required="true"></jgp-num>
+        <jgp-text _label="销售经理：" _name="saleManagerUuid" _col="6" _required="true"></jgp-text>
+        <jgp-num _label="销售经理佣金（元）：" _name="saleManagerCharge" _col="6" _decimal="5" _required="true"></jgp-num>
+        <jgp-text _label="置业顾问：" _name="counselorManUuid" _col="6"></jgp-text>
+        <jgp-num _label="置业顾问佣金（元）：" _name="counselorCharge" _decimal="5" _col="6" ></jgp-num>
+        <jgp-text _label="营销主管：" _name="dutyManUuid" _col="6" ></jgp-text>
+        <jgp-num _label="销售主管佣金（元）：" _name="dutyCharge" _decimal="5" _col="6" ></jgp-num>
+        <jgp-num _label="前置赚取（元）：" _name="prepositionEarn" _decimal="5" _col="6"></jgp-num>
+        <jgp-num _label="公司毛利润（元）：" _name="grossProfit" _col="6" _decimal="5" _required="true" _readonly="true"></jgp-num>
+        <jgp-num _label="公司纯利润（元）：" _name="pureProfit" _col="6" _decimal="5" _required="true" _readonly="true"></jgp-num>
+        <jgp-drop _label="渠道名称：" _name="channelName" _col="6" _not_input="true" _id="channelName" _onchange="channelName" _active_key="LJ_CUSTOMER_INFO.CHANNEL_NAME"></jgp-drop>
+        <jgp-text _label="其他渠道：" _name="otherChannel" _col="6" _id="otherChannel" _readonly="true"></jgp-text>
+        <jgp-num _label="渠道佣金（元）：" _name="channelCharge" _id="channelCharge" _value="0" _required="true" _decimal="5" _col="6" ></jgp-num>
+        <jgp-area _label="备注：" _name="remark" _col="12" _row="5"></jgp-area>
+        <jgp-text _name="houseUuid" _value="${hid!''}" style="display: none"></jgp-text>
+    </jgp-form>
+</jgp-panel>
+
+[/@JGP.body]
+
+[@JGP.foot/]

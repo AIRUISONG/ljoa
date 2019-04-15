@@ -1,0 +1,115 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/8/15
+-->
+[@JGP.head ""/]
+[@JGP.body]
+<jgp-div _col="['20','*']" _aux="true">
+    <div slot="1-1">
+        <jgp-tree _id="testTree" _root="项目列表"
+                  _url="/ljoa/channel/ljHouseInfoApiController/listTestTreeMarking"
+                  _onclick="opengrid"
+                  _auto_load="false">
+        </jgp-tree>
+    </div>
+    <jgp-div slot="1-2" _row="['45','45','*']" _runit = "px">
+        <jgp-btn slot="1-1" _icon="cogs" _fn="removeSelected">打印第三方渠道结佣报表</jgp-btn>
+        <jgp-query slot="2-1" _id="query" _target="grid" _page_size="15" >
+            <jgp-drop _not_input="true" _label="查询条件"  _name="chargeTargetUuid" _placeholder="渠道公司"  _url="/ljoa/channel/LjChannelCompanyApiController/listAllLjChannelCompany"  _col="3"></jgp-drop>
+        </jgp-query>
+        <jgp-grid slot="3-1" _id="grid" _check="true">
+        </jgp-grid>
+    </jgp-div>
+
+
+</jgp-div>
+
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    var uuid='';
+    JGP.$onload(function(){
+        JGP.tree('testTree').load();
+        JGP.query('query').searchTo("/ljoa/channel/ljHouseInfoApiController/listAllLjHouseInfoCWYX/xx", function () {
+
+        }, function () {
+
+        })
+    })//树加载一次
+    function opengrid(re) {
+        JGP.query('query').searchTo("/ljoa/channel/ljHouseInfoApiController/listAllLjHouseInfoCWYX/"+re.back.key, function (re) {
+        }, function () {
+
+        })
+        uuid=re.back.key;
+    }
+    //详情
+    function showLjHouseInfo(re) {
+        var config = {
+            url:'/ljoa/channel/ljHouseInfoController/showLjHouseInfo/'+re.back.id,
+            title:"房源详情",
+            callback:function(a){
+                if(a){
+                    JGP.query('query').searchTo("/ljoa/channel/ljHouseInfoApiController/listAllLjHouseInfoCWYX/"+uuid, function () {
+
+                    }, function () {
+
+                    })
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //房源销售信息
+    function showLjHouseSaleInfo(re) {
+//        if(re.back.status=="2"){
+//            JGP.$warn("该房源已出售，销售信息已录入！");
+//            return;
+//        }
+        var config = {
+            url:'/ljoa/channel/ljHouseSaleInfoController/addLjHouseSaleInfo/'+re.back.id,
+            title:"添加房源销售信息",
+            callback:function(a){
+                if(a){
+                    JGP.$alert("添加成功！");
+                    JGP.query('query').searchTo("/ljoa/channel/ljHouseInfoApiController/listAllLjHouseInfoCWYX/"+uuid, function () {
+
+                    }, function () {
+
+                    })
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+
+    function removeSelected() {
+        var selected = JGP.grid('grid').getSelected();
+        if(selected.length==0){
+            JGP.$warn("请选择要打印的数据！");
+            return;
+        }
+        var arr =new Array();
+        for (var i=0;i<selected.length;i++){
+            arr[i]=selected[i].id;
+        }
+        var config = {
+            url:'/ljoa/reporter/ThirdPartyChannelCommissionController/thirdPartyChannelCommissionYX'+'?array='+arr,
+            title:"房源详情",
+            width:'100%',
+            height:'100%'
+        }
+        JGP.$dialog(config);
+    }
+
+
+</script>
+[/@JGP.foot]

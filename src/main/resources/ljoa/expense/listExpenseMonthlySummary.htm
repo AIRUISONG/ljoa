@@ -1,0 +1,18 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/8/1 0001
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _target="grid" _id="query"
+               _action="/ljoa/expense/ljExpenseApiController/listExpense">
+        <jgp-drop _label="查询条件：" _col="3" _name="month" _placeholder="月份" _not_input="true" _active_key="LJOA.MONTH"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"></jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot/]

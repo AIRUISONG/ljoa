@@ -1,0 +1,108 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+    <jgp-div>
+        <jgp-div slot="1-1" _row="['45','*']" _runit="px">
+            <div slot="1-1">
+                <jgp-btn _icon="plus-square" _fn="addOrg">新建部门</jgp-btn>
+            </div>
+            <jgp-panel slot="2-1" _padding="10px" _border="right">
+                <jgp-tree _id="orgTree" _url="/ljoa/hr/organizationApiController/listTreeOrganization" _onclick="getClickNode"
+                          _tools="[{'tip':'编辑','icon':'edit','fn':'editOrg'},{'tip':'移动','icon':'exchange','fn':'moveTo'},{'tip':'删除','icon':'trash','fn':'removeOrg'}]" _lazy="false"
+                          _check="true" _root="公司部门" _single="true"></jgp-tree>
+            </jgp-panel>
+        </jgp-div>
+    </jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //新建部门
+    function addOrg(){
+        var parentTreeNode = JGP.tree('orgTree').getSelected();
+        //console.log(parentTreeNode)
+        var parentId;
+        if(parentTreeNode == -1){
+            parentId = parentTreeNode;
+            JGP.$confirm('是否添加顶级菜单',function () {
+                addMenuWin(parentId);
+            });
+        }else if(parentTreeNode.length > 0) {
+            parentId = parentTreeNode[0].id;
+            addMenuWin(parentId);
+        }
+    }
+    /*//获取点击的树节点
+    function getClickNode(result) {
+        JGP.query('menuGridQuery').field('parentId',result.back.bean.id)
+    }*/
+    //添加部门弹窗
+    function addMenuWin(parentId) {
+        var dialog = {
+            'title': '添加部门',
+            'width': '400px',
+            'height': '370px',
+            'url': '/ljoa/hr/organizationController/addOrganization/' + parentId,
+            'callback': function (result) {
+                if(result){
+                    JGP.$alert('保存成功！');
+                    JGP.tree('orgTree').load();
+                }
+            }
+        }
+        JGP.$dialog(dialog);
+    }
+    //编辑部门信息
+    function editOrg(result) {
+        var dialog = {
+            'title': '编辑部门信息',
+            'width': '400px',
+            'height': '370px',
+            'url': '/ljoa/hr/organizationController/editOrganization/' + result.back.id,
+            'callback': function (result) {
+                if(result){
+                    JGP.$alert('保存成功！');
+                    JGP.tree('orgTree').load();
+                }
+            }
+        }
+        JGP.$dialog(dialog);
+    }
+    //移动到
+    function moveTo(result) {
+        var dialog = {
+            'title': '移动部门',
+            'width': '400px',
+            'height': '300px',
+            'url': '/ljoa/hr/organizationController/moveTo/'+result.back.id,
+            'callback': function (node) {
+                if(!node) return ;
+                JGP.$post('/ljoa/hr/organizationApiController/moveTo',{id:result.back.id,toId:node.id},function (res) {
+                    if(res.flag){
+                        JGP.$alert('移动成功！');
+                        location.reload();
+                    }
+                })
+            }
+        }
+        JGP.$dialog(dialog);
+    }
+    //删除部门
+    function removeOrg(result) {
+        JGP.$confirm('是否删除部门:'+result.back.orgName,function () {
+            JGP.$post('/ljoa/hr/organizationApiController/removeOneOrganization',{id:result.back.id},function (res) {
+                if(res.flag){
+                    JGP.$alert('删除成功！');
+                    JGP.tree('orgTree').load();
+                }
+            })
+        })
+    }
+</script>
+[/@JGP.foot]

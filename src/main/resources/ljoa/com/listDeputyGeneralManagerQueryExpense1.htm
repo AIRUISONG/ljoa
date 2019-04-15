@@ -1,0 +1,82 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/10
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['45','*']" _runit = "px">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/com/approvalApiController/listDeputyGeneralManagerQueryExpense1">
+        <jgp-drop _label="查询条件："  _not_input="true" _name="expenseType" _placeholder="报销种类"  _active_key="LJOA.EXPENSE_TYPE" _col="3"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"
+              _record_tools="[{'icon':'eye','tip':'反馈意见','fn':'feedback'},{'icon':'eye','tip':'进度查询','fn':'feedSpeed'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    //详情
+    function showLjExpense(re) {
+        var config = {
+            url:'/ljoa/com/ljExpenseBMController/showLjExpenseBM/'+re.back.record.id,
+            title:"申请详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //审批
+    function approval(re) {
+        var config = {
+            url:'/ljoa/com/approvalController/listDeputyGeneralManagerLookExpense/'+re.back.record.id,
+            title:"申请审批",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'500px'
+        }
+        JGP.$dialog(config)
+    }
+    //总经理反馈
+    function feedback(re) {
+        var config = {
+            url:'/ljoa/com/approvalController/showApproval/'+re.back.record.id+'/1/4',
+            title:"反馈意见",
+            callback:function(a){
+                /*if(a){
+                    window.location.reload();
+                }*/
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //进度查询
+    function feedSpeed(re) {
+        var config = {
+            url:'/ljoa/expense/ljExpenseController/showApprovalProgress/'+re.back.record.id,
+            title:"进度",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

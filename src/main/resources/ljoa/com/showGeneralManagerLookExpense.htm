@@ -1,0 +1,85 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/10
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['160','*','45']" _runit="px">
+    <jgp-form slot="1-1" _label_width="100px" _id="formLjApproval" _method="post" _fdata='${LjApprovalfdata!''}' _action="/ljoa/com/approvalApiController/saveLjApproval">
+        <jgp-drop _label="审批业务" _name="checkContent" _active_key="LJOA.TONG.CHECK_CONTENT" _readonly="true" _col="6"></jgp-drop>
+        <jgp-drop _label="审批类型" _name="checkType" _active_key="LJOA.TONG.CHECK_TYPE" _readonly="true" _col="6"></jgp-drop>
+        <jgp-radio _label="审批结果" _id="checkResult" _name="checkResult" _onchange="editStatus" _active_key="LJOA.TONG.CHECK_RESULT" _col="6"></jgp-radio>
+        <jgp-date-time _not_input="true" _label="审批时间" _name="checkTime" _format="date" _col="6"></jgp-date-time>
+        <jgp-area _label="审批意见" _name="checkOption"  _col="12"></jgp-area>
+    </jgp-form>
+    <jgp-panel slot="2-1">
+        <jgp-form _label_width="100px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/expense/ljExpenseApiController/saveLjExpense">
+            <jgp-form-group _label_width="100px" _title="报销上报信息">
+                <jgp-drop _name="orgUuid" _label="部门:" _url="/ljoa/hr/organizationApiController/listAllOrg" _col="6" _readonly="true"></jgp-drop>
+                <jgp-date-time _name="applyTime" _label="申请日期:" _format="date" _readonly="true"></jgp-date-time>
+                <jgp-drop _id="projectUuid"  _label="对应项目:" _url="/ljoa/channel/ljProjectInfoApiController/listProjectDrop" _name="projectUuid" _not_input="true"  _readonly="true"></jgp-drop>
+                <jgp-text _id="otherProject" _name="otherProject" _label="其他对应：" _placeholder="例如：总部"  _readonly="true"></jgp-text>
+                <jgp-num _name="fileNum" _label="附件数量:" _col="6" _readonly="true"></jgp-num>
+                <jgp-text  _label="报销人:" _value="${expenseManName!''}" _readonly="true"></jgp-text>
+                <jgp-text _label="收款人:" _value="${expenseManName!''}" _readonly="true"></jgp-text>
+                <jgp-drop _name="expenseType" _label="报销种类:" _active_key="LJOA.EXPENSE_TYPE" _readonly="true"></jgp-drop>
+                <jgp-num _name="money" _label="金额(元):" _decimal="5" _col="6" _readonly="true"></jgp-num>
+                <jgp-drop _id="status" _name="status" _label="状态" _active_key="LJOA.EXPENSE"  _readonly="true"></jgp-drop>
+                <jgp-area _name="payUse" _label="付款用途" _readonly="true" _col="12"></jgp-area>
+                <jgp-uploader _disabled="true" _allow="all" _object_id="${uuid!''}" _object_type="com.jgp.ljoa.expense.model.LjExpense"></jgp-uploader>
+
+            </jgp-form-group>
+        </jgp-form>
+    </jgp-panel>
+    <div slot="3-1" style="margin-left: 75%">
+        <jgp-btn  _fn="ljApprovalSaveCallBack" _icon="check">完成审批</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+
+    var flag = '${flag!''}';
+
+    JGP.$onload(function () {
+        if(flag == '0'){
+            JGP.$warn('此信息已审批或未到此审批环节！');
+            JGP.form('form').attr('_disabled','true');
+            JGP.form('formLjApproval').attr('_disabled','true');
+        }
+    })
+
+    //保存
+    function ljApprovalSaveCallBack() {
+        var checkResult = JGP.form('formLjApproval').field('checkResult');
+        if(checkResult == '' || checkResult == undefined){
+            JGP.$alert('请填写审批结果！');
+            return;
+        }
+        JGP.form("form").ajaxSubmit(function (re) {
+            JGP.form("formLjApproval").ajaxSubmit(function () {
+                JGP.$alert("审批成功！");
+                JGP.$close(true);
+            },function () {
+                JGP.$error("审批失败！");
+                JGP.$close(false);
+            })
+        },function (re) {
+            JGP.$error("审批失败！");
+            JGP.$close(false);
+        })
+    }
+
+    //切换状态
+    function editStatus() {
+        if(JGP.radio('checkResult').val()=='Y'){
+            JGP.drop("status").val("7");
+        }else if(JGP.radio('checkResult').val()=='N'){
+            JGP.drop("status").val("11");
+        }
+    }
+</script>
+[/@JGP.foot]

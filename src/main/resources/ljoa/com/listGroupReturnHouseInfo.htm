@@ -1,0 +1,38 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/9/26
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/com/LjHouseInfoZJLApiController/listGroupHouseReturnYES">
+        <jgp-text  _label="查询条件：" _name="applyName" _placeholder="姓名" _col="3"></jgp-text>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+              _record_tools="[{'icon':'eye','tip':'房源详情','fn':'show'}">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //房源详情
+    function show(re) {
+        var config = {
+            url:'/ljoa/com/houseReturnFZController/showLjHouseInfoHouseReturn/'+re.back.record.id,
+            title:"房源详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+
+</script>
+[/@JGP.foot]

@@ -1,0 +1,42 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/5 0005
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-panel >
+    <div >
+        <jgp-btn _form="customerInfo" _fn="addCallBack" _id="btn" >保存</jgp-btn>
+    </div>
+    <jgp-form _id="customerInfo"_action="/ljoa/marketing/ajax/saveMarketingSaleInfo"  _fdata='${fdata!''}' _label_width="100px">
+        <jgp-text _label="置业顾问：" _name="counselorManUuid" _col="12" _required="true"></jgp-text>
+        <jgp-num _label="佣金（元）：" _name="counselorCharge" _decimal="5" _col="12" _required="true"></jgp-num>
+        <jgp-text _name="dutyManUuid" _id="dutyManUuid" _col="6" _is_show="false"></jgp-text>
+        <jgp-text _name="chargeStatus" _id="chargeStatus" _is_show="false"></jgp-text>
+        <jgp-text _name="houseUuid" _value="${hid!''}" style="display: none"></jgp-text>
+    </jgp-form>
+</jgp-panel>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    var chargeStatus = JGP.text("chargeStatus").val();
+    var dutyManUuid=JGP.text("dutyManUuid").val();
+    if(chargeStatus!='0'||dutyManUuid!=null){
+        JGP.form("customerInfo").attr("_disabled","true");
+        JGP.btn("btn").attr("_is_show","false");
+    }
+    function addCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("添加失败！");
+            JGP.$close(false);
+        }
+
+    }
+</script>
+[/@JGP.foot]

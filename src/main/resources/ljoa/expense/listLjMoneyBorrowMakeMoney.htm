@@ -1,0 +1,64 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/11/29
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/expense/LjMoneyBorrowApiController/listLjMoneyBorrowMakeMoney">
+        <jgp-drop _label="查询条件：" _col="3" _name="expenseType" _placeholder="支出类型" _not_input="true" _active_key="LJOA.EXPENSE_TYPE"></jgp-drop>
+        <jgp-drop _col="2" _name="status" _placeholder="状态" _not_input="true" _active_key="LJOA.EXPENSE"></jgp-drop>
+        <jgp-date-time _col="2" _name="borrowDate" _placeholder="借款日期" _not_input="true" _format="date"></jgp-date-time>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+              _record_tools="[{'icon':'credit-card','tip':'打款','fn':'editLjExpense'}
+              ,{'icon':'cog','tip':'打印申请','fn':'printLjExpense'}
+              ,{'icon':'cogs','tip':'打印申请明细','fn':'printljMoneyPayRecord'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //备用金打款
+    function editLjExpense(re) {
+        var config = {
+            url:'/ljoa/expense/LjMoneyBorrowController/updateLjMoneyBorrowMakeMoney/'+re.back.record.id,
+            title:"备用金打款",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+    //打印
+    function printLjExpense(re) {
+
+        var config={
+                url:'/ljoa/reporter/LjMoneyBorrowReportController/ljMoneyBorrowJasper/'+re.back.record.id,
+                title:'打印申请',
+                width:'100%',
+                height:'100%'
+            }
+
+        JGP.$dialog(config);
+    }
+//打印明细
+    function printljMoneyPayRecord(re) {
+        var config={
+            url:'/ljoa/reporter/LjMoneyBorrowReportController/ljMoneyPayRecordJasper/'+re.back.record.id,
+            title:'打印申请',
+            width:'100%',
+            height:'100%'
+        }
+
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

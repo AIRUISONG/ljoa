@@ -1,0 +1,46 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/8/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<jgp-panel>
+<jgp-div _row="['50','50','50']">
+    <jgp-form slot="1-1" _label_width="100px" _id="form" _disabled="true" _method="post" _fdata='${fdata1!''}'>
+        <jgp-drop _label="审批业务：" _name="checkContent" _active_key="LJOA.TONG.CHECK_CONTENT" _readonly="true" _col="6"></jgp-drop>
+        <jgp-drop _label="审批类型：" _name="checkType" _active_key="LJOA.TONG.CHECK_TYPE" _readonly="true" _col="6"></jgp-drop>
+        <jgp-radio _label="审批结果：" _id="checkResult" _name="checkResult" _active_key="LJOA.TONG.CHECK_RESULT" _col="6" _readonly="true"></jgp-radio>
+        <jgp-date-time _not_input="true" _label="审批时间：" _name="checkTime" _format="date" _col="6"></jgp-date-time>
+        <jgp-area _label="审批意见：" _name="checkOption" _readonly="true" _row="6" _col="12"></jgp-area>
+    </jgp-form>
+    <jgp-form slot="2-1" _label_width="100px" _id="form" _disabled="true" _method="post" _fdata='${fdata2!''}'>
+        <jgp-drop _label="审批业务：" _name="checkContent" _active_key="LJOA.TONG.CHECK_CONTENT" _readonly="true" _col="6"></jgp-drop>
+        <jgp-drop _label="审批类型：" _name="checkType" _active_key="LJOA.TONG.CHECK_TYPE" _readonly="true" _col="6"></jgp-drop>
+        <jgp-radio _label="审批结果：" _id="checkResult" _name="checkResult" _active_key="LJOA.TONG.CHECK_RESULT" _col="6" _readonly="true"></jgp-radio>
+        <jgp-date-time _not_input="true" _label="审批时间：" _name="checkTime" _format="date" _col="6"></jgp-date-time>
+        <jgp-area _label="审批意见：" _name="checkOption" _readonly="true" _row="6" _col="12"></jgp-area>
+    </jgp-form>
+[#--    <jgp-form slot="3-1" _label_width="100px" _id="form" _disabled="true" _method="post" _fdata='${fdata3!''}'>
+        <jgp-drop _label="审批业务：" _name="checkContent" _active_key="LJOA.TONG.CHECK_CONTENT" _readonly="true" _col="6"></jgp-drop>
+        <jgp-drop _label="审批类型：" _name="checkType" _active_key="LJOA.TONG.CHECK_TYPE" _readonly="true" _col="6"></jgp-drop>
+        <jgp-radio _label="审批结果：" _id="checkResult" _name="checkResult" _active_key="LJOA.TONG.CHECK_RESULT" _col="6" _readonly="true"></jgp-radio>
+        <jgp-date-time _not_input="true" _label="审批时间：" _name="checkTime" _format="date" _col="6"></jgp-date-time>
+        <jgp-area _label="审批意见：" _name="checkOption" _readonly="true" _row="6" _col="12"></jgp-area>
+    </jgp-form>--]
+    <jgp-form slot="3-1" _label_width="100px" _id="form" _disabled="true" _method="post" _fdata='${fdata4!''}'>
+        <jgp-drop _label="审批业务：" _name="checkContent" _active_key="LJOA.TONG.CHECK_CONTENT" _readonly="true" _col="6"></jgp-drop>
+        <jgp-drop _label="审批类型：" _name="checkType" _active_key="LJOA.TONG.CHECK_TYPE" _readonly="true" _col="6"></jgp-drop>
+        <jgp-radio _label="审批结果：" _id="checkResult" _name="checkResult" _active_key="LJOA.TONG.CHECK_RESULT" _col="6" _readonly="true"></jgp-radio>
+        <jgp-date-time _not_input="true" _label="审批时间：" _name="checkTime" _format="date" _col="6"></jgp-date-time>
+        <jgp-area _label="审批意见：" _name="checkOption" _readonly="true" _row="6" _col="12"></jgp-area>
+    </jgp-form>
+</jgp-div>
+</jgp-panel>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    
+</script>
+[/@JGP.foot]

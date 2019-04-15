@@ -1,0 +1,103 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/8/28
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['50','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/com/ljHouseSaleInfoBMYJApiController/listGroupLjHouseSaleInfoYJSPQDNO">
+        <jgp-drop _not_input="true" _label="查询条件：" _name="projectUuid" _placeholder="所属项目" _col="3" _url="/ljoa/channel/ljProjectInfoApiController/listQDProjectName"></jgp-drop>
+        <jgp-drop  _not_input="true" _name="roomType"  _placeholder="产品分类"  _col="2" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+              _record_tools="[{'icon':'eye','tip':'房源信息','fn':'showLjHouseInfo'},{'icon':'eye','tip':'总监经理佣金录入','fn':'editLjHouseSaleInfo'},{'icon':'eye','tip':'反馈意见','fn':'feedback'},{'icon':'check','tip':'提交申请','fn':'examineStatus'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+
+    function examineStatus(re) {
+
+        var houseType=re.back.record.houseType;
+//        console.log(houseType);
+        if(houseType=="1"){
+            var config = {
+                url:'/ljoa/com/ljHouseSaleInfoBMYJController/showExamineLjHouseSaleInfoBMYJQD/'+re.back.record.id,
+                title:"提交审核",
+                callback:function(a){
+                    if(a){
+                        window.location.reload();
+                    }
+                },
+                width:'800px',
+                height:'550px'
+            }
+            JGP.$dialog(config)
+        }
+        if(houseType=="2"){
+            var config = {
+                url:'/ljoa/com/ljHouseSaleInfoBMYJController/showExamineLjHouseSaleInfoBMYJYX/'+re.back.record.id,
+                title:"营销佣金审核",
+                callback:function(a){
+                    if(a){
+                        window.location.reload();
+                    }
+                },
+                width:'800px',
+                height:'550px'
+            }
+            JGP.$dialog(config)
+        }
+    }
+
+    //财务反馈
+    function feedback(re) {
+        var config = {
+            url:'/ljoa/com/approvalController/showChargeApprovalByHouseUuid/1/'+re.back.record.id+'/2/2',
+            title:"反馈意见",
+            callback:function(a){
+                /*if(a){
+                    window.location.reload();
+                }*/
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+    function showLjHouseInfo(re) {
+        var config = {
+            url:'/ljoa/channel/ljHouseInfoController/showLjHouseInfo/'+re.back.record.id,
+            title:"房源信息",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+
+    function editLjHouseSaleInfo(re) {
+        var config = {
+            url:'/ljoa/com/ljHouseSaleInfoBMController/addLjHouseSaleInfoBM/'+re.back.record.id,
+            title:"总监佣金录入",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

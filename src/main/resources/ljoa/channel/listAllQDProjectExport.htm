@@ -1,0 +1,37 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/10/15
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+
+    <jgp-grid slot="1-1" _id="grid" _check="false" _page_size="15" _record_tools="[{'icon':'eye','tip':'详情','fn':'showljChannelProject'}, {'icon':'edit','tip':'导出','fn':'exportInfo'}]"
+              _url="/ljoa/channel/ljProjectInfoApiController/listAllLjProjectInfoCW">
+    </jgp-grid>
+    [/@JGP.body]
+
+    [@JGP.foot]
+    <script>
+        //项目详情
+        function showljChannelProject(re) {
+            var config = {
+                url:'/ljoa/marketing/ljProjectInfoYXController/showLjProjectInfo/'+re.back.record.id,
+                title:"项目详情",
+                callback:function(a){
+                    if(a){
+                        window.location.reload();
+                    }
+                },
+                width:'800px',
+                height:'550px'
+            }
+            JGP.$dialog(config)
+        }
+        //项目信息导出
+        function exportInfo(re) {
+            window.open("/ljoa/channel/ljProjectInfoApiController/exportInfo/"+re.back.record.id);
+        }
+    </script>
+    [/@JGP.foot]

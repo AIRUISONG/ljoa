@@ -1,0 +1,36 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   wfgl
+作者   LIUJINXU
+时间   2018/3/26
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<!--内容-->
+    <jgp-form _slot="1-1" _id="form" _action="/ljoa/common/messageApiController/addMessage" _fdata='${fdata!''}'>
+        <jgp-form-group _label_width="90px">
+            <jgp-text _readonly="true" _name="sendManName" _label="发送人：" ></jgp-text>
+            <jgp-text _readonly="true" _name="acceptManName" _label="接收人：" ></jgp-text>
+        </jgp-form-group>
+        <jgp-form-group _label_width="90px">
+            <jgp-text _readonly="true" _name="msgTitle" _label="标题：" _col="12"></jgp-text>
+        </jgp-form-group>
+        <jgp-form-group _label_width="90px">
+            <jgp-area _name="msgContent" _readonly="true" _label="内容：" _row="7" _col="12"></jgp-area>
+        </jgp-form-group>
+    </jgp-form>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function saveCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("保存成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("保存失败！");
+            JGP.$close(false);
+        }
+    }
+</script>
+[/@JGP.foot]

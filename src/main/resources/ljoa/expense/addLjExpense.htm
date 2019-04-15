@@ -1,0 +1,83 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/6
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','45']" _runit="px">
+    <jgp-panel slot="1-1">
+    <jgp-form  _label_width="100px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/expense/ljExpenseApiController/saveLjExpense">
+        <jgp-drop _not_input="true" _name="orgUuid" _id="orgUuid" _label="部门:" _onchange="changeOrg" _url="/ljoa/hr/organizationApiController/listAllOrg" _required="true" _readonly="true" _col="6"></jgp-drop>
+        <jgp-date-time _not_input="true" _name="applyTime" _label="申请日期:" _format="date" _required="true"></jgp-date-time>
+        <jgp-drop _id="projectUuid"  _label="对应项目:" _url="/ljoa/channel/ljProjectInfoApiController/listProjectDropByType/${typeUuid!''}" _name="projectUuid" _not_input="true" ></jgp-drop>
+        <jgp-text _id="otherProject" _name="otherProject" _label="其他对应：" _placeholder="例如：总部"></jgp-text>
+        <jgp-num _name="fileNum" _label="附件数量:" _col="6" _decimal="0"></jgp-num>
+        <jgp-drop _id="expenseMan" _onchange="changeExpenseMan" _label="报销人:" _url="/ljoa/hr/employeeApiController/listAllEmployee" _name="expenseMan" _not_input="true" _required="true"></jgp-drop>
+        <jgp-drop _id="receiver" _readonly="true" _label="收款人:" _url="/ljoa/hr/employeeApiController/listAllEmployee" _name="receiver" _not_input="true" _required="true"></jgp-drop>
+        <jgp-drop _id="expenseCategory" _name="expenseCategory"  _label="报销类型:"_active_key="LJOA.EXPENSE_CATEGORY" _not_input="true" _required="true"></jgp-drop>
+        <jgp-drop _not_input="true" _name="expenseType" _label="报销种类:" _required="true" _active_key="LJOA.EXPENSE_TYPE"></jgp-drop>
+        <jgp-num _name="money" _label="金额:" _decimal="5" _col="6" _required="true"></jgp-num>
+        <jgp-drop _name="status" _label="状态" _active_key="LJOA.EXPENSE" _value="0" _readonly="true"></jgp-drop>
+        <jgp-area _name="payUse" _label="付款用途" _col="12"></jgp-area>
+        [#--<jgp-uploader _id="uploader" _allow="all" ></jgp-uploader>--]
+    </jgp-form>
+    </jgp-panel>
+    <div slot="2-1" style="margin-left: 75%">
+        <jgp-btn _icon="floppy-o" _form="form" _fn="saveCallBack">保存</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+
+    var mount = [];
+
+    function saveCallBack(result) {
+        //console.log(result.back.data.id)
+        if(result.back && result.back.flag){
+           /* console.log('---------');
+            console.log(JGP.uploader('uploader').updateMountInfo);
+            console.log('---------');*/
+            /*JGP.uploader('uploader').updateMountInfo(result.back.data.id,
+                    'com.jgp.ljoa.expense.model.LjExpense',
+                    function () {
+                        JGP.$alert("添加成功！");
+                        JGP.$close(true);
+                    });*/
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("添加失败！");
+            JGP.$close(false);
+        }
+    }
+
+    //根据部门查询部门的员工
+    function changeOrg(data) {
+        //console.log(data)
+        JGP.$post('/ljoa/hr/employeeApiController/listEmployeeByOrgId',{orgId:data.back.item.value},function (re) {
+            JGP.drop('expenseMan').attr('_list',re.data.ldata);
+            JGP.drop('receiver').attr('_list',re.data.ldata);
+            //console.log(re.data.ldata)
+        },function () {
+
+        })
+    }
+
+    //
+    function changeExpenseMan(data) {
+        if(data.back.item){
+            JGP.drop('receiver').val(data.back.item.value);
+        }
+    }
+
+    //对应部门查询项目
+    function editProjectUuid() {
+        JGP.drop("orgUuid").label();
+
+    }
+</script>
+[/@JGP.foot]

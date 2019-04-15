@@ -1,0 +1,84 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/9/11
+-->
+[@JGP.head "$Title$"]
+    <style>
+        .upload{
+            margin-top: 20px;
+        }
+        .uploadSome{
+            margin-left: 128px;
+            width: 83% !important;
+        }
+        .mce-container-body{
+            height: 300px;
+        }
+    </style>
+[/@JGP.head]
+[@JGP.body]
+<jgp-div _row="['35','*']" _runit="px">
+    <div slot="1-1">
+        <jgp-btn  _fn="saveCallBack">保存</jgp-btn>
+    </div>
+    <jgp-panel  slot="2-1" >
+        <jgp-form _id="form"   _label_width="120px"  _action="/ljoa/common/LjNoticeInfoApiController/saveLjNoticeInfo" _fdata="${fdata!''}">
+            <jgp-div  _row="['135','200','*']" _runit="px">
+                <jgp-form-group slot="1-1">
+                    <jgp-text _name="title" _label="标题：" _required="true" _col="12"></jgp-text>
+                    <jgp-drop _not_input _name="noticeType" _label="信息类别：" _required="true" _active_key="LJ_NOTICE_INFO.NOTICE_TYPE" _col="6"></jgp-drop>
+                    <jgp-date-time _not_input _label="发布日期:" _name="pushTime" _format="date" _col="6" _required="true"></jgp-date-time>
+                    <jgp-date-time _not_input _label="有效开始日期:" _name="startDate" _format="date" _col="6" _required="true"></jgp-date-time>
+                    <!--<jgp-date-time _not_input _label="有效结束日期:" _name="endDate" _format="date" _col="6" _required="true"></jgp-date-time>-->
+                    <jgp-drop _name="boticeStatus" _label="信息状态：" _required="true" _active_key="LJ_NOTICE_INFO.NOTICE_STATUS" _col="6" ></jgp-drop>
+                    <!--<jgp-area _label="内容：" _name="content"  _col="12" _required="true" _row="12"></jgp-area>-->
+                </jgp-form-group>
+                <jgp-panel slot="2-1">
+                    <jgp-rich-editor _label="内容："  _required="true" _id="rich-editor" _name="content" _col="12"  ></jgp-rich-editor>
+                </jgp-panel>
+                <jgp-form-group class="upload" slot="3-1">
+                    <jgp-uploader _allow="all" _col="12" _id="upload" class="uploadSome" _onfinished="onlade" ></jgp-uploader>
+                </jgp-form-group>
+            </jgp-div>
+        </jgp-form>
+    </jgp-panel>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    // _object_id="${id!''}" _object_type="com.jgp.ljoa.common.model.LjNoticeInfo"
+
+    var mount = [];
+
+    function onlade(re) {
+        console.log(re)
+        mount = re.back.existFiles;
+    }
+    function saveCallBack() {
+        JGP.richEditor('rich-editor').save(function () {
+            JGP.form('form').ajaxSubmit(function (result) {
+                // console.log(result);
+                if(result.flag ){
+                    JGP.uploader('upload').updateMountInfo(result.data.id,
+                        'com.jgp.ljoa.common.model.LjNoticeInfo',
+                        function () {
+                            console.log(result.data.id);
+                            JGP.$alert("保存成功！");
+                            JGP.$close(true);
+                        });
+                }else {
+                    JGP.$error("保存失败！");
+                    JGP.$close(false);
+                }
+            },function () {
+                JGP.$error("保存失败！");
+                JGP.$close(false);
+            })
+
+        })
+
+    }
+</script>
+[/@JGP.foot]

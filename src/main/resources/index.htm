@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>邻家</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit">
+    <!-- 引入 Bootstrap -->
+    <link href="${base!''}/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="${base!''}/css/font-awesome.min.css">
+	<link rel="stylesheet" href="${base!''}/css/swiper.min.css">
+	<link rel="stylesheet" href="${base!''}/css/main.css">
+	<link rel="stylesheet" href="${base!''}/css/style.css">
+
+    <!-- HTML5 Shiv 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="content clearfix">
+	<div class="col-sm-12">
+		<div class="index-top">
+			<div class="col-sm-6">
+				<p class="text-left one">
+					<img src="${base!''}/img/user.png" alt="">
+				${personName!''}您好！欢迎使用邻家OA综合管理平台！
+				</p>
+			</div>
+			<div class="col-sm-6">
+				<p class="text-right">
+					<img src="${base!''}/img/date.png" alt="">
+                    <span class="date-show" id="currentDate"></span>
+                    <span id="weatherCity"></span>
+                    <span id="weatherNow"></span>
+					<!--<span style="margin-left: 10px;"><iframe width="320" scrolling="no" height="18" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=1&icon=1&wind=1&num=1&site=12"></iframe></span>-->
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="main-box bg-blue">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-location-arrow"></i>信息展示</p>
+			</div>
+			<div class="main-bd">
+				<div class="icon-group clearfix">
+					<div class="col-sm-4">
+						<a href="#"><#--人员 -->
+							<img src="${base!''}/img/kjfs1.png" alt="">
+							<p id="douw1"></p>
+						</a>
+					</div>
+					<div class="col-sm-4">
+						<a href="#"><#--交易数-->
+							<img src="${base!''}/img/kjfs2.png" alt="">
+							<p id="douw2"></p>
+						</a>
+					</div>
+					<div class="col-sm-4">
+						<a href="#"><#--盈利额-->
+							<img src="${base!''}/img/kjfs3.png" alt="">
+							<p id="douw3"></p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="main-box">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-file-text"></i> 新闻</p>
+				<a href="/ljoa/common/LjNoticeInfoController/listGroupLjNoticeInfoJournalism" class="hd-more">查看更多 <i class="fa fa-plus"></i></a>
+			</div>
+			<div class="main-bd">
+				<div class="list-group main-list" id="Journalism">
+				<#--	<a href="#" class="list-group-item">
+						<p>楼市半年销售帐：百强房企总体销售规模近4.6万亿元</p>
+					</a>
+					<a href="#" class="list-group-item">
+						<p>新一线城市最受青睐  近7成毕业生想在工作地买房</p>
+					</a>
+					<a href="#" class="list-group-item">
+						<p>丰盛控股执行董事施智强辞职 杜玮接任</p>
+					</a>
+					<a href="#" class="list-group-item">
+						<p>近期多城出台调控政策  防止房价明显过快上涨</p>
+					</a>-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="main-box">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-bullhorn"></i> 公告通知</p>
+                <a href="/ljoa/common/LjNoticeInfoController/listGroupLjNoticeInfoNotice" class="hd-more">查看更多 <i class="fa fa-plus"></i></a>
+			</div>
+			<div class="main-bd">
+                <div class="list-group main-list havetime swiper-container" style="height: 105px;">
+                    <div class="swiper-wrapper" id="Notice"></div>
+                </div>
+			</div>
+		</div>
+		<div class="main-box">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-hourglass-half"></i> 项目进展</p>
+			</div>
+			<div class="main-bd">
+				<div class="progress-box">
+					<p class="progress-legend">
+						<span><i class="qudao"></i> 邻家渠道</span>
+						<span><i class="yingxiao"></i> 邻家营销</span>
+					</p>
+					<!-- Swiper -->
+					<div class="swiper-container progress-ul">
+					<div class="swiper-wrapper" id="ProjectProgress">
+							<#--<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num yingxiao" style="height: 20%">
+										<span>20%</span>
+									</div>
+								</div>
+								<h3 class="house-name">富邦后海小镇 Ⅱ期</h3>
+								<span class="house-state">进行中</span>
+							</div>
+							<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num qudao" style="height: 30%">
+										<span>30%</span>
+									</div>
+								</div>
+								<h3 class="house-name">华安 家和人家</h3>
+								<span class="house-state">进行中</span>
+							</div>
+							<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num qudao" style="height: 5%">
+										<span>5%</span>
+									</div>
+								</div>
+								<h3 class="house-name">万科 西雅图</h3>
+								<span class="house-state">即将开盘</span>
+							</div>
+							<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num yingxiao" style="height: 15%">
+										<span>15%</span>
+									</div>
+								</div>
+								<h3 class="house-name">吉安 悦城</h3>
+								<span class="house-state">预定中</span>
+							</div>
+							<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num yingxiao" style="height: 30%">
+										<span>30%</span>
+									</div>
+								</div>
+								<h3 class="house-name">珠玑 春和花园</h3>
+								<span class="house-state">进行中</span>
+							</div>
+							<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num yingxiao" style="height: 20%">
+										<span>20%</span>
+									</div>
+								</div>
+								<h3 class="house-name">富邦后海小镇 Ⅱ期</h3>
+								<span class="house-state">进行中</span>
+							</div>
+							<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num qudao" style="height: 30%">
+										<span>30%</span>
+									</div>
+								</div>
+								<h3 class="house-name">华安 家和人家</h3>
+								<span class="house-state">进行中</span>
+							</div>
+							<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num qudao" style="height: 5%">
+										<span>5%</span>
+									</div>
+								</div>
+								<h3 class="house-name">万科 西雅图</h3>
+								<span class="house-state">即将开盘</span>
+							</div>
+							<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num yingxiao" style="height: 15%">
+										<span>15%</span>
+									</div>
+								</div>
+								<h3 class="house-name">吉安 悦城</h3>
+								<span class="house-state">预定中</span>
+							</div>
+							<div class="swiper-slide progress-list">
+								<div class="progress-con">
+									<div class="progress-num yingxiao" style="height: 30%">
+										<span>30%</span>
+									</div>
+								</div>
+								<h3 class="house-name">珠玑 春和花园</h3>
+								<span class="house-state">进行中</span>
+							</div>-->
+						</div>
+						<!-- Add Pagination -->
+						<div class="swiper-pagination"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12">
+		<div class="main-box">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-link"></i> 友情链接</p>
+			</div>
+			<div class="main-bd">
+				<div class="link-group">
+					<a href="#">烟台邻家</a>
+					<a href="#">青岛邻家地产有限公司</a>
+					<a href="#">烟台邻家装有限公司</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- index-right end -->
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="${base!''}/js/jquery.min.js"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="${base!''}/js/bootstrap.min.js"></script>
+<script src="${base!''}/js/swiper.min.js"></script>
+<script>
+
+</script>
+<script src="${base!''}/js/index.js"></script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.8&key=b518c47b41d1aacdff6d76af2a0aeeda"></script>
+<script>
+    //加载天气查询插件
+    AMap.plugin('AMap.Weather', function() {
+        //创建天气查询实例
+        var weather = new AMap.Weather();
+
+        //执行实时天气信息查询
+        weather.getForecast('烟台市', function(err, data) {
+            // console.log(err, data);
+            $('#weatherCity').text(data.city);
+            $('#weatherNow').text(data.forecasts[0].dayWeather)
+        });
+    });
+</script>
+<script>
+//加载公告
+    $.ajax({
+        url:"/ljoa/common/LjNoticeInfoApiController/listGroupLjNoticeInfoNotice",
+        success:function (result) {
+//           console.log("公告"+result.data.Notice.length);
+
+            for( var i = 0;i<result.data.Notice.length;i++){
+                var stype="";
+				if(result.data.Notice[i].noticeType=='1'){
+					stype="新闻";
+				}
+                if(result.data.Notice[i].noticeType=='2'){
+                    stype="公告";
+				}
+				if(result.data.Notice[i].noticeType=='3'){
+                    stype="通知";
+				}
+                $("#Notice").append('<div class="swiper-slide"><a href="/ljoa/common/LjNoticeInfoController/showLjNoticeInfo/'+result.data.Notice[i].id+'"'+'class="list-group-item">'+'<p>'+'('+stype+')'+result.data.Notice[i].title+'：'+result.data.Notice[i].content+'</p>'+'<span class="time">'+result.data.Notice[i].pushTime+'</span>'+'</a></div>');
+                var havetime = new Swiper('.havetime', {
+                    direction: 'vertical',
+                    autoplay: true,
+                    slidesPerView: 3
+                });
+                havetime.el.onmouseenter = function(){
+                    havetime.autoplay.stop();
+                };
+                havetime.el.onmouseleave = function(){
+                    havetime.autoplay.start();
+                };
+            }
+        }
+    });
+//加载新闻
+    $.ajax({
+        url:"/ljoa/common/LjNoticeInfoApiController/listGroupLjNoticeInfoJournalism",
+        success:function (result) {
+            for( var i = 0;i<result.data.Journalism.length;i++){
+                $("#Journalism").append('<a href="/ljoa/common/LjNoticeInfoController/showLjNoticeInfo/'+result.data.Journalism[i].id+'"'+'class="list-group-item">'+'<p>'+result.data.Journalism[i].title+'：'+result.data.Journalism[i].content+'</p>'+'</a>');
+            }
+
+        }
+    });
+//加载柱状图
+    $.ajax({
+        url:"/ljoa/indexApiController/listGroupLjProjectInfoIndex",
+        success:function (result) {
+//            console.log(result.data.ProjectProgress);
+
+            for( var i = 0;i<result.data.ProjectProgress.length;i++){
+				if(result.data.ProjectProgress[i].proType==1){
+                    $("#ProjectProgress").append('<div class="swiper-slide progress-list">'+'<div class="progress-con">'
+                            +'<div class="progress-num qudao" style="height:'+parseFloat(result.data.ProjectProgress[i].progressRatio)+'%">'+
+                            '<span>'+parseFloat(result.data.ProjectProgress[i].progressRatio)+'%'+'</span>'+'</div>'+'</div>'+' <h3 class="house-name">'+
+                            result.data.ProjectProgress[i].projectName+'</h3>'+'<span class="house-state">'+result.data.ProjectProgress[i].prjProcess+'</span>'
+                            +'</div>');
+				}
+				if(result.data.ProjectProgress[i].proType==2){
+                    $("#ProjectProgress").append('<div class="swiper-slide progress-list">'+'<div class="progress-con">'
+                            +'<div class="progress-num yingxiao" style="height:'+parseFloat(result.data.ProjectProgress[i].progressRatio)+'%">'+
+                            '<span>'+parseFloat(result.data.ProjectProgress[i].progressRatio)+'%'+'</span>'+'</div>'+'</div>'+' <h3 class="house-name">'+
+                            result.data.ProjectProgress[i].projectName+'</h3>'+'<span class="house-state">'+result.data.ProjectProgress[i].prjProcess+'</span>'
+                            +'</div>');
+				}
+                var progress_swiper = new Swiper('.progress-ul', {
+                    autoplay:{
+                        delay:3000,
+                        disableOnInteraction:false,
+                        autoplayDisableOnInteraction : false,
+                    },
+                    slidesPerView: 5,
+                    spaceBetween: 30,
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    }
+                });
+                //鼠标覆盖停止自动切换
+                progress_swiper.el.onmouseenter = function(){
+                    progress_swiper.autoplay.stop();
+                };
+                progress_swiper.el.onmouseleave = function(){
+                    progress_swiper.autoplay.start();
+                };
+
+            }
+
+        }
+    });
+
+	$.ajax({
+		url:"/ljoa/indexApiController/indexShowInfo",
+		success:function (result) {
+		    var personnel=result.data.dataLine.personnel;
+            $("#douw1").html(personnel+'人');
+            var room=result.data.dataLine.room;
+            $("#douw2").html(room+'套');
+            var money=result.data.dataLine.money;
+            $("#douw3").html(money+'元');
+		}
+	});
+</script>
+</body>
+</html>

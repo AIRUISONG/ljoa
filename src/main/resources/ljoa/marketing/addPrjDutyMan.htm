@@ -1,0 +1,33 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/17
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','45']" _runit="px">
+    <jgp-form slot="1-1" _label_width="120px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/marketing/ljProjectInfoYXApiController/addPrjDutyMan">
+        <jgp-text  _label="项目名称:" _col="12" _value="${projectName!''}"></jgp-text>
+        <jgp-drop _name="subUuid" _label="置业顾问:" _url="/ljoa/marketing/ljProjectInfoYXApiController/listEmployeeDrop" _col="12"></jgp-drop>
+        [#--<jgp-drop _name="relationType" _label="类型:" _active_key="LJOA_EMPLOYEE.RLATION_TYPE" _col="6" _readonly="true"></jgp-drop>--]
+    </jgp-form>
+    <div slot="2-1" style="margin-left: 70%">
+        <jgp-btn _icon="floppy-o" _form="form" _fn="saveCallBack">保存</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function saveCallBack(result) {
+        if(result.back && result.back.flag){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$warn("添加失败！");
+            JGP.$close(false);
+        }
+    }
+</script>
+[/@JGP.foot]

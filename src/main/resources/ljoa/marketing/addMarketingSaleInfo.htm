@@ -1,0 +1,38 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/5 0005
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','20']">
+    <jgp-form slot="1-1" _id="customerInfo"_action="/ljoa/marketing/marketingSaleInfoApiController/saveMarketingSaleInfoLR"  _fdata='${fdata!''}' _label_width="140px">
+        <jgp-num _label="前置赚取（元）：" _name="prepositionEarn" _id="prepositionEarn" _decimal="5" _col="12" _required="true"></jgp-num>
+        <jgp-num _label="公司毛利润（元）：" _name="grossProfit" _id="grossProfit" _col="12" _decimal="5" _readonly="true" ></jgp-num>
+        <jgp-area _label="备注：" _name="remark" _col="12" _row="5"></jgp-area>
+    </jgp-form>
+    <jgp-btn slot="2-1" _form="customerInfo" _fn="addCallBack" _id="btn" style="margin-left: 75%">保存</jgp-btn>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+
+    var chargeStatus = '${channeChargeStatus!''}';
+    if(chargeStatus!='0'){
+        JGP.form("customerInfo").attr("_disabled","true");
+        JGP.btn("btn").attr("_is_show","false");
+    }
+    function addCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("添加失败！");
+            JGP.$close(false);
+        }
+    }
+
+</script>
+[/@JGP.foot]

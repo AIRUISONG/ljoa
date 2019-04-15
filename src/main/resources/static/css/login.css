@@ -1,0 +1,93 @@
+body, html {
+  height: 100%; }
+
+a:hover {
+  color: #3082d6; }
+
+.header {
+  height: 76px;
+  background: #f0f0f0; }
+  .header .header-title {
+    position: relative; }
+    .header .header-title img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 184px;
+      height: 88px;
+      z-index: 2; }
+
+.content {
+  position: relative;
+  height: calc(100% - 262px);
+  background: #3082d6;
+  background: linear-gradient(to right, #467ae3, #2ca2fd); }
+  .content .content-box {
+    background: url(../img/bg.png) repeat;
+    height: 100%; }
+
+.footer {
+  height: 186px;
+  background: #f0f0f0; }
+  .footer .link-group {
+    padding-top: 70px; }
+  .footer p {
+    text-align: center;
+    color: #94939d;
+    line-height: 24px; }
+    .footer p a {
+      padding: 0 5px; }
+
+.login-body {
+  position: relative;
+  height: 100%; }
+  .login-body .login-bgimg {
+    position: absolute;
+    width: 560px;
+    height: 380px;
+    background: url(../img/l_bgimg.png);
+    top: 50%;
+    left: 0;
+    margin-top: -155px; }
+  .login-body .login-con {
+    position: absolute;
+    width: 400px;
+    top: 50%;
+    right: 0;
+    margin-top: -124px; }
+    .login-body .login-con h1 {
+      font-size: 30px;
+      color: #fff;
+      margin-bottom: 30px;
+      text-align: center; }
+    .login-body .login-con .form-group {
+      position: relative; }
+      .login-body .login-con .form-group i {
+        position: absolute;
+        color: #959595;
+        font-size: 16px;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border-right: 1px solid #959595;
+        top: 10px;
+        left: 10px;
+        line-height: 20px; }
+      .login-body .login-con .form-group .form-control {
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        padding-left: 40px; }
+      .login-body .login-con .form-group .form-check {
+        color: #fff; }
+        .login-body .login-con .form-group .form-check.checkbox label::before {
+          border-color: #fff;
+          background-color: transparent; }
+        .login-body .login-con .form-group .form-check a:hover {
+          color: #fff;
+          text-decoration: underline; }
+    .login-body .login-con .btn-warning {
+      background: #f2c118;
+      padding: 8px 12px; }
+
+/*# sourceMappingURL=login.css.map */

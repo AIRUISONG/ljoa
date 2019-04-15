@@ -1,0 +1,179 @@
+[#import "../framework/JGP.htm"  as JGP]
+
+<!--
+项目   sys
+作者   loufei
+时间   2018/2/24
+-->
+[@JGP.head "${(sys.name)!''}"]
+<style>
+
+        .top{
+            background-color: #607D8B;
+        }
+        .top .logo{
+            color: white;
+            font-size: 1.5em;
+            line-height: 50px;
+            padding-left: 20px;
+        }
+        .left-menu .title .big .icon{
+            font-size: 1.3em;
+        }
+        .south{
+            font-size: 0.8em;
+            line-height: 30px;
+            text-align: center;
+        }
+        .top-operate{
+            display: table;
+            height: 100%;
+        }
+        .top-operate a{
+            position: relative;
+            color: white;
+            display: table-cell;
+            margin: 10px;
+        }
+        .top-operate a .num{
+            position: absolute;
+            top: 7px;
+            right: -7px;
+            display: inline-block;
+            padding: 0 5px;
+            border-radius: 50px;
+            height: 14px;
+            line-height: 14px;
+            background: red;
+            color: #fff;
+            font-size: 12px;
+            letter-spacing: 0px;
+        }
+
+    </style>
+
+[/@JGP.head]
+[@JGP.body]
+    <jgp-layout-border _north="{'height': '50px'}"
+                       _west="{'width': '230px','holder':true}"
+                       _south="{'height': '30px'}">
+        <jgp-div _class="top" slot="north" _col="['250','*','250']" _cunit="px">
+            <div class="logo" slot="1-1">
+                <img width="40px" height="40px" src="/static/images/ljlogo.jpg">
+                邻家OA管理系统
+            </div>
+            <div class="top-operate" slot="1-3">
+                <a href="javascript:showNewMessage();">
+                    消息
+                    <span id="num" class="num" style="display:none"></span>
+                </a>&nbsp;&nbsp;
+                <a href="javascript:changePassword();">修改密码</a>&nbsp;&nbsp;
+                <a href="javascript:goHome();">返回首页</a>&nbsp;&nbsp;
+                <a href="${base!'/'}security/admin/adminController/logout">退出</a>
+            </div>
+        </jgp-div>
+        <jgp-panel slot="west" class="left-menu" _default_tools="[]"
+                   _title="<i class='icon fa fa-list'></i>&nbsp;&nbsp;<span>功能菜单</span>">
+            <jgp-menu _fn="goLink"
+                    _url="[#if securityEnable]/security/admin/adminApiController/queryAllMenus[#else]/sys/menuApiController/queryAllMenus[/#if]"></jgp-menu>
+        </jgp-panel>
+        <jgp-panel _id="mainFrame" slot="center" _default_tools="['max','refresh']"
+                   _title="首页"
+                   _url="/sys/index">
+        </jgp-panel>
+        <jgp-panel slot="south">
+            技术支持：烟台九儿信息科技有限公司 联系方式：0535-2120192
+        </jgp-panel
+    </jgp-layout-border>
+[/@JGP.body]
+
+[@JGP.foot]
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="../static/js/jquery.min.js" type="text/javascript"></script>
+    <script>
+        //初次加载新消息数量
+        autoUpdate();
+        //查看最新信息
+        function showNewMessage() {
+            var mainPanel = top.JGP.panel('mainFrame');
+            mainPanel.load('${base!'/'}ljoa/common/messageController/listGroupMessageForAccept');
+            mainPanel.setTitle('消息');
+        }
+
+        //定时器 3s刷新
+        var int = self.setInterval("autoUpdate()",3000);
+
+        //查看后更新数量
+        function lookUpdate() {
+            var num = $('.num')[0].innerHTML;
+            if(num == '' || num == undefined || parseInt(num) == 0){
+                return;
+            }else {
+                num = parseInt($('.num')[0].innerHTML) - 1;
+                if(parseInt(num) == 0){
+                    $('.num')[0].style.display = "none";
+                }else {
+                    $('.num')[0].innerHTML = parseInt(num);
+                }
+            }
+        }
+
+
+        //自动更新数量
+        function autoUpdate() {
+//            console.log("11")
+            $.ajax({
+                url: "/ljoa/common/messageApiController/queryNewMessage",
+                data: {},
+                success: function (result) {
+//                console.log(result.data.msgNum);
+                    if(parseInt(result.data.msgNum) >= 100){
+                        $('.num')[0].innerHTML = '99+';
+                        $('.num')[0].style.display = "inline";
+                    }else if(parseInt(result.data.msgNum) == 0){
+                        $('.num')[0].style.display = "none";
+                    }else {
+                        $('.num')[0].innerHTML = result.data.msgNum;
+                        $('.num')[0].style.display = "inline";
+                    }
+
+                },
+                error:function () {
+
+                }
+            });
+        }
+
+    </script>
+    <script>
+        function goLink(result){
+            if(result.back.link){
+                var mainPanel = JGP.panel('mainFrame');
+                mainPanel.load(result.back.link);
+                mainPanel.setTitle(result.back.title)
+            }
+        }
+
+        function goHome() {
+            var mainPanel = top.JGP.panel('mainFrame');
+            mainPanel.load('/sys/index');
+            mainPanel.setTitle('首页');
+        }
+
+        //修改密码
+        function changePassword() {
+            var config = {
+                url:'${base!'/'}ljoa/hr/employeeController/editEmployeePassword',
+                title:"修改密码",
+                callback:function(a){
+                    if(a){
+                        window.location.reload();
+                    }
+                },
+                width:'400px',
+                height:'400px'
+            }
+            JGP.$dialog(config)
+        }
+    </script>
+[/@JGP.foot]

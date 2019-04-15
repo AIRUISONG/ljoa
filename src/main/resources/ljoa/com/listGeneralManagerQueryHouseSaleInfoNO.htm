@@ -1,0 +1,82 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/8/29
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['50','*']" _runit = "px">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/com/approvalApiController/listGeneralManagerQueryHouseSaleInfoNO">
+        <jgp-drop _label="查询条件："  _not_input="true" _name="houseType" _placeholder="房源类型"  _active_key="LJOA.CHANNEL.HOUSETYPE" _col="3"></jgp-drop>
+        <jgp-drop _not_input="true" _name="projectUuid" _placeholder="所属项目"  _url="/ljoa/expense/ljHouseInfoCCSApiController/listProjectName" _col="2"></jgp-drop>
+        <jgp-drop _not_input="true" _name="roomType" _placeholder="产品分类"  _active_key="LJOA.CHANNEL.ROOM_TYPE" _col="2"></jgp-drop>
+    [#--<jgp-text _name="buildingNo" _placeholder="楼号" _col="1"></jgp-text>
+    <jgp-text _name="unitNo" _placeholder="单元" _col="1"></jgp-text>
+    <jgp-text _name="roomNo" _placeholder="房号" _col="1"></jgp-text>--]
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"
+              _record_tools="[{'icon':'eye','tip':'房源信息','fn':'showLjHouseInfo'},
+                  {'icon':'hand-pointer-o','tip':'佣金审批','fn':'approval'},{'icon':'eye','tip':'反馈意见','fn':'feedback'}]">
+    </jgp-grid>
+</jgp-div>
+
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //详情
+    function showLjHouseInfo(re) {
+        var config = {
+            url:'/ljoa/channel/ljHouseInfoController/showLjHouseInfo/'+re.back.record.id,
+            title:"房源信息",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+
+    //审核
+    function approval(re){
+        var config = {
+            url:'/ljoa/com/approvalController/showGeneralManagerApprovalHouseSaleInfo/'+re.back.record.id+"/"+re.back.record.houseType,
+            title:"审批",
+            callback:function(a){
+                //console.log(a)
+                if(a){
+                    JGP.query('query').searchTo("/ljoa/com/approvalApiController/listGeneralManagerQueryHouseSaleInfo", function (re) {
+                        //JGP.$alert("审核完成！");
+                        window.location.reload();
+                    }, function () {
+                        //JGP.$error("审核失败！");
+                        window.location.reload();
+                    })
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+    function feedback(re) {
+        var config = {
+            url:'/ljoa/com/approvalController/showChargeApprovalByHouseUuid/'+re.back.record.houseType+"/"+re.back.record.id+'/2/4',
+            title:"反馈意见",
+            callback:function(a){
+                /*if(a){
+                    window.location.reload();
+                }*/
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+
+</script>
+[/@JGP.foot]

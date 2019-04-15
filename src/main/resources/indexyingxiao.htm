@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>邻家</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit">
+    <!-- 引入 Bootstrap -->
+    <link href="${base!''}/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="${base!''}/css/font-awesome.min.css">
+	<link rel="stylesheet" href="${base!''}/css/swiper.min.css">
+	<link rel="stylesheet" href="${base!''}/css/main.css">
+	<link rel="stylesheet" href="${base!''}/css/style.css">
+	<style>
+		.table>tbody>tr>td{padding: 20px 8px;}
+	</style>
+    <!-- HTML5 Shiv 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="content">
+	<div class="col-sm-12">
+		<div class="index-top">
+			<div class="col-sm-6">
+				<p class="text-left one">
+					<img src="${base!''}/img/user.png" alt="">
+					${personName!''}您好！欢迎使用邻家OA综合管理平台！
+				</p>
+			</div>
+			<div class="col-sm-6">
+				<p class="text-right">
+					<img src="${base!''}/img/date.png" alt="">
+					<span class="date-show" id="currentDate"></span>
+					<span id="weatherCity"></span>
+                    <span id="weatherNow"></span>
+					<!--<span style="margin-left: 10px;"><iframe width="320" scrolling="no" height="18" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=1&icon=1&wind=1&num=1&site=12"></iframe></span>-->
+				</p>
+			</div>
+		</div>
+	</div>
+    <div class="col-sm-6">
+        <div class="main-box">
+            <div class="main-hd">
+                <p class="hd-title"><i class="fa fa-bullhorn"></i> 公告通知</p>
+                <a href="/ljoa/common/LjNoticeInfoController/listGroupLjNoticeInfoNotice" class="hd-more">查看更多 <i class="fa fa-plus"></i></a>
+            </div>
+            <div class="main-bd">
+                <div class="list-group main-list havetime swiper-container" style="height: 105px;">
+                    <div class="swiper-wrapper" id="Notice"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="main-box">
+            <div class="main-hd">
+                <p class="hd-title"><i class="fa fa-file-text"></i> 新闻</p>
+                <a href="/ljoa/common/LjNoticeInfoController/listGroupLjNoticeInfoJournalism" class="hd-more">查看更多 <i class="fa fa-plus"></i></a>
+            </div>
+            <div class="main-bd">
+                <div class="list-group main-list" style="height: 105px;" id="Journalism">
+                <#--	<a href="#" class="list-group-item">
+						<p>楼市半年销售帐：百强房企总体销售规模近4.6万亿元</p>
+					</a>
+					<a href="#" class="list-group-item">
+						<p>新一线城市最受青睐  近7成毕业生想在工作地买房</p>
+					</a>
+					<a href="#" class="list-group-item">
+						<p>丰盛控股执行董事施智强辞职 杜玮接任</p>
+					</a>
+					<a href="#" class="list-group-item">
+						<p>近期多城出台调控政策  防止房价明显过快上涨</p>
+					</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="col-sm-3">
+		<div class="main-box bg-green h-top">
+            <div class="main-hd">
+                <p class="hd-title"><i class="fa fa-cny"></i> 销售额</p>
+            </div>
+            <div class="main-bd">
+                <div class="money-item">
+                    <div onclick="yingshoukuan()">
+                        <span id="receivables">应收款：</span>
+					<#--<strong>1348,6902</strong>-->
+                    </div>
+                    <div onclick="yishoukuan()">
+                        <span id="receivables1">已收款：</span>
+					<#--<strong>3,6902</strong>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div class="col-sm-3">
+		<div class="main-box bg-blue2 h-top" onclick="lirun()">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-gg"></i> 利润</p>
+			</div>
+			<div class="main-bd">
+				<div class="money-item" id="profit">
+					<#--<strong>78,6902</strong>-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="main-box bg-orange h-top">
+            <p style="display: none" id="UUID"></p>
+			<div class="main-hd">
+				<p class="hd-title" id="ModelName"></p>
+				<div class="main-search">
+					<input type="text" class="form-control typeahead2" placeholder="搜索项目" id="OnInFo">
+					<i class="fa fa-search"></i>
+				</div>
+			</div>
+			<div class="main-bd" id="Feng">
+				<div class="money-item clearfix" style="padding-top: 35px;" id="ListModel">
+                    <div class="col-xs-3" >
+                        <span>应收款：</span><br>
+                        <strong id="cols1"></strong>
+                    </div>
+                    <div class="col-xs-3" >
+                        <span>已收款：</span><br>
+                        <strong id="cols2"></strong>
+                    </div>
+                    <div class="col-xs-3" >
+                        <span>支出：</span><br>
+                        <strong id="cols3"></strong>
+                    </div>
+                    <div class="col-xs-3" >
+                        <span>利润：</span><br>
+                        <strong id="cols4"></strong>
+                    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="main-box h-bottom">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-home"></i> 房源成交数量</p>
+			</div>
+			<div class="main-bd">
+				<div id="mychart" style="width: 100%; height: 400px;"></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="main-box h-bottom">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-home"></i> 库存</p>
+			</div>
+			<div class="main-bd">
+				<table class="table table-hover table-striped stock-table text-center">
+					<thead>
+					<tr>
+						<th>项目</th>
+						<th>录入</th>
+						<th>出售</th>
+						<th>剩余</th>
+					</tr>
+					</thead>
+					<tbody id="tbody">
+					<#--<tr>
+						<td>富邦后海小镇 Ⅱ期</td>
+						<td>180</td>
+						<td>160</td>
+						<td>20</td>
+					</tr>
+					<tr>
+						<td>华安家合人家</td>
+						<td>180</td>
+						<td>160</td>
+						<td>20</td>
+					</tr>
+					<tr>
+						<td>吉安悦城</td>
+						<td>180</td>
+						<td>160</td>
+						<td>20</td>
+					</tr>
+					<tr>
+						<td>珠玑春天花园</td>
+						<td>180</td>
+						<td>160</td>
+						<td>20</td>
+					</tr>
+					<tr>
+						<td>万科西雅图</td>
+						<td>180</td>
+						<td>160</td>
+						<td>20</td>
+					</tr>-->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- index-right end -->
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="${base!''}/js/jquery.min.js"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="${base!''}/js/bootstrap.min.js"></script>
+<script src="${base!''}/js/swiper.min.js"></script>
+<script src="${base!''}/js/echarts.min.js"></script>
+<script src="${base!''}/js/bootstrap3-typeahead.min.js"></script>
+<script src="${base!''}/js/index.js"></script>
+<script>
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('mychart'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        color: ['#5fa1f8'],
+        tooltip : {
+            trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis : [
+            {
+                type : 'category',
+                data : [],
+                axisTick: {
+                    alignWithLabel: true
+                },
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: '#818893',
+                        width: 1
+                    }
+                }
+            }
+        ],
+        yAxis : [
+            {
+                name : '数量',
+                type : 'value',
+                axisLine: {            // 坐标轴线
+                    lineStyle: {       // 属性lineStyle控制线条样式
+                        color: '#818893',
+                        width: 1
+                    }
+                }
+            }
+        ],
+        series : [
+            {
+                name:'直接访问',
+                type:'bar',
+                barWidth: '60%',
+                data: []
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.8&key=b518c47b41d1aacdff6d76af2a0aeeda"></script>
+<script>
+    // $.get("assets/js/data.json", function(data){
+    //     $(".typeahead2").typeahead({
+    //         source:data
+    //     });
+    // },'json');
+    //data.json的格式如下：
+    // ["jQuery","Script",".Net","Python","java","javascript","C++","CSS","HTML5"]
+
+
+    //加载天气查询插件
+    AMap.plugin('AMap.Weather', function() {
+        //创建天气查询实例
+        var weather = new AMap.Weather();
+
+        //执行实时天气信息查询
+        weather.getForecast('烟台市', function(err, data) {
+            // console.log(err, data);
+            $('#weatherCity').text(data.city);
+            $('#weatherNow').text(data.forecasts[0].dayWeather)
+        });
+    });
+
+    //传输数据
+
+    //加载公告
+    $.ajax({
+        url:"/ljoa/common/LjNoticeInfoApiController/listGroupLjNoticeInfoNotice",
+        success:function (result) {
+//           console.log("公告"+result.data.Notice.length);
+
+            for( var i = 0;i<result.data.Notice.length;i++){
+                var stype="";
+				if(result.data.Notice[i].noticeType=='1'){
+					stype="新闻";
+				}
+                if(result.data.Notice[i].noticeType=='2'){
+                    stype="公告";
+                }
+                if(result.data.Notice[i].noticeType=='3'){
+                    stype="通知";
+                }
+                $("#Notice").append('<div class="swiper-slide"><a href="/ljoa/common/LjNoticeInfoController/showLjNoticeInfo/'+result.data.Notice[i].id+'"'+'class="list-group-item">'+'<p>'+'('+stype+')'+result.data.Notice[i].title+'：'+result.data.Notice[i].content+'</p>'+'<span class="time">'+result.data.Notice[i].pushTime+'</span>'+'</a></div>');
+                var havetime = new Swiper('.havetime', {
+                    direction: 'vertical',
+                    autoplay: true,
+                    slidesPerView: 3
+                });
+                havetime.el.onmouseenter = function(){
+                    havetime.autoplay.stop();
+                };
+                havetime.el.onmouseleave = function(){
+                    havetime.autoplay.start();
+                };
+            }
+        }
+    });
+    //加载新闻
+    $.ajax({
+        url:"/ljoa/common/LjNoticeInfoApiController/listGroupLjNoticeInfoJournalism",
+        success:function (result) {
+//          console.log("新闻："+result.data.Journalism.length);
+
+            //查找营销中各个项目的收支情况
+            for( var i = 0;i<result.data.Journalism.length;i++){
+                $("#Journalism").append('<a href="/ljoa/common/LjNoticeInfoController/showLjNoticeInfo/'+result.data.Journalism[i].id+'"'+'class="list-group-item">'+'<p>'+result.data.Journalism[i].title+'：'+result.data.Journalism[i].content+'</p>'+'</a>');
+            }
+
+        }
+    });
+        $.ajax({
+            url:"/ljoa/indexYingXiaoApiController/indexYingXiao",
+			success:function (result) {
+                console.log(result.data.mapData);
+                //应收款
+                $("#receivables").append("<strong>"+result.data.mapData.receivables+"</strong>");
+                //已收款
+                $("#receivables1").append("<strong>"+result.data.mapData.receivables1+"</strong>");
+
+                //利润
+                $("#profit").append("<strong>"+result.data.mapData.profit+"</strong>");
+                //查找营销中各个项目的收支情况
+        /*        for( var i = 0;i<result.data.mapData.pies.length;i++){
+                    $("#pies").append("<div class='swiper-slide'> <div class='main-hd'> <p class='hd-title'>"+result.data.mapData.pies[i].projectName+
+                            "</p> </div> <div class='main-bd'> <div class='money-item clearfix' style='padding-top: 35px;'> <div class='col-xs-6'> <span>收入：</span> <strong>"
+                            +result.data.mapData.pies[i].income+"</strong> </div> <div class='col-xs-6'> <span>支出：</span> <strong>"+result.data.mapData.pies[i].expenditure+"</strong> </div> </div> </div> </div>");
+                }*/
+
+                //房源成交数量
+				var area = new Array();
+				var num = new Array();
+				for (var i=0;i<result.data.mapData.transactionsNum.length;i++){
+                    area[i]=result.data.mapData.transactionsNum[i].area;
+                    num[i]=result.data.mapData.transactionsNum[i].num;
+				}
+				option.xAxis[0].data=area;
+				option.series[0].data=num;
+                myChart.setOption(option);
+
+                //库存
+                for(var i = 0;i<result.data.mapData.stock.length;i++){
+                    $("#tbody").append("<tr> <td>"+result.data.mapData.stock[i].projectName
+							+"</td> <td>"+result.data.mapData.stock[i].entry
+							+"</td> <td>"+result.data.mapData.stock[i].maid
+							+"</td> <td>"+result.data.mapData.stock[i].surplus+"</td> </tr>");
+				}
+
+            }
+        })
+
+    //设置项目模块数据
+    $.ajax({
+        url:"/ljoa/indexYingXiaoApiController/indexYINFXIAO",
+        success:function (result) {
+            //初始第一次数据
+            $("#cols1").html(result.data.ListModel[0].income);
+            $("#cols2").html(result.data.ListModel[0].receivable);
+            $("#cols3").html(result.data.ListModel[0].expenditure);
+            $("#cols4").html(result.data.ListModel[0].profit);
+            $("#ModelName").html(result.data.ListModel[0].projectName);
+            $("#UUID").html(result.data.ListModel[0].id);
+
+            var mycars=new Array();
+            for(var i=0;i<result.data.ListModel.length;i++){
+                mycars[i]=result.data.ListModel[i].projectName;
+            }
+            //搜素框模糊提示数据
+            $(".typeahead2").typeahead({
+                source: mycars
+            });
+        }
+
+    });
+
+    $("#OnInFo").change(function () {
+        $.ajax({
+            url:"/ljoa/indexYingXiaoApiController/indexYINFXIAO",
+            success:function (result) {
+                for(var i=0;i<result.data.ListModel.length;i++){
+                    console.log( $("#OnInFo").val());
+                    if(result.data.ListModel[i].projectName==$("#OnInFo").val()){
+                        $("#cols1").html(result.data.ListModel[i].income);
+                        $("#cols2").html(result.data.ListModel[i].receivable);
+                        $("#cols3").html(result.data.ListModel[i].expenditure);
+                        $("#cols4").html(result.data.ListModel[i].profit);
+                        $("#ModelName").html(result.data.ListModel[i].projectName);
+                        $("#UUID").html(result.data.ListModel[i].id);
+                    }
+                }
+            }
+        });
+    });
+
+    $("#Feng").click(function () {
+        javascript:window.location.href='/ljoa/marketing/ljHouseInfoYXController/listHouseInfoByuuid/'+$("#UUID").html();
+    });
+
+
+    var mainPanel = top.JGP.panel('mainFrame');
+
+    //应收款
+    function yingshoukuan() {
+        mainPanel.load('/ljoa/marketing/ljHouseInfoYXController/listGrouptHouseInfoAll');
+        mainPanel.setTitle('应收款');
+    }
+
+    //已收款
+    function yishoukuan() {
+        mainPanel.load('/ljoa/marketing/ljHouseInfoYXController/listGrouptHouseInfoYES');
+        mainPanel.setTitle('已收款');
+    }
+
+    //利润
+    function lirun() {
+        mainPanel.load('/ljoa/marketing/ljHouseInfoYXController/listGroupHouseInfoProfit');
+        mainPanel.setTitle('利润');
+    }
+</script>
+</body>
+</html>

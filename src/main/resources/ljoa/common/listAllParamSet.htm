@@ -1,0 +1,89 @@
+[#import "/framework/JGP.htm"  as JGP]
+
+<!--
+项目   sys
+作者   loufei
+时间   2018/2/24
+-->
+[@JGP.head "${(sys.name)!''}"/]
+[@JGP.body]
+
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <div slot="1-1">
+        <jgp-btn _icon="bullseye" _fn="addParamSet">添加</jgp-btn>
+        <jgp-btn _fn="removeSelected" _icon="trash">批量删除</jgp-btn>
+    </div>
+    <jgp-grid slot="2-1" _id="grid" _page_size="10" _record_tools="[{'icon':'edit','tip':'编辑','fn':'edit'},{'icon':'trash','tip':'删除','fn':'remove'}]" _url="/ljoa/common/paramSetApiController/listAllParamSet">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    //添加
+    function addParamSet(result) {
+        var config = {
+            url:'/ljoa/common/paramSetController/addParamSet',
+            title:"添加通用参数",
+            callback:function(a){
+                if(a){window.location.reload();}
+            },
+            width:'600px',
+            height:'400px'
+        }
+        JGP.$dialog(config);
+    }
+    //编辑
+    function edit(result) {
+        //console.log(result.back.id);
+        var config = {
+            url:'/ljoa/common/paramSetController/editParamSet/'+result.back.record.id,
+            title:"编辑通用参数",
+            callback:function(a){
+                if(a){window.location.reload();}
+            },
+            width:'600px',
+            height:'400px'
+        }
+        JGP.$dialog(config);
+
+    }
+    //删除单个
+    function remove(result) {
+        JGP.$confirm("是否删除\""+result.back.paramName+"\"？",function () {
+            JGP.$post("/ljoa/common/paramSetApiController/removeParamSet/",{"id":result.back.record.id},//参数
+                    function () {
+                        JGP.$alert("删除成功！");
+                        window.location.reload();
+                    },function () {
+                        JGP.$warn("删除失败！");
+                    })
+        },function () {
+
+        })
+    }
+    //批量删除通用参数
+    function removeSelected() {
+        var selected = JGP.grid('grid').getSelected();
+        if(selected.length==0){
+            JGP.$warn("请选择要删除的对象！");
+            return;
+        }
+        var arr = new Array();
+        for(var i=0;i<selected.length;i++){
+            arr[i] = selected[i].id;
+        }
+
+        JGP.$confirm("是否删除选中的对象？",function () {
+            JGP.$post("/ljoa/common/paramSetApiController/removeSelectedParamSet",{array:arr+''},function () {
+                JGP.$alert("删除成功！");
+                window.location.reload();
+            },function () {
+                JGP.$error("删除失败！");
+            })
+        },function () {
+            window.location.reload();
+        })
+    }
+
+</script>
+[/@JGP.foot]

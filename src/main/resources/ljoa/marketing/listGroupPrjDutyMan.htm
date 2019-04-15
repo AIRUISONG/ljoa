@@ -1,0 +1,49 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/17
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div  _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-btn slot="1-1" _icon="bullseye" _fn="addPrjDutyMan">添加置业顾问</jgp-btn>
+    <div slot="2-1" >
+        <jgp-grid _id="grid" _check="false" _page_size="15" _record_tools="[{'icon':'trash','tip':'删除','fn':'remove'}]" _url="/ljoa/marketing/ljProjectInfoYXApiController/listGroupPrjDutyMan/${mainUuid!''}">
+        </jgp-grid>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //添加
+    function addPrjDutyMan(re) {
+        var config = {
+            url:'/ljoa/marketing/ljProjectInfoYXController/addPrjDutyMan/${mainUuid!''}',
+            title:"添加置业顾问",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'400px',
+            height:'300px'
+        }
+        JGP.$dialog(config);
+    }
+    //删除
+    function remove(re) {
+        JGP.$confirm("是否删除该置业顾问？",function () {
+            JGP.$post("/ljoa/marketing/ljProjectInfoYXApiController/removePrjDutyMan/"+re.back.record.id,{},
+                    function () {
+                        JGP.$alert("删除成功！");
+                        window.location.reload();
+                    },function () {
+                        JGP.$error("删除失败！");
+                        window.location.reload();
+                    })
+        })
+    }
+</script>
+[/@JGP.foot]

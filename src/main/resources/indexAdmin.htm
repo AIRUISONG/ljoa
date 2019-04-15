@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>邻家</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="renderer" content="webkit">
+    <!-- 引入 Bootstrap -->
+    <link href="${base!''}/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="${base!''}/css/font-awesome.min.css">
+	<link rel="stylesheet" href="${base!''}/css/main.css">
+	<link rel="stylesheet" href="${base!''}/css/style.css">
+
+    <!-- HTML5 Shiv 和 Respond.js 用于让 IE8 支持 HTML5元素和媒体查询 -->
+    <!-- 注意： 如果通过 file://  引入 Respond.js 文件，则该文件无法起效果 -->
+    <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="content">
+	<div class="col-sm-12">
+		<div class="index-top">
+			<div class="col-sm-6">
+				<p class="text-left one">
+					<img src="${base!''}/img/user.png" alt="">
+				${personName!''}您好！欢迎使用邻家OA综合管理平台！
+				</p>
+			</div>
+			<div class="col-sm-6">
+				<p class="text-right">
+					<#--<img src="${base!''}/img/date.png" alt="">-->
+					<span class="date-show" id="currentDate"></span>
+					<span id="weatherCity"></span>
+                    <span id="weatherNow"></span>
+					<!--<span style="margin-left: 10px;"><iframe width="320" scrolling="no" height="18" frameborder="0" allowtransparency="true" src="http://i.tianqi.com/index.php?c=code&id=1&icon=1&wind=1&num=1&site=12"></iframe></span>-->
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+        <div class="main-box">
+            <div class="main-hd">
+                <p class="hd-title"><i class="fa fa-bullhorn"></i> 公告通知</p>
+                <a href="/ljoa/common/LjNoticeInfoController/listGroupLjNoticeInfoNotice" class="hd-more">查看更多 <i class="fa fa-plus"></i></a>
+            </div>
+            <div class="main-bd">
+                <div class="list-group main-list havetime swiper-container" style="height: 105px;">
+                    <div class="swiper-wrapper" id="Notice"></div>
+                </div>
+            </div>
+        </div>
+	</div>
+    <div class="col-sm-6">
+        <div class="main-box">
+            <div class="main-hd">
+                <p class="hd-title"><i class="fa fa-file-text"></i> 新闻</p>
+                <a href="/ljoa/common/LjNoticeInfoController/listGroupLjNoticeInfoJournalism" class="hd-more">查看更多 <i class="fa fa-plus"></i></a>
+            </div>
+            <div class="main-bd">
+                <div class="list-group main-list" style="height: 105px;" id="Journalism">
+				<#--	<a href="#" class="list-group-item">
+						<p>楼市半年销售帐：百强房企总体销售规模近4.6万亿元</p>
+					</a>
+					<a href="#" class="list-group-item">
+						<p>新一线城市最受青睐  近7成毕业生想在工作地买房</p>
+					</a>
+					<a href="#" class="list-group-item">
+						<p>丰盛控股执行董事施智强辞职 杜玮接任</p>
+					</a>
+					<a href="#" class="list-group-item">
+						<p>近期多城出台调控政策  防止房价明显过快上涨</p>
+					</a>-->
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="col-sm-3">
+		<div class="main-box team-qudao h-top">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-cubes"></i> 渠道整合</p>
+			</div>
+			<div class="main-bd">
+				<div class="money-item">
+					<div id="incomeQD" onclick="qudaoshouru()">
+						<span>收入：</span>
+						<#--<strong>1348,6902</strong>-->
+					</div>
+					<div id="expenditureQD" onclick="qudaozhichu()">
+						<span>支出：</span>
+						<#--<strong>3,6902</strong>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-3">
+		<div class="main-box team-yingxiao h-top">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-area-chart"></i> 邻家营销</p>
+			</div>
+			<div class="main-bd">
+				<div class="money-item">
+					<div id="incomeYX" onclick="yingxiaoshouru()">
+						<span>收入：</span>
+						<#--<strong>1348,6902</strong>-->
+					</div>
+					<div id="expenditureYX" onclick="yingxiaozhichu()">
+						<span>支出：</span>
+						<#--<strong>3,6902</strong>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="main-box money-pool h-top">
+			<div class="main-bd clearfix">
+				<div class="col-sm-3" onclick="xiaoshoue()">
+					<div class="money-con" id="income">
+						<p>销售额</p>
+						<#--<strong>19,0000</strong>-->
+					</div>
+				</div>
+				<div class="col-sm-3" onclick="huikuane()">
+					<div class="money-con" id="returnMoney">
+						<p>回款额</p>
+						<#--<strong>5,0000</strong>-->
+					</div>
+				</div>
+				<div class="col-sm-3" onclick="yingshoukuan()">
+					<div class="money-con" id="trueIncome">
+						<p>应收款</p>
+						<#--<strong>14,0000</strong>-->
+					</div>
+				</div>
+				<div class="col-sm-3" onclick="tuikuanjine()">
+					<div class="money-con" id="refund">
+						<p>退款金额</p>
+						<#--<strong>2,0000</strong>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="main-box h-center">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-home"></i> 房源成交数量</p>
+			</div>
+			<div class="main-bd">
+				<div class="info">
+					<div>
+						<select id="s_province" name="s_province"></select>
+						<select id="s_city" name="s_city"></select>
+						<select id="s_county" name="s_county"></select>
+					</div>
+					<!--<div id="show"></div>-->
+				</div>
+				<div id="mychart" style="width: 100%; height: 250px;"></div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6">
+		<div class="main-box h-center">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-pie-chart"></i> 房源成交量</p>
+			</div>
+			<div class="main-bd">
+				<div class="volume-cont">
+					<div class="volume-ranking" id="transactionsNums">
+						<h5>房源成交排行</h5>
+					<#--	&lt;#&ndash;<p>1.芝罘区<span>9654</span>套<i class="pull-right"><em>47.41</em>%</i></p>
+						<p>2.莱山区<span>7877</span>套<i class="pull-right"><em>38.69</em>%</i></p>
+						<p>3.开发区<span>1301</span>套<i class="pull-right"><em>6.39</em>%</i></p>
+						<p>4.福山区<span>819</span>套<i class="pull-right"><em>4.02</em>%</i></p>
+						<p>5.高新区<span>517</span>套<i class="pull-right"><em>2.54</em>%</i></p>
+						<p>6.牟平区<span>194</span>套<i class="pull-right"><em>0.95</em>%</i></p>&ndash;&gt;-->
+					</div>
+					<div id="volume" style="width: 100%;height:340px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-12">
+		<div class="main-box">
+			<div class="main-hd">
+				<p class="hd-title"><i class="fa fa-home"></i> 库存</p>
+			</div>
+			<div class="main-bd">
+				<table class="table table-hover table-striped stock-table text-center">
+					<thead>
+					<tr>
+						<th>项目</th>
+						<th>录入</th>
+						<th>出售</th>
+						<th>剩余</th>
+					</tr>
+					</thead>
+					<tbody id="tbody">
+
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- index-right end -->
+<!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+<script src="${base!''}/js/jquery.min.js"></script>
+<!-- 包括所有已编译的插件 -->
+<script src="${base!''}/js/bootstrap.min.js"></script>
+<script src="${base!''}/js/echarts.min.js"></script>
+<script src="${base!''}/js/swiper.min.js"></script>
+<script src="${base!''}/js/area.js"></script>
+<script src="${base!''}/js/index.js"></script>
+<script>
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('mychart'));
+    var myChart2 = echarts.init(document.getElementById('volume'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        xAxis: {
+            type: 'category',
+            data: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+            name: '月份',
+            axisLine: {            // 坐标轴线
+                lineStyle: {       // 属性lineStyle控制线条样式
+                    color: '#818893',
+                    width: 1
+                }
+            },
+        },
+        yAxis: {
+            type: 'value',
+            name: '数量',
+			textStyle:{
+                color:'#6a7082'
+			},
+            axisLine: {            // 坐标轴线
+                lineStyle: {       // 属性lineStyle控制线条样式
+                    color: '#818893',
+                    width: 1
+                }
+            },
+        },
+        color:['#5fa1f8','#ff895b'],
+        legend: {
+            show: true,
+            data: ['渠道整合', '邻家营销'],
+            right: '40px',
+            textStyle:{
+                color:'#6a7082'
+            }
+        },
+        series: [{
+            data: [],
+            type: 'bar',
+            name: '渠道整合'
+        },
+            {
+                data: [],
+                type: 'bar',
+                name: '邻家营销'
+            }]
+    };
+    var option3 = {
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'horizontal',
+            left: 'center',
+            top:'20px',
+            textStyle:{
+                fontSize:12,
+                color:'#6a7082'
+            },
+            data: []
+        },
+        series : [
+            {
+                name: '房源成交量',
+                type: 'pie',
+                radius : '40%',
+                center: ['70%', '60%'],
+                color:['#6dc9c1','#f37c80','#73bbff','#ec936b','#4d78c5','#b0d059','#cdcdcd'],
+                data:[
+                    /*{value:965, name:'芝罘区'},//9654
+                    {value:877, name:'莱山区'},//7877
+                    {value:819, name:'福山区'},
+                    {value:301, name:'开发区'},//1301
+                    {value:517, name:'高新区'},
+                    {value:194, name:'牟平区'},
+                    {value:280, name:'其他'}*/
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    myChart2.setOption(option3);
+</script>
+<script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.8&key=b518c47b41d1aacdff6d76af2a0aeeda"></script>
+<script>
+
+    // 三级联动
+    _init_area();
+
+    //加载天气查询插件
+    AMap.plugin('AMap.Weather', function() {
+        //创建天气查询实例
+        var weather = new AMap.Weather();
+
+        //执行实时天气信息查询
+        weather.getForecast('烟台市', function(err, data) {
+            // console.log(err, data);
+            $('#weatherCity').text(data.city);
+            $('#weatherNow').text(data.forecasts[0].dayWeather)
+        });
+    });
+
+    $.ajax({
+		url:"/ljoa/indexAdminApiController/indexAdmin",
+		success:function (result) {
+		    console.log(result.data.mapData);
+		    //渠道整合收入和支出
+			$("#incomeQD").append("<strong>"+result.data.mapData.incomeQD+"</strong>");
+			$("#expenditureQD").append("<strong>"+result.data.mapData.expenditureQD+"</strong>");
+			//营销收入和支出
+            $("#incomeYX").append("<strong>"+result.data.mapData.incomeYX+"</strong>");
+            $("#expenditureYX").append("<strong>"+result.data.mapData.expenditureYX+"</strong>");
+			//销售额
+            $("#income").append("<strong>"+result.data.mapData.income+"</strong>");
+            //应收款
+            $("#trueIncome").append("<strong>"+result.data.mapData.trueIncome+"</strong>");
+            //回款额
+            $("#returnMoney").append("<strong>"+result.data.mapData.returnMoney+"</strong>");
+            //退款
+            $("#refund").append("<strong>"+result.data.mapData.refund+"</strong>");
+			//房源成交量
+			var area = new Array();
+			var num = new Array();
+			for(var i=0;i<result.data.mapData.transactionsNum.length;i++){
+			    $("#transactionsNums").append("<p>"+(i+1)+"."+result.data.mapData.transactionsNum[i].area
+						+"<span>"+result.data.mapData.transactionsNum[i].num+"</span>套<i class='pull-right'><em>"+
+                        result.data.mapData.transactionsNum[i].scale+"</em>%</i></p>");
+			    area[i]=result.data.mapData.transactionsNum[i].area;
+			    num[i]={value:result.data.mapData.transactionsNum[i].num,name:result.data.mapData.transactionsNum[i].area};
+			}
+			option3.legend.data=area;
+			option3.series[0].data=num;
+            myChart2.setOption(option3);
+
+            //库存
+            for(var i = 0;i<result.data.mapData.stock.length;i++){
+                $("#tbody").append("<tr> <td>"+result.data.mapData.stock[i].projectName
+                        +"</td> <td>"+result.data.mapData.stock[i].entry
+                        +"</td> <td>"+result.data.mapData.stock[i].maid
+                        +"</td> <td>"+result.data.mapData.stock[i].surplus+"</td> </tr>");
+            }
+        }
+	});
+
+    //加载公告
+    $.ajax({
+        url:"/ljoa/common/LjNoticeInfoApiController/listGroupLjNoticeInfoNotice",
+        success:function (result) {
+//           console.log("公告"+result.data.Notice.length);
+
+            for( var i = 0;i<result.data.Notice.length;i++){
+                var stype="";
+				if(result.data.Notice[i].noticeType=='1'){
+					stype="新闻";
+				}
+                if(result.data.Notice[i].noticeType=='2'){
+                    stype="公告";
+                }
+                if(result.data.Notice[i].noticeType=='3'){
+                    stype="通知";
+                }
+                $("#Notice").append('<div class="swiper-slide"><a href="/ljoa/common/LjNoticeInfoController/showLjNoticeInfo/'+result.data.Notice[i].id+'"'+'class="list-group-item">'+'<p>'+'('+stype+')'+result.data.Notice[i].title+'：'+result.data.Notice[i].content+'</p>'+'<span class="time">'+result.data.Notice[i].pushTime+'</span>'+'</a></div>');
+                var havetime = new Swiper('.havetime', {
+                    direction: 'vertical',
+                    autoplay: true,
+                    slidesPerView: 3
+                });
+                havetime.el.onmouseenter = function(){
+                    havetime.autoplay.stop();
+                };
+                havetime.el.onmouseleave = function(){
+                    havetime.autoplay.start();
+                };
+            }
+        }
+    });
+    //加载新闻
+    $.ajax({
+        url:"/ljoa/common/LjNoticeInfoApiController/listGroupLjNoticeInfoJournalism",
+        success:function (result) {
+//          console.log("新闻："+result.data.Journalism.length);
+
+            //查找营销中各个项目的收支情况
+            for( var i = 0;i<result.data.Journalism.length;i++){
+                $("#Journalism").append('<a href="/ljoa/common/LjNoticeInfoController/showLjNoticeInfo/'+result.data.Journalism[i].id+'"'+'class="list-group-item">'+'<p>'+result.data.Journalism[i].title+'：'+result.data.Journalism[i].content+'</p>'+'</a>');
+            }
+
+        }
+    });
+    $("#s_county").change(function () {
+        console.log($("#s_county option:selected")[0].value);
+        $.ajax({
+            url: "/ljoa/indexAdminApiController/numHouse",
+            data: {area: $("#s_county option:selected")[0].value,city:$("#s_city option:selected")[0].value,province:$("#s_province option:selected")[0].value},
+            success: function (result) {
+                option.series[0].data=result.data.mapData.numQD;
+                option.series[1].data=result.data.mapData.numYX;
+                myChart.setOption(option);
+            }
+        });
+    });
+
+
+    var mainPanel = top.JGP.panel('mainFrame');
+
+    //渠道收入链接
+	function qudaoshouru() {
+        mainPanel.load('/ljoa/channel/ljHouseInfoController/listGroudHouseInfo');
+        mainPanel.setTitle('渠道整合收入');
+    }
+
+    //渠道支出链接
+	function qudaozhichu() {
+        mainPanel.load('/ljoa/channel/ljHouseInfoController/listProfit');
+        mainPanel.setTitle('渠道整合支出');
+    }
+
+    //营销收入链接
+	function yingxiaoshouru() {
+        mainPanel.load('/ljoa/marketing/ljHouseInfoYXController/listGrouptHouseInfoYES');
+        mainPanel.setTitle('邻家营销收入');
+    }
+
+    //营销支出链接
+	function yingxiaozhichu() {
+        mainPanel.load('/ljoa/marketing/ljHouseInfoYXController/listGroupHouseInfoProfit');
+        mainPanel.setTitle('邻家营销支出');
+    }
+
+	//销售额
+	function xiaoshoue() {
+        mainPanel.load('/ljoa/com/LjHouseInfoZJLController/listGroupLjHouseInfo');
+        mainPanel.setTitle('销售额');
+    }
+
+    //回款额
+	function huikuane() {
+        mainPanel.load('/ljoa/com/LjHouseInfoZJLController/listGroupLjHouseInfoReturn');
+        mainPanel.setTitle('回款额');
+    }
+
+    //应收款
+	function yingshoukuan() {
+        mainPanel.load('/ljoa/com/LjHouseInfoZJLController/listGroupLjHouseInfoYSK');
+        mainPanel.setTitle('应收款');
+    }
+
+    //退款金额
+	function tuikuanjine() {
+        mainPanel.load('/ljoa/com/LjHouseInfoZJLController/listGroupReturnHouseInfo');
+        mainPanel.setTitle('退款金额');
+    }
+</script>
+</body>
+</html>

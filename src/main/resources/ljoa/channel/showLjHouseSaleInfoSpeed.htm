@@ -1,0 +1,119 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/10/12
+-->
+[@JGP.head "$Title$"]
+    <style>
+        .formBody{
+            height: 450px;
+        }
+    </style>
+[/@JGP.head]
+[@JGP.body]
+<jgp-panel>
+    <jgp-form _id="form" _label_width="80px" class="formBody">
+        <jgp-drop  _label="未审批" _name="radiobox2" _id="radiobox2" _readonly="true" _value="1" _list="[{'value':'1','label':' '},{'value':'2','label':'YES'}]" _col="6"></jgp-drop>
+        <jgp-text _readonly="true" _label="时间" _id="date1" _col="6" _value='${dateList[0]}'></jgp-text>
+        <jgp-text _readonly="true" _label="用时" _col="12" _id="time1" _value='${timeList[0]}'></jgp-text>
+        <jgp-drop  _label="渠道总监" _name="radiobox3" _id="radiobox3" _readonly="true" _value="1" _list="[{'value':'1','label':' '},{'value':'2','label':'YES'},{'value':'3','label':'NO'}]" _col="6"></jgp-drop>
+        <jgp-text _readonly="true" _label="时间" _id="date1" _col="6" _value='${dateList[1]}'></jgp-text>
+        <jgp-text _readonly="true" _label="用时" _col="12" _id="time2" _value='${timeList[1]}'></jgp-text>
+        <jgp-drop  _label="财务" _name="radiobox4" _id="radiobox4"_readonly="true" _value="1" _list="[{'value':'1','label':' '},{'value':'2','label':'YES'},{'value':'3','label':'NO'}]" _col="6"></jgp-drop>
+        <jgp-text _readonly="true" _label="时间" _id="date1" _col="6" _value='${dateList[2]}'></jgp-text>
+        <jgp-text _readonly="true" _label="用时" _col="12" _id="time3" _value='${timeList[2]}'></jgp-text>
+      [#--  <jgp-drop  _label="副总经理" _name="radiobox5" _id="radiobox5" _readonly="true" _value="1" _list="[{'value':'1','label':' '},{'value':'2','label':'YES'},{'value':'3','label':'NO'}]" _col="6"></jgp-drop>
+        <jgp-text _readonly="true" _label="时间" _id="date1" _col="6" _value='${dateList[3]}'></jgp-text>
+        <jgp-text _readonly="true" _label="用时" _col="12" _id="time4" _value='${timeList[3]}'></jgp-text>--]
+        <jgp-drop  _label="总经理" _name="radiobox6" _id="radiobox6" _readonly="true" _value="1" _list="[{'value':'1','label':' '},{'value':'2','label':'YES'},{'value':'3','label':'NO'}]" _col="6"></jgp-drop>
+        <jgp-text _readonly="true" _label="时间" _id="date1" _col="6" _value='${dateList[3]}'></jgp-text>
+        <jgp-drop  _label="已结佣" _name="radiobox7" _id="radiobox7" _readonly="true" _value="1" _list="[{'value':'1','label':' '},{'value':'2','label':'YES'}]" _col="12"></jgp-drop>
+    [#--<jgp-text _readonly="true" _label="时间" _id="date1" _col="6" _value='${dateList[3]}'></jgp-text>--]
+    [#--<jgp-drop _label="未上报" _name="radiobox1" _id="radiobox1"  _readonly="true"--]
+    [#--_value="1"--]
+    [#--_list="[{'value':'1','label':' '},{'value':'2','label':'YES'}]" _col="12">--]
+    [#--</jgp-drop>--]
+    </jgp-form>
+</jgp-panel>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    var sta= '${chargeStatus!''}';
+    JGP.$onload(
+            function () {
+                if(sta=="0"){
+//                    JGP.drop("radiobox1").val("2");
+                }
+                if(sta=="1"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                }
+                if(sta=="2"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                    JGP.drop("radiobox3").val("2");
+                }
+                if(sta=="3"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                    JGP.drop("radiobox3").val("3");
+
+                }
+                if(sta=="4"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                    JGP.drop("radiobox3").val("2");
+                    JGP.drop("radiobox4").val("2");
+
+                }
+                if(sta=="5"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                    JGP.drop("radiobox3").val("2");
+                    JGP.drop("radiobox4").val("3");
+                }
+                if(sta=="6"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                    JGP.drop("radiobox3").val("2");
+                    JGP.drop("radiobox4").val("2");
+                    // JGP.drop("radiobox5").val("2");
+                }
+                if(sta=="7"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                    JGP.drop("radiobox3").val("2");
+                    JGP.drop("radiobox4").val("2");
+                    // JGP.drop("radiobox5").val("3");
+                }
+                if(sta=="8"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                    JGP.drop("radiobox3").val("2");
+                    JGP.drop("radiobox4").val("2");
+                    // JGP.drop("radiobox5").val("2");
+                    JGP.drop("radiobox6").val("2");
+                }
+                if(sta=="9"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                    JGP.drop("radiobox3").val("2");
+                    JGP.drop("radiobox4").val("2");
+                    // JGP.drop("radiobox5").val("2");
+                    JGP.drop("radiobox6").val("3");
+                }
+                if(sta=="10"){
+//                    JGP.drop("radiobox1").val("2");
+                    JGP.drop("radiobox2").val("2");
+                    JGP.drop("radiobox3").val("2");
+                    JGP.drop("radiobox4").val("2");
+                    // JGP.drop("radiobox5").val("2");
+                    JGP.drop("radiobox6").val("2");
+                    JGP.drop("radiobox7").val("2");
+                }
+            }
+    )
+</script>
+[/@JGP.foot]

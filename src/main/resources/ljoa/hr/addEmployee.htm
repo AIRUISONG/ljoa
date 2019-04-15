@@ -1,0 +1,36 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['45','*']" _runit="px">
+    <div slot="1-1">
+        <jgp-btn _form="form" _fn="saveCallBack">保存</jgp-btn>
+    </div>
+    <jgp-form slot="2-1" _id="form" _action="/ljoa/hr/employeeApiController/addEmployee" _method="post" >
+        <jgp-text _name="account" _label="账号：" _col="12" _required="true"></jgp-text>
+        <jgp-text _label="密码：" _readonly="true" _col="12" _value="123456"></jgp-text>
+        <jgp-drop _name="orgId" _label="职位：" _col="12" _url="/ljoa/hr/organizationApiController/listAllRole" _not_input="true" _required="true"></jgp-drop>
+    </jgp-form>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //添加员工
+    function saveCallBack(result) {
+        console.log(result.back);
+        if(result.back && result.back.flag){
+            JGP.$alert("保存成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("保存失败！");
+            JGP.$close(false);
+        }
+    }
+</script>
+[/@JGP.foot]

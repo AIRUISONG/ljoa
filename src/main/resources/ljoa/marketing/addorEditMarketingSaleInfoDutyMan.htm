@@ -1,0 +1,60 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/5 0005
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-panel >
+    <div >
+        <jgp-btn _form="customerInfo" _fn="addCallBack" _id="btn">保存</jgp-btn>
+    </div>
+    <jgp-form _id="customerInfo"_action="/ljoa/marketing/ajax/saveMarketingSaleInfo"  _fdata='${fdata!''}' _label_width="140px">
+        <jgp-text _label="营销主管：" _name="dutyManUuid" _col="6" _required="true"></jgp-text>
+        <jgp-num _label="销售主管佣金（元）：" _name="dutyCharge" _decimal="5" _col="6" _required="true"></jgp-num>
+        <jgp-text _label="置业顾问：" _name="counselorManUuid" _col="6"></jgp-text>
+        <jgp-num _label="置业顾问佣金（元）：" _name="counselorCharge" _decimal="5" _col="6" ></jgp-num>
+        <jgp-drop _label="渠道名称：" _name="channelName" _col="6" _not_input="true" _id="channelName" _onchange="channelName" _active_key="LJ_CUSTOMER_INFO.CHANNEL_NAME"></jgp-drop>
+        <jgp-text _label="其他渠道：" _name="otherChannel" _col="6" _id="otherChannel" _readonly="true"></jgp-text>
+        <jgp-num _label="渠道佣金（元）：" _name="channelCharge" _id="channelCharge" _required="true" _decimal="5" _col="6"></jgp-num>
+        <jgp-num _label="前置赚取（元）：" _name="prepositionEarn" _decimal="5" _col="6"></jgp-num>
+        <jgp-area _label="备注：" _name="remark" _col="12" _row="5"></jgp-area>
+        <jgp-text _name="chargeStatus" _id="chargeStatus" _is_show="false"></jgp-text>
+        <jgp-text _name="saleChiefUuid" _id="saleChiefUuid" _col="6" _is_show="false"></jgp-text>
+        <jgp-text _name="houseUuid" _value="${hid!''}" style="display: none"></jgp-text>
+    </jgp-form>
+</jgp-panel>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    var chargeStatus = JGP.text("chargeStatus").val();//佣金状态
+    var saleChiefUuid = JGP.text("saleChiefUuid").val();//销售经理
+    if(chargeStatus!='0'||saleChiefUuid!=null){
+        JGP.form("customerInfo").attr("_disabled","true");
+        JGP.btn("btn").attr("_is_show","false");
+    }
+    function addCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("添加失败！");
+            JGP.$close(false);
+        }
+    }
+    function channelName() {
+        var channelName = JGP.drop("channelName").val();
+        JGP.num("channelCharge").attr("_required","true");
+        if(channelName==4){
+            JGP.text("otherChannel").attr("_readonly","false");
+            JGP.text("otherChannel").attr("_required","true");
+        }else{
+            JGP.text("otherChannel").attr("_readonly","true");
+            JGP.text("otherChannel").attr("_required","false");
+            JGP.text("otherChannel").reset();
+        }
+    }
+</script>
+[/@JGP.foot]

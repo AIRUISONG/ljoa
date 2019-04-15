@@ -1,0 +1,55 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/3
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','45']" _runit="px">
+
+    <jgp-form slot="1-1" _label_width="100px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/channel/ljProjectInfoApiController/saveLjProjectInfo">
+        <jgp-text _name="projectName" _label="项目名称：" _required="true" _col="6"></jgp-text>
+
+        <jgp-drop _id="projecRegion" _name="projecRegion" _label="项目区域:" _active_key="LJ_CUSTOMER_INFO.PROJECREGION"  _required="true" _col="6"></jgp-drop>
+
+        <jgp-drop _id="chiefUuid" _name="chiefUuid" _label="销售总监："  _url="/ljoa/hr/employeeApiController/listAllEmployee" _col="6" _required="true"></jgp-drop>
+        <jgp-drop _id="managerUuid" _name="managerUuid" _label="销售经理："  _url="/ljoa/hr/employeeApiController/listAllEmployee" _col="6" _required="true"></jgp-drop>
+        <jgp-drop _id="caseManager" _name="caseManager" _label="销售助理:"  _url="/ljoa/hr/employeeApiController/listAllEmployee"  _col="6" _required="true"></jgp-drop>
+
+        <jgp-drop _name="projectType" _label="项目类别："  _active_key="LJOA.CHANNEL.HOUSETYPE" _readonly="true" _col="6"></jgp-drop>
+        <jgp-drop _not_input="true" _name="province" _label="省:" _active_key="LJOA.CHANNEL.PROVINCE" _col="6"></jgp-drop>
+        <jgp-drop _not_input="true" _name="city" _label="市:" _active_key="LJOA.CHANNEL.CITY" _col="6"></jgp-drop>
+        <jgp-drop _not_input="true" _name="area" _label="区:" _active_key="LJOA.CHANNEL.AREA" _col="6"></jgp-drop>
+        <jgp-drop _name="prjProcess" _label="项目进度：" _not_input="true" _active_key="LJOA.TONG.PRJ_PROCESS" _col="6"></jgp-drop>
+        <jgp-area _name="describe" _label="备注：" _col="12" _row="6"> </jgp-area>
+    </jgp-form>
+    <div slot="2-1" style="margin-left: 75%">
+        <jgp-btn _icon="floppy-o" _form="form" _fn="saveCallBack">保存</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function saveCallBack(result) {
+        //console.log(result.back);
+        if(result.back && result.back.flag){
+            JGP.$alert("添加成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$warn("添加失败！");
+            JGP.$close(false);
+        }
+    }
+/*
+    function editUuid(re) {
+        var name = JGP.drop("projecRegion").val();
+        if(name=="1"){
+            JGP.drop("chiefUuid").val('d6c7640478fa497582dd159293944173');//qfl
+            JGP.drop("managerUuid").val('d6c7640478fa497582dd159293944173');//qfl
+
+        }
+    }*/
+</script>
+[/@JGP.foot]

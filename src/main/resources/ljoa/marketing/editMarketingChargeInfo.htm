@@ -1,0 +1,83 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/17 0017
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['*','15']" >
+    <jgp-form slot="1-1" _id="form" _fdata='${fdata!''}' _label_width="120px" _action="/ljoa/marketing/marketingChargeInfoApiController/editMarketingChargeInfo">
+        <jgp-drop _label="佣金对象:" _not_input="true" _name="chargeTargetUuid" _col="12" _id="chargeTargetUuid" _onchange="chargeTargetUuid" ></jgp-drop>
+        [#--<jgp-text _label="佣金对象名称:" _id="chargeTargetName" _name="chargeTargetName" _id="chargeTargetName" _col="12" _is_show="false"></jgp-text>--]
+        <jgp-num _label="佣金金额:" _name="chargeMoney" _decimal="5" _col="12" _required="true"></jgp-num>
+        <jgp-drop _label="佣金类型：" _name="chargeType" _not_input="true" _id="chargeType"_readonly="true" _onchange="getChargeType" _col="12" _active_key="LJ_CUSTOMER_INFO.CHARGE_TYPE"></jgp-drop>
+        <jgp-drop _label="佣金状态：" _id="chargeStatus" _name="chargeStatus" _not_input="true" _readonly="true" _col="12" _active_key="LJ_CUSTOMER_INFO.CHARGESTATUS"></jgp-drop>
+    </jgp-form>
+    <div slot="2-1" style="margin-left: 80%">
+        <jgp-btn _form="form" _fn="editCallBack" _id="btn">保存</jgp-btn>
+    </div>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    JGP.$onload(function () {
+        var chargeStatus = JGP.drop('chargeStatus').value;
+        var chargeType = '${chargeType!''}';
+        var chargeTargetUuid = JGP.drop('chargeTargetUuid').value;
+        if(chargeStatus == '1'||chargeStatus == '2'||chargeStatus == '4'||chargeStatus == '6'|| chargeStatus =='8'|| chargeStatus=='10'){
+            JGP.form('form').attr('_disabled','true');
+            JGP.btn("btn").attr("_is_show","false");
+            }
+            if(chargeStatus=='3'){
+                JGP.$warn("该信息部门审核不通过请修改！");
+                return;
+            }
+            if(chargeStatus=='5'){
+                JGP.$warn("该信息财务审核不通过请修改！");
+                return;
+            }
+            if(chargeStatus=='7'){
+                JGP.$warn("该信息副总审核不通过请修改！");
+                return;
+            }
+            if(chargeStatus=='9'){
+                JGP.$warn("该信息总经理审核不通过请修改！");
+                return;
+            }
+        if(chargeType=='5'){
+            JGP.$post("/ljoa/channel/LjChannelCompanyApiController/listAllLjChannelCompany",{},function (result) {
+                JGP.drop('chargeTargetUuid').attr('_list',result.data.ldata);
+            });
+
+        }else{
+            JGP.$post("/ljoa/hr/employeeApiController/listAllEmployee",{},function (result) {
+                JGP.drop('chargeTargetUuid').attr('_list',result.data.ldata);
+            });
+        }
+
+    })
+
+    function editCallBack(result) {
+        if(result.back && result.back.flag ){
+            JGP.$alert("修改成功！");
+            JGP.$close(true);
+        }else {
+            JGP.$error("修改失败！");
+            JGP.$close(false);
+        }
+
+    }
+
+//    function chargeTargetUuid(re) {
+//        var chargeTargetUuid = JGP.drop('chargeTargetUuid').val;
+//        if(chargeTargetUuid=="4"){
+//            JGP.text('chargeTargetName').show();
+//        }else{
+//            JGP.text('chargeTargetName').attr('_is_show','false');
+//        }
+//    }
+</script>
+[/@JGP.foot]
+

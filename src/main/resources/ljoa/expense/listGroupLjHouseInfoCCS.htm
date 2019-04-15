@@ -1,0 +1,38 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/9
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _id="query" _target="grid" _page_size="15" _action="/ljoa/expense/ljExpenseYJSPApiController/listGroupLjExpenseYJSP">
+        <jgp-drop _not_input="true" _name="houseType" _label="查询条件："  _col="3" _placeholder="房源归属" _active_key="LJOA.CHANNEL.HOUSETYPE"></jgp-drop>
+        <jgp-drop _not_input="true" _name="projectUuid" _placeholder="所属项目" _col="3" _url="/ljoa/expense/ljHouseInfoCCSApiController/listProjectName"></jgp-drop>
+        <jgp-drop  _not_input="true" _name="roomType"  _placeholder="产品分类"  _col="3" _active_key="LJOA.CHANNEL.ROOM_TYPE"></jgp-drop>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false" _page_size="15"
+              _record_tools="[{'icon':'edit','tip':'修改佣金状态','fn':'editStatus'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    function editStatus(re) {
+        var config = {
+            url:'/ljoa/expense/ljHouseInfoCCSController/editLjHouseInfoCCS/'+re.back.record.id,
+            title:"修改佣金状态",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config)
+    }
+</script>
+[/@JGP.foot]

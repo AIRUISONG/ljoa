@@ -1,0 +1,111 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/17 0017
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit="px" _aux="true">
+    <div slot="1-1" _col="['25','*']">
+        <jgp-btn slot="1-1" _fn="addMarketingChargeInfoSaleManager">录入营销经理佣金</jgp-btn>
+        <jgp-btn slot="1-2" _fn="addMarketingChargeInfoSaleDirector">录入营销总监佣金</jgp-btn>
+    </div>
+
+    <jgp-grid slot="2-1" _check="false" _url="/ljoa/marketing/marketingChargeInfoApiController/listGroupMarketingChargeInfo/${hid!''}" _page_size="15"
+              _record_tools=" [{'icon':'edit','tip':'编辑','fn':'edit'},{'icon':'trash','tip':'删除','fn':'remove'}]"></jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    var hid='${hid!''}';//房源id
+    [#--var way = '${way!''}';//判断填佣金是渠道还是自然--]
+    var insideChargeStatus = '${insideChargeStatus!''}';//内部佣金状态
+    //添加
+    function addMarketingChargeInfoSaleManager() {
+//        if(way=='1'||way=='2'){
+            if (insideChargeStatus=="0"||insideChargeStatus==""){
+                var config = {
+                    url: '/ljoa/marketing/marketingChargeInfoController/addMarketingChargeInfoSaleManager/' + hid,
+                    title: "添加佣金",
+                    callback: function (a) {
+                        if (a) {
+                            window.location.reload();
+                        }
+                    },
+                    width: '600px',
+                    height: '400px'
+                }
+                JGP.$dialog(config);
+            }else {
+                JGP.$warn("已上报，无法添加！");
+            }
+//        }else {
+//            JGP.$warn("已添加渠道佣金！");
+//        }
+
+    }
+    function addMarketingChargeInfoSaleDirector() {
+//        if(way=='1'||way=='2'){
+            if (insideChargeStatus=="0"||insideChargeStatus==""){
+                var config = {
+                    url: '/ljoa/marketing/marketingChargeInfoController/addMarketingChargeInfoSaleDirector/' + hid,
+                    title: "添加佣金",
+                    callback: function (a) {
+                        if (a) {
+                            window.location.reload();
+                        }
+                    },
+                    width: '600px',
+                    height: '400px'
+                }
+                JGP.$dialog(config);
+            }else {
+                JGP.$warn("已上报，无法添加！");
+            }
+//        }else{
+//            JGP.$warn("已添加渠道佣金！");
+//        }
+
+    }
+    //编辑
+    function edit(result) {
+        var config = {
+            url:'/ljoa/marketing/marketingChargeInfoController/editMarketingChargeInfo/'+result.back.record.id,
+            title:"编辑佣金信息",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'600px',
+            height:'400px'
+        }
+        JGP.$dialog(config);
+    }
+    //删除
+    function remove(result) {
+        if (insideChargeStatus=="0"||insideChargeStatus==""){
+
+            JGP.$confirm("是否删除？", function () {
+                JGP.$post("/ljoa/marketing/marketingChargeInfoApiController/removeOneMarketingProject", {"id": result.back.record.id},//参数
+                        function (re) {
+                            if (re.flag == true) {
+                                JGP.$alert("删除成功！");
+                                window.location.reload();
+                            } else {
+                                JGP.$error("删除失败");
+                            }
+                        }, function () {
+                            JGP.$error("删除失败！");
+                        })
+            }, function () {
+
+            })
+        }else {
+            JGP.$warn("已上报，无法删除！");
+        }
+    }
+</script>
+[/@JGP.foot]

@@ -1,0 +1,42 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/23
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-panel>
+    <jgp-form _id="form" _label_width="120px" _method="post" _fdata='${fdata!''}'>
+    [#--     <jgp-text _name="projectUuid" _label="项目主键:" _readonly="true" style="display: none" _col="6"></jgp-text>
+         <jgp-text _name="ownerName" _label="房主姓名:" _readonly="true" _col="6"></jgp-text>
+         <jgp-text _name="ownerTel" _label="房主手机号:" _readonly="true"  _col="6"></jgp-text>
+         <jgp-text _name="ownerIdentity" _label="房主身份证号:" _readonly="true" _col="6"></jgp-text>
+         <jgp-text _name="otherName" _label="其他联系人姓名:" _readonly="true"  _col="6"></jgp-text>
+         <jgp-text _name="otherTel" _label="其他联系人手机号:" _readonly="true" _decimal="5" _col="6"></jgp-text>
+         <jgp-text _name="otherIdentity" _label="其他联系人身份证号:" _readonly="true" _decimal="5" _col="6"></jgp-text>--]
+        <jgp-text _name="buildingNo" _label="楼号:" _readonly="true" _decimal="5" _col="6"></jgp-text>
+        <jgp-text _name="unitNo" _label="单元:" _readonly="true" _decimal="5" _col="6"></jgp-text>
+        <jgp-text _name="roomNo" _label="房号:" _readonly="true" _decimal="5" _col="6"></jgp-text>
+        <jgp-text _name="roomArea" _label="面积:" _readonly="true" _decimal="5" _col="6"></jgp-text>
+        <jgp-drop  _not_input="true" _name="roomType" _label="产品分类："  _col="6" _active_key="LJOA.CHANNEL.ROOM_TYPE" _readonly="true"></jgp-drop>
+        <jgp-text _name="otherRoomType" _label="其他分类：" _readonly="true"  _col="6"></jgp-text>
+        <jgp-num _name="saleMoney" _label="销售价格：" _readonly="true" _decimal="5"  _col="6"></jgp-num>
+    [#--<jgp-num _name="minMoney" _label="销售底价：" _readonly="true" _decimal="5" _col="6"></jgp-num>--]
+    [#--<jgp-num _name="premium" _label="溢价金额：" _readonly="true"  _decimal="5" _col="6"></jgp-num>--]
+        <jgp-drop _name="status" _label="状态：" _readonly="true" _active_key="LJOA.CHANNEL.ROOM_STATUS"  _col="6"></jgp-drop>
+        <jgp-drop _name="houseType" _label="房源归属：" _readonly="true" _active_key="LJOA.CHANNEL.HOUSETYPE" _col="6"></jgp-drop>
+        <jgp-drop  _not_input="true" _id="companyChargeType" _name="companyChargeType" _onchange="editcompanyChargeType" _readonly="true" _label="公司佣金方式" _active_key="LJOA.CHANNEL.CHARGE_TYPE"></jgp-drop>
+        <jgp-num _id="companyChargeMoney" _name="companyChargeMoney" _label="公司佣金金额" _readonly="true" _decimal="5" ></jgp-num>
+        <jgp-num _id="companyChargeScale" _name="companyChargeScale" _label="公司佣金比例" _readonly="true" _decimal="5" ></jgp-num>
+        <jgp-drop _id="companyChargeStatus" _name="companyChargeStatus" _label="公司佣金状态" _readonly="true" _active_key="LJOA.CHANNEL.COMPANY_CHARGE_STATUS"></jgp-drop>
+        <jgp-date-time _not_input="true" _name="companyChargeTime" _readonly="true" _label="结佣时间:" _format="date"></jgp-date-time>
+        <jgp-area _name="remark" _label="备注：" _readonly="true" _col="12"> </jgp-area>
+        <jgp-uploader _disabled="true" _allow="all" _object_id="${uuid!''}" _object_type="com.jgp.ljoa.channel.model.LjHouseInfo"></jgp-uploader>
+    </jgp-form>
+</jgp-panel>
+[/@JGP.body]
+
+[@JGP.foot]
+
+[/@JGP.foot]

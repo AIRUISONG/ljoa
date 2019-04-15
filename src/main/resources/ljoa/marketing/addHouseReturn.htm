@@ -1,0 +1,104 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/23
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-div _row="['*','45']" _runit="px">
+    <jgp-panel slot="1-1">
+        <jgp-form  _label_width="150px" _id="form" _method="post" _fdata='${fdata!''}' _action="/ljoa/marketing/houseReturnApiController/addHouseReturn">
+            <jgp-text _name="applyName" _label="客户姓名：" _required="true" _col="6"></jgp-text>
+            <jgp-text _name="tel" _label="联系方式：" _required="true" _col="6"></jgp-text>
+            <jgp-text _name="identityCode" _label="身份证号：" _required="true" _col="6"></jgp-text>
+            <jgp-text _name="bank" _label="开户行：" _required="true" _col="6"></jgp-text>
+            <jgp-text _name="bankCard" _label="银行卡号：" _required="true" _col="6"></jgp-text>
+            <jgp-text _name="source" _label="来源：" _required="true" _col="6"></jgp-text>
+            <jgp-num _name="returnMoney" _label="应退款金额(元)：" _decimal="5" _col="6" _readonly="true"></jgp-num>
+            <jgp-num _name="actuaLReturnMoney" _label="实际退款金额(元)：" _decimal="5" _col="6" _required="true"></jgp-num>
+            <jgp-area _name="returnReason" _label="退款原因：" _col="12"></jgp-area>
+            <jgp-date-time _format="date" _not_input="true" _name="applyDate" _label="申请日期：" _required="true" _col="6"></jgp-date-time>
+            <jgp-drop _not_input="true" _name="inputMan" _label="申请填报人：" _required="true" _url="/ljoa/hr/employeeApiController/listAllEmployee" _col="6"></jgp-drop>
+            <jgp-drop _not_input="true" _name="approvalStatus" _label="申请状态：" _readonly="true" _active_key="LJOA.EXPENSE"></jgp-drop>
+            <jgp-drop _not_input="true" _name="moneyStatus" _label="退款状态：" _active_key="LJ_HOUSE_RETURN.MONEY_STATUS" _readonly="true"></jgp-drop>
+            <jgp-area _name="remark" _label="备注：" _col="12"></jgp-area>
+            <jgp-uploader _allow="all" _id="upload" _object_id="${id!''}" _object_type="com.jgp.ljoa.marketing.model.HouseReturn" ></jgp-uploader>
+        </jgp-form>
+    </jgp-panel>
+    <div slot="2-1" style="margin-left: 55%">
+        <jgp-btn _icon="floppy-o" _fn="saveCallBack">保存</jgp-btn>
+        <jgp-btn _icon="check" _fn="commitHouseReturn">提交申请</jgp-btn>
+        [#--<jgp-btn _icon="check" _fn="output">打印申请</jgp-btn>--]
+    </div>
+</jgp-div>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    var mount;
+    var id = '${id!''}';
+
+    var flag = '${flag!''}';
+    function upload(re) {
+        //console.log(re.back);
+        mount = re.back.existFiles;
+    }
+
+    function saveCallBack() {
+        JGP.form('form').ajaxSubmit(function (result) {
+            if(result.flag == true){
+                JGP.$alert('保存成功！');
+                JGP.$close(true);
+                /*if(mount && mount.length > 0){
+                    console.log(mount,result.data.id);
+                    JGP.$updateMountInfo(result.data.id,'com.jgp.ljoa.marketing.model.HouseReturn',mount,function(){
+                        JGP.$close(true);
+                    });
+                }*/
+                //JGP.uploader('upload').updateMountInfo(result.data.id,'com.jgp.ljoa.marketing.model.HouseReturn',mount);
+
+            }else {
+                JGP.$error('保存失败！');
+                JGP.$close(false);
+            }
+        },function () {
+
+        })
+
+    }
+
+    //提交申请
+    function commitHouseReturn() {
+        if(flag == '0'){
+            JGP.$warn('正在审批！不可修改！');
+            return;
+        }
+        if(id == undefined || id == ''){
+            JGP.$warn('请先保存退房申请！');
+            return;
+        }
+        JGP.$post('/ljoa/marketing/houseReturnApiController/editCommitHouseReturn',{id:id},function (re) {
+            if(re.flag){
+                JGP.$alert('申请成功！');
+                JGP.$close(true);
+            }else {
+                JGP.$error('申请失败！');
+                JGP.$close(false);
+            }
+        },function (re) {
+            JGP.$error('申请失败！');
+            JGP.$close(false);
+        })
+    }
+    function output() {
+        var config = {
+            url:'/ljoa/moneyReturnReportController/report/moneyReturnReport/'+id,
+            title:'打印申请',
+            width:'100%',
+            height:'100%'
+        }
+        JGP.$dialog(config)
+    }
+</script>
+[/@JGP.foot]

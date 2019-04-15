@@ -1,0 +1,32 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   liujinxu
+时间   2018/7/4
+-->
+[@JGP.head "Title"/]
+[@JGP.body]
+<!--内容-->
+<jgp-panel>
+    <jgp-tree _id="orgTree" _url="/ljoa/hr/organizationApiController/listTreeOrganization" _onclick="getClickNode"
+              _root="公司部门" _auto_load="false"></jgp-tree>
+</jgp-panel>
+[/@JGP.body]
+[@JGP.foot]
+<script>
+    var id = '${id!''}';
+
+    JGP.$onload(function () {
+        JGP.tree('orgTree').load();
+    })
+
+    function getClickNode(result) {
+        //console.log(result.back.bean.id);
+        if(id == result.back.bean.id){
+            JGP.$warn('不可选择自身节点！');
+            return;
+        }
+        JGP.$close(result.back.bean);
+    }
+</script>
+[/@JGP.foot]

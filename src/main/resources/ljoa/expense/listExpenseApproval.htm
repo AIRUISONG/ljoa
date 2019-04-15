@@ -1,0 +1,40 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者   XUXIAOMIN 
+时间   2018/7/8 0008
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-div _row="['45','*']" _runit = "px" _aux="true">
+    <jgp-query slot="1-1" _target="grid" _id="query"
+               _action="/ljoa/expense/ljExpenseApiController/listExpenseApproval">
+        <jgp-drop _label="查询条件：" _col="3" _name="expenseType" _placeholder="报销种类" _not_input="true" _active_key="LJOA.EXPENSE_TYPE"></jgp-drop>
+        <jgp-drop _col="2" _name="status" _placeholder="报销状态" _not_input="true" _active_key="LJOA.EXPENSE"></jgp-drop>
+        <jgp-date-time _col="2" _name="applyTime" _placeholder="申请日期" _not_input="true" _format="date"></jgp-date-time>
+    </jgp-query>
+    <jgp-grid slot="2-1" _id="grid" _check="false"
+              _record_tools="[{'icon':'eye','tip':'审批详情','fn':'queryApproval'}]">
+    </jgp-grid>
+</jgp-div>
+[/@JGP.body]
+
+[@JGP.foot]
+<script>
+    //跳转审批详情页面
+    function queryApproval(result) {
+        var config = {
+            url:'/ljoa/expense/ljExpenseController/listApprovalByBUuid/'+result.back.record.id,
+            title:"审批详情",
+            callback:function(a){
+                if(a){
+                    window.location.reload();
+                }
+            },
+            width:'800px',
+            height:'550px'
+        }
+        JGP.$dialog(config);
+    }
+</script>
+[/@JGP.foot]

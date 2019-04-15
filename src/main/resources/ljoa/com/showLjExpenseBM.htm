@@ -1,0 +1,28 @@
+[#import "/framework/JGP.htm"  as JGP]
+<!--
+项目   ljoa
+作者  SSF
+时间   2018/7/7
+-->
+[@JGP.head "$Title$"/]
+[@JGP.body]
+<jgp-form _label_width="100px" _id="form" _method="post" _fdata='${fdata!''}'>
+<jgp-drop _name="orgUuid" _label="部门:"   _col="6" _readonly="true"></jgp-drop>
+<jgp-date-time _name="applyTime" _label="申请日期:" _format="date" _readonly="true"></jgp-date-time>
+<jgp-num _name="fileNum" _label="附件数量:" _col="6" _readonly="true"></jgp-num>
+<jgp-text  _label="报销人:" _value="${expenseManName!''}" _readonly="true"></jgp-text>
+<jgp-drop _name="receiver" _label="收款人:" _readonly="true"></jgp-drop>
+<jgp-drop _name="expenseType" _label="报销种类:" _active_key="LJOA.EXPENSE_TYPE" _readonly="true"></jgp-drop>
+<jgp-area _name="payUse" _label="付款用途" _readonly="true"></jgp-area>
+<jgp-num _name="money" _label="金额:" _decimal="5" _col="6" _readonly="true"></jgp-num>
+<jgp-area _name="orgOpition" _label="部门意见" _col="12" _readonly="true"></jgp-area>
+<jgp-area _name="finangeOpition" _label="财务意见" _col="12" _readonly="true"></jgp-area>
+<jgp-area _name="viceManagerOpition" _label="副总经理意见" _col="12" _readonly="true"></jgp-area>
+<jgp-area _name="managerOpition" _label="总经理意见" _col="12" _readonly="true"></jgp-area>
+<jgp-drop _name="status" _label="状态" _active_key="LJOA.EXPENSE"  _readonly="true"></jgp-drop>
+</jgp-form>
+[/@JGP.body]
+
+[@JGP.foot]
+
+[/@JGP.foot]
